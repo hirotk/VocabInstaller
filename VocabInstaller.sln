@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VocabInstaller", "VocabInstaller\VocabInstaller.csproj", "{B401D6E0-BBE3-43D4-95DF-A89FA51D0EAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VocabInstaller.Tests", "VocabInstaller.Tests\VocabInstaller.Tests.csproj", "{FE504C37-C9AB-4264-AEC5-5537E4362625}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B401D6E0-BBE3-43D4-95DF-A89FA51D0EAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B401D6E0-BBE3-43D4-95DF-A89FA51D0EAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B401D6E0-BBE3-43D4-95DF-A89FA51D0EAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B401D6E0-BBE3-43D4-95DF-A89FA51D0EAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE504C37-C9AB-4264-AEC5-5537E4362625}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE504C37-C9AB-4264-AEC5-5537E4362625}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE504C37-C9AB-4264-AEC5-5537E4362625}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE504C37-C9AB-4264-AEC5-5537E4362625}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
