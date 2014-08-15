@@ -1,0 +1,112 @@
+﻿html{
+    background-color: #fff;
+}
+
+body {
+    background-color: #eee;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+/* main layout
+----------------------------------------------------------*/
+.content_wrapper {
+    margin: 0 auto;
+    max-width: 960px;
+}
+
+header{
+    overflow: hidden;
+    background-color: #eef;
+}
+
+#layout_body{
+    clear: both;
+    overflow: auto;
+    background-color: #fee;
+}
+
+    .main_content {
+        padding: 20px 10px;
+    }
+
+footer{
+    clear: both;
+    overflow:hidden;
+    background-color: #eef;
+}
+
+    footer .content_wrapper small {
+        display: block;
+        margin: 10px;
+        text-align: center;
+        background-color: #efe;
+    }
+
+
+/* site title
+----------------------------------------------------------*/
+.site_title {
+    float: left;
+    margin: 10px;
+    font-size: 30px;
+    line-height: 32px;
+    background-color: #efe;
+}
+
+.site_title a, .site_title a:hover, .site_title a:active {
+    background: none;
+    color: #448;
+    outline: none;
+    text-decoration: none;
+}
+
+/* menu
+----------------------------------------------------------*/
+nav {
+    float: left;
+    margin: 15px 10px;
+    font-size: 20px;
+    background-color: #ffe;
+}
+
+    nav ul#menu {
+        margin: 0;
+        padding: 0;
+    }
+
+        nav ul#menu li {
+            display: inline;
+            list-style: none;
+            padding-left: 15px;
+        }
+
+        ul#menu li a {
+            background: none;
+            color: #448;
+            text-decoration: none;
+        }
+
+/* login
+----------------------------------------------------------*/
+#login {
+    float: right;
+    margin: 15px 10px;
+    text-align: right;
+    background-color: #eff;
+}
+    #login ul{
+        margin: 0;
+        padding: 0;
+    }
+
+        #login ul li {
+            display: inline;
+            list-style: none;
+        }
