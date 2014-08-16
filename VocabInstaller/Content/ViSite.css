@@ -6,14 +6,6 @@ body {
     background-color: #eee;
 }
 
-.float-left {
-    float: left;
-}
-
-.float-right {
-    float: right;
-}
-
 /* main layout
 ----------------------------------------------------------*/
 .content_wrapper {
@@ -110,3 +102,20 @@ nav {
             display: inline;
             list-style: none;
         }
+
+/* table
+----------------------------------------------------------*/
+th, td {
+    border: 1px solid gray;
+    padding: 5px;
+}
+
+
+/* Mobile Styles
+----------------------------------------------------------*/
+@media only screen and (max-width: 720px) {
+    nav {
+        clear:both;
+        margin: 0 15px 10px;
+    }
+}

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<VocabInstaller.Models.Question>
+
+@{
     ViewBag.Title = "Home Page";
 }
 
@@ -20,6 +22,7 @@
     </section>
 }*@
 
+<!--
 <h3>We suggest the following:</h3>
 <ol class="round">
     <li class="one">
@@ -45,3 +48,19 @@
         <a href="http://go.microsoft.com/fwlink/?LinkId=245157">Learn more…</a>
     </li>
 </ol>
+-->
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Word</th>
+        <th>Meaning</th>
+    </tr>
+    @foreach (var q in Model) {
+        <tr>
+            <td>@q.Id</td>
+            <td>@q.Word</td>
+            <td>@q.Meaning</td>
+        </tr>
+    }
+</table>
