@@ -1,4 +1,4 @@
-﻿@model List<VocabInstaller.Models.Question>
+﻿@model VocabInstaller.ViewModels.HomeViewModel
 
 @{
     ViewBag.Title = "Home Page";
@@ -55,12 +55,21 @@
         <th>ID</th>
         <th>Word</th>
         <th>Meaning</th>
+        <th>Registerd Date</th>
     </tr>
-    @foreach (var q in Model) {
+    @foreach (var q in Model.GetQuestions()) {
         <tr>
             <td>@q.Id</td>
             <td>@q.Word</td>
             <td>@q.Meaning</td>
+            <td>@q.RegisteredDate</td>
         </tr>
     }
 </table>
+
+<div class="paging">
+    @Html.Partial("_PagingPartial")
+    <p>
+        [ @(Model.Page + 1) / @(Model.LastPage + 1) ]
+    </p>
+</div>

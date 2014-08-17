@@ -110,6 +110,17 @@ th, td {
     padding: 5px;
 }
 
+/* paging
+----------------------------------------------------------*/
+.paging{
+    clear: both;
+    margin: 20px 0 0;
+    text-align: center;
+}
+
+    .paging p{
+        margin: 5px 0 0;
+    }
 
 /* Mobile Styles
 ----------------------------------------------------------*/
