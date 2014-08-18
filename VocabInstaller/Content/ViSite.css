@@ -122,6 +122,54 @@ th, td {
         margin: 5px 0 0;
     }
 
+
+/* Login Page, Register Page, Manage Page
+----------------------------------------------------------*/
+#login_form,
+#register_form,
+#change_password_form {
+    max-width: 480px;
+}
+    #login_form .field-validation-error {
+        margin-left: 5px;
+        color: red;
+    }
+
+    #login_form .validation-summary-errors ul li,
+    #register_form .validation-summary-errors ul li,
+    #change_password_form .validation-summary-errors ul li {
+        margin: 10px 0;
+        color: red;
+    }
+
+    #login_form fieldset,
+    #login_form fieldset ul,
+    #register_form fieldset,
+    #register_form fieldset ul,
+    #change_password_form fieldset,
+    #change_password_form fieldset ul {
+        margin: 0;
+        padding: 10px;
+    }
+
+    #login_form fieldset ul li,
+    #register_form fieldset ul li,
+    #change_password_form fieldset ul li {
+        margin: 0 0 15px;
+        list-style:none;
+    }
+
+    #login_form fieldset .submit_button,
+    #register_form fieldset .submit_button,
+    #change_password_form fieldset .submit_button {
+        padding: 0 10px 0 0;
+        text-align: right;
+    }
+
+    #login_form .register_link {
+        margin: 20px 20px 0;
+    }
+
 /* Mobile Styles
 ----------------------------------------------------------*/
 @media only screen and (max-width: 720px) {

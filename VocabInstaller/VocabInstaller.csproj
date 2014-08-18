@@ -189,10 +189,15 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Question.cs" />
+    <Compile Include="Models\ViDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\aspnet-VocabInstaller-20140814152423.mdf" />
+    <Content Include="App_Data\aspnet-VocabInstaller-20140814152423_log.ldf">
+      <DependentUpon>aspnet-VocabInstaller-20140814152423.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\normalize.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -307,9 +312,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Shared\_PagingPartial.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>

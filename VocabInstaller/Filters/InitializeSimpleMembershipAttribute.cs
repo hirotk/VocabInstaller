@@ -20,10 +20,10 @@ namespace VocabInstaller.Filters {
 
         private class SimpleMembershipInitializer {
             public SimpleMembershipInitializer() {
-                Database.SetInitializer<UsersContext>(null);
+                Database.SetInitializer<ViDbContext>(null);
 
                 try {
-                    using (var context = new UsersContext()) {
+                    using (var context = new ViDbContext()) {
                         if (!context.Database.Exists()) {
                             // Create the SimpleMembership database without Entity Framework migration schema
                             ((IObjectContextAdapter)context).ObjectContext.CreateDatabase();
