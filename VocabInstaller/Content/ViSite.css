@@ -117,7 +117,9 @@ th, td {
     margin: 20px 0 0;
     text-align: center;
 }
-
+    .paging a {
+        text-decoration: none;
+    }
     .paging p{
         margin: 5px 0 0;
     }
@@ -169,6 +171,16 @@ th, td {
     #login_form .register_link {
         margin: 20px 20px 0;
     }
+
+/* Home/Index
+----------------------------------------------------------*/
+.main_content .create_link {
+    margin: 10px 0;
+}
+    .main_content .create_link a {
+        text-decoration: none;
+    }
+    
 
 /* Mobile Styles
 ----------------------------------------------------------*/

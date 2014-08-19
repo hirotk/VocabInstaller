@@ -1,0 +1,63 @@
+﻿@model VocabInstaller.Models.Question
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Question</legend>
+
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.UserId)
+
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Word)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(m => m.Word)
+            @Html.ValidationMessageFor(m => m.Word)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Meaning)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(m => m.Meaning)
+            @Html.ValidationMessageFor(m => m.Meaning)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Note)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(m => m.Note)
+            @Html.ValidationMessageFor(m => m.Note)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(m => m.RegisteredDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(m => m.RegisteredDate)
+            @Html.ValidationMessageFor(m => m.RegisteredDate)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

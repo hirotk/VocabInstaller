@@ -50,11 +50,16 @@
 </ol>
 -->
 
+<div class="create_link">
+    @Html.ActionLink("Create", "Create")
+</div>
+
 <table>
     <tr>
         <th>ID</th>
         <th>Word</th>
         <th>Meaning</th>
+        <th>Note</th>
         <th>Registerd Date</th>
     </tr>
     @foreach (var q in Model.GetQuestions()) {
@@ -62,7 +67,10 @@
             <td>@q.Id</td>
             <td>@q.Word</td>
             <td>@q.Meaning</td>
+            <td>@q.Note</td>
             <td>@q.RegisteredDate</td>
+            <td>@Html.ActionLink("Edit", "Edit", new {id = q.Id, page = Model.Page})</td>
+            <td>@Html.ActionLink("Delete", "Delete", new { id = q.Id, page = Model.Page })</td>
         </tr>
     }
 </table>

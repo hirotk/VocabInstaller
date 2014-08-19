@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace VocabInstaller.Models {
     public class Question {
+        [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
-
+        [HiddenInput(DisplayValue = false)]
         public int UserId { get; set; }
 
         [Required]

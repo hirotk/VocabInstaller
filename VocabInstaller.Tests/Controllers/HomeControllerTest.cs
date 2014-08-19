@@ -11,7 +11,7 @@ namespace VocabInstaller.Tests.Controllers {
     [TestClass]
     public class HomeControllerTest {
         [TestMethod]
-        public void Index() {
+        public void IndexTest() {
             // Arrange
             HomeController controller = new HomeController();
 
@@ -24,7 +24,43 @@ namespace VocabInstaller.Tests.Controllers {
         }
 
         [TestMethod]
-        public void About() {
+        public void CreateTest() {
+            // Arrange
+            var controller = new HomeController();
+
+            // Act
+            ViewResult result = controller.Create() as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void EditTest() {
+            // Arrange
+            var controller = new HomeController();
+
+            // Act
+            ViewResult result = controller.Edit(1) as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void DeleteTest() {
+            // Arrange
+            var controller = new HomeController();
+
+            // Act
+            ViewResult result = controller.Delete(1) as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void AboutTest() {
             // Arrange
             HomeController controller = new HomeController();
 
@@ -36,7 +72,7 @@ namespace VocabInstaller.Tests.Controllers {
         }
 
         [TestMethod]
-        public void Contact() {
+        public void ContactTest() {
             // Arrange
             HomeController controller = new HomeController();
 

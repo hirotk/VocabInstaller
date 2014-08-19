@@ -1,0 +1,65 @@
+﻿@model VocabInstaller.Models.Question
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Question</legend>
+
+        @Html.HiddenFor(m => m.Id)
+        @Html.HiddenFor(m => m.UserId)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Word)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(m => m.Word, new { @class = "word" })
+            @Html.ValidationMessageFor(m => m.Word)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Meaning)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(m => m.Meaning, new { @class = "meaning" })
+            @Html.ValidationMessageFor(m => m.Meaning)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(m => m.Note)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(m => m.Note, new { @class = "note", @cols = 60, @rows = 4 })
+            @Html.ValidationMessageFor(m => m.Note)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(m => m.RegisteredDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(m => m.RegisteredDate)
+            @Html.ValidationMessageFor(m => m.RegisteredDate)
+        </div>
+
+        <p>
+            @Html.Hidden("page", (int)ViewBag.Page)
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div class="BackToList">
+    @Html.ActionLink("Back to List", "Index", "Home",
+        new { page = ViewBag.Page}, null)
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
