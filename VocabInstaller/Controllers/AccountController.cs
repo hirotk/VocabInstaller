@@ -17,7 +17,6 @@ namespace VocabInstaller.Controllers {
     public class AccountController : Controller {
         //
         // GET: /Account/Login
-
         [AllowAnonymous]
         public ActionResult Login(string returnUrl) {
             ViewBag.ReturnUrl = returnUrl;
@@ -26,7 +25,6 @@ namespace VocabInstaller.Controllers {
 
         //
         // POST: /Account/Login
-
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -42,18 +40,16 @@ namespace VocabInstaller.Controllers {
 
         //
         // POST: /Account/LogOff
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff() {
+            Session["UserId"] = null;
             WebSecurity.Logout();
-
             return RedirectToAction("Index", "Home");
         }
 
         //
         // GET: /Account/Register
-
         [AllowAnonymous]
         public ActionResult Register() {
             return View();
@@ -61,7 +57,6 @@ namespace VocabInstaller.Controllers {
 
         //
         // POST: /Account/Register
-
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -83,7 +78,6 @@ namespace VocabInstaller.Controllers {
 
         //
         // POST: /Account/Disassociate
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Disassociate(string provider, string providerUserId) {
@@ -108,7 +102,6 @@ namespace VocabInstaller.Controllers {
 
         //
         // GET: /Account/Manage
-
         public ActionResult Manage(ManageMessageId? message) {
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
@@ -122,7 +115,6 @@ namespace VocabInstaller.Controllers {
 
         //
         // POST: /Account/Manage
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Manage(LocalPasswordModel model) {
@@ -169,9 +161,8 @@ namespace VocabInstaller.Controllers {
 
         //
         // POST: /Account/ExternalLogin
-
         [HttpPost]
-        [AllowAnonymous]
+//        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLogin(string provider, string returnUrl) {
             return new ExternalLoginResult(provider, Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
@@ -179,8 +170,7 @@ namespace VocabInstaller.Controllers {
 
         //
         // GET: /Account/ExternalLoginCallback
-
-        [AllowAnonymous]
+//        [AllowAnonymous]
         public ActionResult ExternalLoginCallback(string returnUrl) {
             AuthenticationResult result = OAuthWebSecurity.VerifyAuthentication(Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
             if (!result.IsSuccessful) {
@@ -206,9 +196,8 @@ namespace VocabInstaller.Controllers {
 
         //
         // POST: /Account/ExternalLoginConfirmation
-
         [HttpPost]
-        [AllowAnonymous]
+//        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult ExternalLoginConfirmation(RegisterExternalLoginModel model, string returnUrl) {
             string provider = null;
@@ -245,13 +234,12 @@ namespace VocabInstaller.Controllers {
 
         //
         // GET: /Account/ExternalLoginFailure
-
-        [AllowAnonymous]
+//        [AllowAnonymous]
         public ActionResult ExternalLoginFailure() {
             return View();
         }
 
-        [AllowAnonymous]
+//        [AllowAnonymous]
         [ChildActionOnly]
         public ActionResult ExternalLoginsList(string returnUrl) {
             ViewBag.ReturnUrl = returnUrl;

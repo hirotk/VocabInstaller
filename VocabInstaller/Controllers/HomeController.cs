@@ -6,39 +6,15 @@ using System.Web;
 using System.Web.Mvc;
 using VocabInstaller.Models;
 using VocabInstaller.ViewModels;
+using VocabInstaller.Helpers;
 
 namespace VocabInstaller.Controllers {
+    [Authorize]
     public class HomeController : Controller {
-//        private static List<Question> questions;
-//        private static int questionId;
         private IViRepository repository;
 
+        // Default Constructor
         public HomeController() : this(new ViRepository()) {
-/*            if (questions == null) {
-                questions = new List<Question>() {
-                    new Question(){Id=1, Word="word1", Meaning="meaning1", 
-                        RegisteredDate=DateTime.Parse("2014/01/01 10:20:30")},
-                    new Question(){Id=2, Word="word2", Meaning="meaning2",
-                        RegisteredDate=DateTime.Parse("2014/01/02 10:20:30")},
-                    new Question(){Id=3, Word="word3", Meaning="meaning3",
-                        RegisteredDate=DateTime.Parse("2014/01/03 10:20:30")},
-                    new Question(){Id=4, Word="word4", Meaning="meaning4",
-                        RegisteredDate=DateTime.Parse("2014/01/04 10:20:30")},
-                    new Question(){Id=5, Word="word5", Meaning="meaning5",
-                        RegisteredDate=DateTime.Parse("2014/01/05 10:20:30")},
-                    new Question(){Id=6, Word="word6", Meaning="meaning6", 
-                        RegisteredDate=DateTime.Parse("2014/01/06 10:20:30")},
-                    new Question(){Id=7, Word="word7", Meaning="meaning7",
-                        RegisteredDate=DateTime.Parse("2014/01/07 10:20:30")},
-                    new Question(){Id=8, Word="word8", Meaning="meaning8",
-                        RegisteredDate=DateTime.Parse("2014/01/08 10:20:30")},
-                    new Question(){Id=9, Word="word9", Meaning="meaning9",
-                        RegisteredDate=DateTime.Parse("2014/01/09 10:20:30")},
-                    new Question(){Id=10, Word="word10", Meaning="meaning10",
-                        RegisteredDate=DateTime.Parse("2014/01/10 10:20:30")},
-                };
-                questionId = questions.Count + 1;
-            }*/
         }
 
         public HomeController(IViRepository repository) {
@@ -46,9 +22,19 @@ namespace VocabInstaller.Controllers {
         }
 
         public ActionResult Index(int page = 0, int itemsPerPage = 4) {
-//            questions = questions.OrderByDescending(q => q.RegisteredDate).ToList();
+            int userId ;
+            var uid = Session["UserId"] as int?;
+            if (uid == null) {
+                userId = this.GetUserId();
+                Session["UserId"] = userId;
+            } else {
+                userId = (int)uid;
+            }
+
             var questions = repository.Questions
+                .Where(q => q.UserId == userId)
                 .OrderByDescending(q => q.RegisteredDate).ToList();
+
             var viewModel = new HomeViewModel(questions, page, itemsPerPage);
             
             return View(viewModel);
@@ -56,9 +42,9 @@ namespace VocabInstaller.Controllers {
 
         // GET: /Home/Create
         public ActionResult Create() {
-            var userId = 2; // Todo: implement GetUserId() method
+            int userId = (int)(Session["UserId"] ?? this.GetUserId());
+
             var question = new Question() {
-//                Id = questionId,
                 UserId = userId,
                 RegisteredDate = DateTime.Now,
             };
@@ -73,9 +59,12 @@ namespace VocabInstaller.Controllers {
             "Id, UserId, Word, Meaning, Note, RegisteredDate")] 
             Question question) {
 
+            int userId = (int)(Session["UserId"] ?? this.GetUserId());
+            if (question.UserId != userId) {
+                throw new Exception("User Account Error");
+            }
+
             if (ModelState.IsValid) {
-//                questions.Add(question);
-//                questionId++;
                 repository.SaveQuestion(question);
                 return RedirectToAction("Create");
             }
@@ -88,8 +77,11 @@ namespace VocabInstaller.Controllers {
             if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+            int userId = (int)(Session["UserId"] ?? this.GetUserId());
+
             var question = repository.Questions
-                .Where(q => q.Id == id).SingleOrDefault();
+                .Where(q => q.UserId == userId && q.Id == id).SingleOrDefault();
 
             if (question == null) {
                 return HttpNotFound();
@@ -107,11 +99,13 @@ namespace VocabInstaller.Controllers {
             "Id, UserId, Word, Meaning, Note, RegisteredDate")] 
             Question question, int page = 0) {
 
+            int userId = (int)(Session["UserId"] ?? this.GetUserId());
+
+            if (question.UserId != userId) {
+                throw new Exception("User Account Error");
+            }
+
             if (ModelState.IsValid) {
-//                var curQuestion = questions
-//                    .Where(q => q.Id == question.Id).SingleOrDefault();
-//                questions.Remove(curQuestion);
-//                questions.Add(question);
                 repository.SaveQuestion(question);
             }
 
@@ -126,8 +120,10 @@ namespace VocabInstaller.Controllers {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+            int userId = (int)(Session["UserId"] ?? this.GetUserId());
+
             var question = repository.Questions
-                .Where(q => q.Id == id).SingleOrDefault();
+                .Where(q => q.UserId == userId && q.Id == id).SingleOrDefault();
 
             if (question == null) {
                 return HttpNotFound();
@@ -142,23 +138,31 @@ namespace VocabInstaller.Controllers {
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id, int page = 0) {
-//            var question = questions.Where(q => q.Id == id).SingleOrDefault();
-//            questions.Remove(question);
+            int userId = (int)(Session["UserId"] ?? this.GetUserId());
+            
+            var question = repository.Questions
+                .Where(q => q.UserId == userId && q.Id == id).SingleOrDefault();
+
+            if (question == null) {
+                throw new Exception("User Account Error");
+            }
+            
             repository.DeleteQuestion(id);
 
             return RedirectToAction("Index", new {page = page});
         }
 
         public ActionResult About() {
-//            ViewBag.Message = "Your app description page.";
-
             return View();
         }
 
-        public ActionResult Contact() {
-//            ViewBag.Message = "Your contact page.";
-
+        public ActionResult Contact() {            
             return View();
+        }
+
+        protected override void Dispose(bool disposing) {
+            repository.Dispose();
+            base.Dispose(disposing);
         }
     }
 }

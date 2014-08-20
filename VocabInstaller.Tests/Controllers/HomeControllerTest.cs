@@ -9,14 +9,26 @@ using VocabInstaller;
 using VocabInstaller.Controllers;
 using VocabInstaller.Models;
 using VocabInstaller.ViewModels;
+using System.Web;
 
 namespace VocabInstaller.Tests.Controllers {
     [TestClass]
     public class HomeControllerTest {
-        private Mock<IViRepository> mockRepository = new Mock<IViRepository>();
+        private Mock<ControllerContext> ctrlContext = new Mock<ControllerContext>();
+        private Mock<IViRepository> mockRepository = new Mock<IViRepository>();        
+
+        private void setControlContext(int userId) {
+            var httpContext = new Mock<HttpContextBase>();
+            var session = new Mock<HttpSessionStateBase>();
+            session.Setup(s => s["UserId"]).Returns(userId);
+            httpContext.Setup(hc => hc.Session).Returns(session.Object);
+            ctrlContext.Setup(cc => cc.HttpContext).Returns(httpContext.Object);            
+        }
 
         [TestInitialize]
         public void BeginTestMethod() {
+            setControlContext(userId:2);
+
             mockRepository.Setup(m => m.Questions).Returns(new Question[] {
                 new Question {Id = 1, UserId = 2,
                     Word = "w1", Meaning = "m1",
@@ -32,7 +44,13 @@ namespace VocabInstaller.Tests.Controllers {
                     RegisteredDate = DateTime.Parse("2014/01/04")},
                 new Question {Id = 5, UserId = 2,
                     Word = "w5", Meaning = "m5",
-                    RegisteredDate = DateTime.Parse("2014/01/05")}
+                    RegisteredDate = DateTime.Parse("2014/01/05")},
+                new Question {Id = 6, UserId = 3,
+                    Word = "w6", Meaning = "m6",
+                    RegisteredDate = DateTime.Parse("2014/01/06")},
+                new Question {Id = 7, UserId = 3,
+                    Word = "w7", Meaning = "m7",
+                    RegisteredDate = DateTime.Parse("2014/01/07")}
             }.OrderByDescending(q => q.RegisteredDate)
             .AsQueryable());
         }
@@ -41,6 +59,7 @@ namespace VocabInstaller.Tests.Controllers {
         public void IndexTest() {
             // Arrange
             var controller = new HomeController(mockRepository.Object);
+            controller.ControllerContext = ctrlContext.Object;
 
             // Act
             var result = controller.Index() as ViewResult;
@@ -60,6 +79,7 @@ namespace VocabInstaller.Tests.Controllers {
         public void CreateTest() {
             // Arrange
             var controller = new HomeController(mockRepository.Object);
+            controller.ControllerContext = ctrlContext.Object;
 
             // Act
             var resultGet = controller.Create() as ViewResult;
@@ -77,9 +97,32 @@ namespace VocabInstaller.Tests.Controllers {
         }
 
         [TestMethod]
+        public void CanNotCreateTest() {
+            // Arrange
+            var controller = new HomeController(mockRepository.Object);
+            setControlContext(userId: 3);
+            controller.ControllerContext = ctrlContext.Object;
+
+            // Act
+            var resultGet = controller.Create() as ActionResult;
+            Exception ex = null;
+            try {
+                var question = new Question() { UserId = 2, Word = "w", Meaning = "m" };
+                var resultPost = controller.Create(question) as ActionResult;
+            } catch (Exception e) {
+                ex = e;
+            }
+
+            // Assert
+            Assert.IsNotNull(resultGet);
+            Assert.AreEqual("User Account Error", ex.Message);
+        }
+
+        [TestMethod]
         public void EditTest() {
             // Arrange
             var controller = new HomeController(mockRepository.Object);
+            controller.ControllerContext = ctrlContext.Object;
                         
             // Act
             var resultGet = controller.Edit(1) as ViewResult;
@@ -100,9 +143,32 @@ namespace VocabInstaller.Tests.Controllers {
         }
 
         [TestMethod]
+        public void CanNotEditTest() {
+            // Arrange
+            var controller = new HomeController(mockRepository.Object);
+            setControlContext(userId:3);
+            controller.ControllerContext = ctrlContext.Object;
+
+            // Act
+            var resultGet = controller.Edit(id:1) as ActionResult;            
+            var question = new Question(){Id =1, UserId=2, Word="", Meaning=""};
+            Exception ex = null;
+            try {
+                var resultPost = controller.Edit(question) as ActionResult;
+            } catch(Exception e) {
+                ex = e;
+            }
+            
+            // Assert
+            Assert.IsInstanceOfType(resultGet, typeof(HttpNotFoundResult));
+            Assert.AreEqual("User Account Error", ex.Message);
+        }
+
+        [TestMethod]
         public void DeleteTest() {
             // Arrange
             var controller = new HomeController(mockRepository.Object);
+            controller.ControllerContext = ctrlContext.Object;
 
             // Act
             var resultGet = controller.Delete(1) as ViewResult;
@@ -115,6 +181,27 @@ namespace VocabInstaller.Tests.Controllers {
             Assert.IsNotNull(resultGet);
             Assert.AreEqual(1, question.Id);
             Assert.AreEqual("Index", resultPost.RouteValues["action"]);
+        }
+
+        [TestMethod]
+        public void CanNotDeleteTest() {
+            // Arrange
+            var controller = new HomeController(mockRepository.Object);
+            setControlContext(userId: 3);
+            controller.ControllerContext = ctrlContext.Object;
+
+            // Act
+            var resultGet = controller.Delete(id: 1) as ActionResult;
+            Exception ex = null;
+            try {
+                var resultPost = controller.DeleteConfirmed(1) as ActionResult;
+            } catch (Exception e) {
+                ex = e;
+            }
+
+            // Assert
+            Assert.IsInstanceOfType(resultGet, typeof(HttpNotFoundResult));
+            Assert.AreEqual("User Account Error", ex.Message);
         }
 
         [TestMethod]
