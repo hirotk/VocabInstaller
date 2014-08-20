@@ -9,11 +9,12 @@ using VocabInstaller.ViewModels;
 
 namespace VocabInstaller.Controllers {
     public class HomeController : Controller {
-        private static List<Question> questions;
-        private static int questionId;
+//        private static List<Question> questions;
+//        private static int questionId;
+        private IViRepository repository;
 
-        public HomeController() {
-            if (questions == null) {
+        public HomeController() : this(new ViRepository()) {
+/*            if (questions == null) {
                 questions = new List<Question>() {
                     new Question(){Id=1, Word="word1", Meaning="meaning1", 
                         RegisteredDate=DateTime.Parse("2014/01/01 10:20:30")},
@@ -37,14 +38,19 @@ namespace VocabInstaller.Controllers {
                         RegisteredDate=DateTime.Parse("2014/01/10 10:20:30")},
                 };
                 questionId = questions.Count + 1;
-            }
+            }*/
+        }
+
+        public HomeController(IViRepository repository) {
+            this.repository = repository;
         }
 
         public ActionResult Index(int page = 0, int itemsPerPage = 4) {
-//            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
-
-            questions = questions.OrderByDescending(q => q.RegisteredDate).ToList();
+//            questions = questions.OrderByDescending(q => q.RegisteredDate).ToList();
+            var questions = repository.Questions
+                .OrderByDescending(q => q.RegisteredDate).ToList();
             var viewModel = new HomeViewModel(questions, page, itemsPerPage);
+            
             return View(viewModel);
         }
 
@@ -52,7 +58,7 @@ namespace VocabInstaller.Controllers {
         public ActionResult Create() {
             var userId = 2; // Todo: implement GetUserId() method
             var question = new Question() {
-                Id = questionId,
+//                Id = questionId,
                 UserId = userId,
                 RegisteredDate = DateTime.Now,
             };
@@ -68,8 +74,9 @@ namespace VocabInstaller.Controllers {
             Question question) {
 
             if (ModelState.IsValid) {
-                questions.Add(question);
-                questionId++;
+//                questions.Add(question);
+//                questionId++;
+                repository.SaveQuestion(question);
                 return RedirectToAction("Create");
             }
 
@@ -81,7 +88,8 @@ namespace VocabInstaller.Controllers {
             if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var question = questions.Where(q => q.Id == id).SingleOrDefault();
+            var question = repository.Questions
+                .Where(q => q.Id == id).SingleOrDefault();
 
             if (question == null) {
                 return HttpNotFound();
@@ -100,10 +108,11 @@ namespace VocabInstaller.Controllers {
             Question question, int page = 0) {
 
             if (ModelState.IsValid) {
-                var curQuestion = questions
-                    .Where(q => q.Id == question.Id).SingleOrDefault();
-                questions.Remove(curQuestion);
-                questions.Add(question);
+//                var curQuestion = questions
+//                    .Where(q => q.Id == question.Id).SingleOrDefault();
+//                questions.Remove(curQuestion);
+//                questions.Add(question);
+                repository.SaveQuestion(question);
             }
 
             ViewBag.Page = page;
@@ -117,7 +126,8 @@ namespace VocabInstaller.Controllers {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var question = questions.Where(q => q.Id == id).SingleOrDefault();
+            var question = repository.Questions
+                .Where(q => q.Id == id).SingleOrDefault();
 
             if (question == null) {
                 return HttpNotFound();
@@ -132,8 +142,9 @@ namespace VocabInstaller.Controllers {
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id, int page = 0) {
-            var question = questions.Where(q => q.Id == id).SingleOrDefault();
-            questions.Remove(question);
+//            var question = questions.Where(q => q.Id == id).SingleOrDefault();
+//            questions.Remove(question);
+            repository.DeleteQuestion(id);
 
             return RedirectToAction("Index", new {page = page});
         }
