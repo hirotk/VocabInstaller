@@ -21,7 +21,7 @@ namespace VocabInstaller.Controllers {
             this.repository = repository;
         }
 
-        public ActionResult Index(int page = 0, int itemsPerPage = 4) {
+        public ActionResult Index(int page = 0, int itemsPerPage = 4, string search = null) {
             int userId ;
             var uid = Session["UserId"] as int?;
             if (uid == null) {
@@ -31,12 +31,18 @@ namespace VocabInstaller.Controllers {
                 userId = (int)uid;
             }
 
-            var questions = repository.Questions
-                .Where(q => q.UserId == userId)
-                .OrderByDescending(q => q.RegisteredDate).ToList();
+            var viewModel = new HomeViewModel(itemsPerPage, pageSkip: 2) {
+                Questions = repository.Questions.Where(q => q.UserId == userId),
+                Page = page
+            };
 
-            var viewModel = new HomeViewModel(questions, page, itemsPerPage);
-            
+            if (search != null) {
+                viewModel.Questions = viewModel.Filter(search);
+            }
+
+            viewModel.Questions = viewModel.Questions
+                .OrderByDescending(q => q.RegisteredDate);
+
             return View(viewModel);
         }
 
@@ -73,7 +79,7 @@ namespace VocabInstaller.Controllers {
         }
 
         // GET: /Home/Edit/5
-        public ActionResult Edit(int? id, int page = 0) {
+        public ActionResult Edit(int? id, int page = 0, string search = null) {
             if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -88,6 +94,7 @@ namespace VocabInstaller.Controllers {
             }
 
             ViewBag.Page = page;
+            ViewBag.Search = search;
 
             return View(question);
         }
@@ -97,7 +104,7 @@ namespace VocabInstaller.Controllers {
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include =
             "Id, UserId, Word, Meaning, Note, RegisteredDate")] 
-            Question question, int page = 0) {
+            Question question, int page = 0, string search = null) {
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
@@ -110,12 +117,13 @@ namespace VocabInstaller.Controllers {
             }
 
             ViewBag.Page = page;
+            ViewBag.Search = search;
 
             return View(question);
         }
 
         // GET: /Home/Delete/5
-        public ActionResult Delete(int? id, int page = 0) {
+        public ActionResult Delete(int? id, int page = 0, string search = null) {
             if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -130,6 +138,7 @@ namespace VocabInstaller.Controllers {
             }
 
             ViewBag.Page = page;
+            ViewBag.Search = search;
 
             return View(question);
         }
@@ -137,7 +146,7 @@ namespace VocabInstaller.Controllers {
         // POST: /Home/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id, int page = 0) {
+        public ActionResult DeleteConfirmed(int id, int page = 0, string search = null) {
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
             
             var question = repository.Questions
@@ -149,7 +158,7 @@ namespace VocabInstaller.Controllers {
             
             repository.DeleteQuestion(id);
 
-            return RedirectToAction("Index", new {page = page});
+            return RedirectToAction("Index", new { page = page, search = search });
         }
 
         public ActionResult About() {

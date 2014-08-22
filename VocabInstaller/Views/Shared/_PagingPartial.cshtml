@@ -1,10 +1,10 @@
 ﻿@{
-    object firstArgs = new { page = 0};
-    object prev2Args = new { page = Model.Page - Model.PageSkip};
-    object prevArgs = new { page = Model.Page - 1};
-    object nextArgs = new { page = Model.Page + 1};
-    object next2Args = new { page = Model.Page + Model.PageSkip};
-    object lastArgs = new { page = Model.LastPage};    
+    object firstArgs = new { page = 0, search = Model.Search };
+    object prev2Args = new { page = Model.Page - Model.PageSkip, search = Model.Search };
+    object prevArgs = new { page = Model.Page - 1, search = Model.Search };
+    object nextArgs = new { page = Model.Page + 1, search = Model.Search };
+    object next2Args = new { page = Model.Page + Model.PageSkip, search = Model.Search };
+    object lastArgs = new { page = Model.LastPage, search = Model.Search };    
 }
 
 @if (Model.HasPrevPage(1)) {

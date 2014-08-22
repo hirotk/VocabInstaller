@@ -50,6 +50,7 @@
 
         <p>
             @Html.Hidden("page", (int)ViewBag.Page)
+            @Html.Hidden("search", (string)ViewBag.Search)
             <input type="submit" value="Save" />
         </p>
     </fieldset>
@@ -57,7 +58,7 @@
 
 <div class="BackToList">
     @Html.ActionLink("Back to List", "Index", "Home",
-        new { page = ViewBag.Page}, null)
+                new { page = ViewBag.Page, search = ViewBag.Search }, null)
 </div>
 
 @section Scripts {
