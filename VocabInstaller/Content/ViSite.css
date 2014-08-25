@@ -110,6 +110,71 @@ th, td {
     padding: 5px;
 }
 
+/* question
+----------------------------------------------------------*/
+section.question{
+    margin: 0;
+    padding: 10px;
+    overflow: hidden;
+    min-height: 100px;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+    border-bottom: 1px solid gray;
+
+    background-color: #fcfcfc;
+}
+
+section.question:nth-of-type(1) {
+    border-top: 1px solid gray;
+}
+
+section.question .left_side{
+    float: left;
+    width: auto;
+
+    background-color: #f0fff0;
+}
+
+section.question .right_side{
+    float: right;
+    width: 135px;
+
+    background-color: #f0f0ff;
+}
+
+.question .word{
+    margin-bottom: 10px;
+    font-size: 20px;
+
+    background-color: #fff0f0;
+}
+
+.question .meaning{
+    margin-bottom: 10px;
+    font-size: 18px;
+
+    background-color: #ffe;
+}
+
+.question .note{
+    font-size: 16px;
+
+    background-color: #eff;
+}
+
+.question .registered_date{
+    margin-bottom: 5px;
+    text-align: right;
+
+    background-color: #ffe;
+}
+
+.question .edit_delete{
+    text-align: right;
+
+    background-color: #fee;
+}
+
 /* paging
 ----------------------------------------------------------*/
 .paging{
@@ -174,15 +239,13 @@ th, td {
 
 /* Home/Index
 ----------------------------------------------------------*/
-
-
 .main_content .create_link {
     margin: 10px 0;
 }
     .main_content .create_link a {
         text-decoration: none;
     }
-    
+
 
 /* Mobile Styles
 ----------------------------------------------------------*/

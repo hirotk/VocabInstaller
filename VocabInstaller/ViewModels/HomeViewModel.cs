@@ -27,6 +27,8 @@ namespace VocabInstaller.ViewModels {
             }
         }
 
+        public IQueryable<Question> ViewQuestions { get; set; }
+
         private int page;
         public int Page { 
             get{ 
@@ -115,7 +117,7 @@ namespace VocabInstaller.ViewModels {
                                     q => {
                                         foreach (var s in searchFields(q)) {
                                             if (s == null) { continue; }
-                                            if (s.Contains(k)) {
+                                            if (s.ToLower().Contains(k.ToLower())) {
                                                 return true;
                                             }
                                         }

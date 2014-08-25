@@ -43,6 +43,7 @@ namespace VocabInstaller.Controllers {
             viewModel.Questions = viewModel.Questions
                 .OrderByDescending(q => q.RegisteredDate);
 
+            viewModel.ViewQuestions = viewModel.GetQuestionsInPage(page);
             return View(viewModel);
         }
 
