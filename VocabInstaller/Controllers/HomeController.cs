@@ -41,7 +41,7 @@ namespace VocabInstaller.Controllers {
             }
 
             viewModel.Questions = viewModel.Questions
-                .OrderByDescending(q => q.RegisteredDate);
+                .OrderByDescending(q => q.CreatedAt);
 
             viewModel.ViewQuestions = viewModel.GetQuestionsInPage(page);
             return View(viewModel);
@@ -53,7 +53,9 @@ namespace VocabInstaller.Controllers {
 
             var question = new Question() {
                 UserId = userId,
-                RegisteredDate = DateTime.Now,
+                CreatedAt = DateTime.Now,
+                ReviewedAt = DateTime.Now,
+                ReviewLevel = 1
             };
 
             return View(question);
@@ -63,7 +65,7 @@ namespace VocabInstaller.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include =
-            "Id, UserId, Word, Meaning, Note, RegisteredDate")] 
+            "Id, UserId, Word, Meaning, Note, CreatedAt, ReviewedAt, ReviewLevel")] 
             Question question) {
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
@@ -104,7 +106,7 @@ namespace VocabInstaller.Controllers {
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include =
-            "Id, UserId, Word, Meaning, Note, RegisteredDate")] 
+            "Id, UserId, Word, Meaning, Note, CreatedAt, ReviewedAt, ReviewLevel")] 
             Question question, int page = 0, string search = null) {
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());

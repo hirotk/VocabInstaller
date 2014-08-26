@@ -6,55 +6,12 @@ using System.Web;
 using VocabInstaller.Models;
 
 namespace VocabInstaller.ViewModels {
-    public class HomeViewModel {
-        public HomeViewModel(int itemsPerPage=1, int pageSkip=2) {
-            ItemsPerPage = itemsPerPage;
-            PageSkip = pageSkip;
-            Page = 0;
+    public class HomeViewModel : AbstractViewModel {
+        public HomeViewModel(int itemsPerPage, int pageSkip) 
+            : base (itemsPerPage, pageSkip) {
         }
 
-        public int ItemsPerPage { get; set; }
-        public int PageSkip { get; set; }
-        public int ItemNum { get; set; }
         public string Search { get; set; }
-
-        private IQueryable<Question> questions;
-        public IQueryable<Question> Questions {
-            get { return questions; }
-            set {
-                questions = value;
-                ItemNum = questions == null ? 0 : questions.Count();
-            }
-        }
-
-        public IQueryable<Question> ViewQuestions { get; set; }
-
-        private int page;
-        public int Page { 
-            get{ 
-                return page < 0 ? 0 : page > this.LastPage ? this.LastPage : page;
-            }
-            set { page = value; }
-        }
-
-        public int LastPage {
-            get {
-                return (ItemNum > 0) ? (ItemNum - 1) / ItemsPerPage : 0;
-            }
-        }
-
-        public bool HasPrevPage(int n) {
-            return (0 <= Page - n) ? true : false;
-        }
-
-        public bool HasNextPage(int n) {
-            return ((Page + n) * ItemsPerPage < ItemNum) ? true : false;
-        }
-
-        public IQueryable<Question> GetQuestionsInPage(int? page = null) {
-            int pg = page ?? Page;
-            return Questions.Skip(pg * ItemsPerPage).Take(ItemsPerPage);
-        }
 
         private IQueryable<Question> filter(
             IQueryable<Question> models, Func<Question, string[]> searchFields, string search) {

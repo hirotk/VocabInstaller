@@ -23,7 +23,9 @@ namespace VocabInstaller.Models {
                     dbEntry.Word = question.Word;
                     dbEntry.Meaning = question.Meaning;
                     dbEntry.Note = question.Note;
-                    dbEntry.RegisteredDate = question.RegisteredDate;
+                    dbEntry.CreatedAt = question.CreatedAt;
+                    dbEntry.ReviewedAt = question.ReviewedAt;
+                    dbEntry.ReviewLevel = question.ReviewLevel;
                 }
             }
             context.SaveChanges();

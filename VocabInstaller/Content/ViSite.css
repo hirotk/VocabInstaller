@@ -162,18 +162,21 @@ section.question .right_side{
     background-color: #eff;
 }
 
-.question .registered_date{
+.question .created_at,
+.question .reviewed_at {
     margin-bottom: 5px;
     text-align: right;
 
     background-color: #ffe;
 }
 
-.question .edit_delete{
+.question .edit_delete, 
+.question .answer {
     text-align: right;
 
     background-color: #fee;
 }
+
 
 /* paging
 ----------------------------------------------------------*/

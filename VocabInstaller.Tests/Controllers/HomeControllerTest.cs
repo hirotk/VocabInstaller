@@ -32,26 +32,26 @@ namespace VocabInstaller.Tests.Controllers {
             mockRepository.Setup(m => m.Questions).Returns(new Question[] {
                 new Question {Id = 1, UserId = 2,
                     Word = "Why don't you try it?", Meaning = "m1",
-                    RegisteredDate = DateTime.Parse("2014/01/01")},
+                    CreatedAt = DateTime.Parse("2014/01/01")},
                 new Question {Id = 2, UserId = 2,
                     Word = "Even though it's difficult, it's worth trying.", Meaning = "m2",
-                    RegisteredDate = DateTime.Parse("2014/01/02")},
+                    CreatedAt = DateTime.Parse("2014/01/02")},
                 new Question {Id = 3, UserId = 2,
                     Word = "What a wonderful day!", Meaning = "m3",
-                    RegisteredDate = DateTime.Parse("2014/01/03")},
+                    CreatedAt = DateTime.Parse("2014/01/03")},
                 new Question {Id = 4, UserId = 2,
                     Word = "It's only 1.2$.", Meaning = "m4",
-                    RegisteredDate = DateTime.Parse("2014/01/04")},
+                    CreatedAt = DateTime.Parse("2014/01/04")},
                 new Question {Id = 5, UserId = 2,
                     Word = "2 * 3 + 6 / 2 = 9", Meaning = "m5",
-                    RegisteredDate = DateTime.Parse("2014/01/05")},
+                    CreatedAt = DateTime.Parse("2014/01/05")},
                 new Question {Id = 6, UserId = 3,
                     Word = "w6", Meaning = "m6",
-                    RegisteredDate = DateTime.Parse("2014/01/06")},
+                    CreatedAt = DateTime.Parse("2014/01/06")},
                 new Question {Id = 7, UserId = 3,
                     Word = "w7", Meaning = "m7",
-                    RegisteredDate = DateTime.Parse("2014/01/07")}
-            }.OrderByDescending(q => q.RegisteredDate)
+                    CreatedAt = DateTime.Parse("2014/01/07")}
+            }.OrderByDescending(q => q.CreatedAt)
             .AsQueryable());
         }
 
@@ -86,7 +86,7 @@ namespace VocabInstaller.Tests.Controllers {
             var question = resultGet.Model as Question;
             question.Word = "w6";
             question.Meaning = "m6";
-            question.RegisteredDate = DateTime.Parse("2014/01/06");
+            question.CreatedAt = DateTime.Parse("2014/01/06");
 
             var resultPost = controller.Create(question) as RedirectToRouteResult;
             mockRepository.Verify(m => m.SaveQuestion(question));
@@ -257,9 +257,10 @@ namespace VocabInstaller.Tests.Controllers {
             Question[] questions7 = viewModel7.Questions.ToArray();
 
             // Assert
-            Assert.AreEqual(questions1.Length, 2);
+            Assert.AreEqual(questions1.Length, 3);
             Assert.IsTrue(questions1[0].Id == 4);
-            Assert.IsTrue(questions1[1].Id == 1);
+            Assert.IsTrue(questions1[1].Id == 2);
+            Assert.IsTrue(questions1[2].Id == 1);
 
             Assert.AreEqual(questions2.Length, 2);
             Assert.IsTrue(questions2[0].Id == 2);

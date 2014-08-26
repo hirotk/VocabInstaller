@@ -1,27 +1,39 @@
 ﻿@{
-    object firstArgs = new { page = 0, search = Model.Search };
-    object prev2Args = new { page = Model.Page - Model.PageSkip, search = Model.Search };
-    object prevArgs = new { page = Model.Page - 1, search = Model.Search };
-    object nextArgs = new { page = Model.Page + 1, search = Model.Search };
-    object next2Args = new { page = Model.Page + Model.PageSkip, search = Model.Search };
-    object lastArgs = new { page = Model.LastPage, search = Model.Search };    
+    string controller = "Home";
+    object firstArgs, prev2Args, prevArgs, nextArgs, next2Args, lastArgs;
+    if (Model.GetType() == typeof(VocabInstaller.ViewModels.ReviewViewModel)) {
+        controller = "Review";
+        firstArgs = new { page = 0 };
+        prev2Args = new { page = Model.Page - Model.PageSkip };
+        prevArgs = new { page = Model.Page - 1 };
+        nextArgs = new { page = Model.Page + 1 };
+        next2Args = new { page = Model.Page + Model.PageSkip };
+        lastArgs = new { page = Model.LastPage };
+    } else {
+        firstArgs = new { page = 0, search = Model.Search };
+        prev2Args = new { page = Model.Page - Model.PageSkip, search = Model.Search };
+        prevArgs = new { page = Model.Page - 1, search = Model.Search };
+        nextArgs = new { page = Model.Page + 1, search = Model.Search };
+        next2Args = new { page = Model.Page + Model.PageSkip, search = Model.Search };
+        lastArgs = new { page = Model.LastPage, search = Model.Search };        
+    }
 }
 
 @if (Model.HasPrevPage(1)) {
     <span>
-        @Html.ActionLink("[First]", "Index", "Home", firstArgs, htmlAttributes: null)
+        @Html.ActionLink("[First]", "Index", controller, firstArgs, htmlAttributes: null)
     </span>
 
     if (Model.HasPrevPage(Model.PageSkip)) {
         <span>
-            @Html.ActionLink("[ << ]", "Index", "Home", prev2Args, htmlAttributes: null)
+            @Html.ActionLink("[ << ]", "Index", controller, prev2Args, htmlAttributes: null)
         </span>
     } else {
         <span>[ &lt;&lt; ]</span>
     }
 
     <span>
-        @Html.ActionLink("[  <  ]", "Index", "Home", prevArgs, htmlAttributes: null)
+        @Html.ActionLink("[  <  ]", "Index", controller, prevArgs, htmlAttributes: null)
     </span>
 } else {
     <span>[First]</span> <span>[ &lt;&lt; ]</span> <span>[  &lt;  ]</span>
@@ -31,19 +43,19 @@
 
 @if (Model.HasNextPage(1)) {
     <span>
-        @Html.ActionLink("[  >  ]", "Index", "Home", nextArgs, htmlAttributes: null)
+        @Html.ActionLink("[  >  ]", "Index", controller, nextArgs, htmlAttributes: null)
     </span>
 
     if (Model.HasNextPage(Model.PageSkip)) {
         <span>
-            @Html.ActionLink("[ >> ]", "Index", "Home", next2Args, htmlAttributes: null)
+            @Html.ActionLink("[ >> ]", "Index", controller, next2Args, htmlAttributes: null)
         </span>
     } else {
         <span>[ &gt;&gt; ]</span>
     }
 
     <span>
-        @Html.ActionLink("[Last]", "Index", "Home", lastArgs, htmlAttributes: null)
+        @Html.ActionLink("[Last]", "Index", controller, lastArgs, htmlAttributes: null)
     </span>
 } else {
     <span>[  &gt;  ]</span> <span>[ &gt;&gt; ]</span> <span>[Last]</span>

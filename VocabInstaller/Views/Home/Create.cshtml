@@ -41,12 +41,15 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(m => m.RegisteredDate)
+            @Html.LabelFor(m => m.CreatedAt)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(m => m.RegisteredDate)
-            @Html.ValidationMessageFor(m => m.RegisteredDate)
+            @Html.EditorFor(m => m.CreatedAt)
+            @Html.ValidationMessageFor(m => m.CreatedAt)
         </div>
+
+        @Html.HiddenFor(m => m.ReviewedAt)
+        @Html.HiddenFor(m => m.ReviewLevel)
 
         <p>
             <input type="submit" value="Create" />

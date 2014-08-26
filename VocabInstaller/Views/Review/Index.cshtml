@@ -1,0 +1,48 @@
+﻿@model VocabInstaller.ViewModels.ReviewViewModel
+
+@{
+    ViewBag.Title = "Review";
+}
+
+<h2>Review</h2>
+
+<div class="record_num">
+    <h3>@Model.ItemNum items</h3>
+</div>
+
+@if (Model.ViewQuestions != null && Model.ViewQuestions.Count() > 0) {
+    foreach (var q in Model.ViewQuestions) {
+        <section class="question">
+            <div class="left_side">
+                <div class="word">
+                    @q.Word
+                </div>
+                @*<div class="meaning">
+                    @q.Meaning
+                </div>
+                <div class="note">
+                    @q.Note
+                </div>*@
+            </div>
+
+            <div class="right_side">
+                <div class="reviewed_at">
+                    @q.ReviewedAt.ToString("yyyy/MM/dd HH:mm")
+                </div>
+                <div class="answer">
+                    @Html.ActionLink("Answer", "Answer",
+                        new { id = q.Id, page = Model.Page })
+                </div>
+            </div>
+        </section>
+    }
+} else {
+    <p>No item is found.</p>
+}
+
+<div class="paging">
+    @Html.Partial("_PagingPartial")
+    <p>
+        [ @(Model.Page + 1) / @(Model.LastPage + 1) ]
+    </p>
+</div>
