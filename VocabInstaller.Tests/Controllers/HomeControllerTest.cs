@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -9,7 +10,7 @@ using VocabInstaller;
 using VocabInstaller.Controllers;
 using VocabInstaller.Models;
 using VocabInstaller.ViewModels;
-using System.Web;
+using VocabInstaller.Tests.Helpers;
 
 namespace VocabInstaller.Tests.Controllers {
     [TestClass]
@@ -17,17 +18,9 @@ namespace VocabInstaller.Tests.Controllers {
         private Mock<ControllerContext> ctrlContext = new Mock<ControllerContext>();
         private Mock<IViRepository> mockRepository = new Mock<IViRepository>();        
 
-        private void setControlContext(int userId) {
-            var httpContext = new Mock<HttpContextBase>();
-            var session = new Mock<HttpSessionStateBase>();
-            session.Setup(s => s["UserId"]).Returns(userId);
-            httpContext.Setup(hc => hc.Session).Returns(session.Object);
-            ctrlContext.Setup(cc => cc.HttpContext).Returns(httpContext.Object);            
-        }
-
         [TestInitialize]
         public void BeginTestMethod() {
-            setControlContext(userId:2);
+            TestHelper.SetUserId(ctrlContext, userId:2);
 
             mockRepository.Setup(m => m.Questions).Returns(new Question[] {
                 new Question {Id = 1, UserId = 2,
@@ -62,8 +55,9 @@ namespace VocabInstaller.Tests.Controllers {
             controller.ControllerContext = ctrlContext.Object;
 
             // Act
-            var result = controller.Index(page:0, itemsPerPage:5) as ViewResult;
+            var result = controller.Index(page:0, itemsPerPage:3) as ViewResult;
             var questions = ((HomeViewModel)result.Model).Questions.ToArray();
+            var viewQuestions = ((HomeViewModel)result.Model).ViewQuestions.ToArray();
 
             // Assert
             Assert.IsNotNull(result);
@@ -73,6 +67,11 @@ namespace VocabInstaller.Tests.Controllers {
             Assert.AreEqual(3, questions[2].Id);
             Assert.AreEqual(2, questions[3].Id);
             Assert.AreEqual(1, questions[4].Id);
+
+            Assert.AreEqual(viewQuestions.Length, 3);
+            Assert.AreEqual(5, questions[0].Id);
+            Assert.AreEqual(4, questions[1].Id);
+            Assert.AreEqual(3, questions[2].Id);
         }
 
         [TestMethod]
@@ -100,7 +99,7 @@ namespace VocabInstaller.Tests.Controllers {
         public void CanNotCreateTest() {
             // Arrange
             var controller = new HomeController(mockRepository.Object);
-            setControlContext(userId: 3);
+            TestHelper.SetUserId(ctrlContext, userId:3);
             controller.ControllerContext = ctrlContext.Object;
 
             // Act
@@ -146,7 +145,7 @@ namespace VocabInstaller.Tests.Controllers {
         public void CanNotEditTest() {
             // Arrange
             var controller = new HomeController(mockRepository.Object);
-            setControlContext(userId:3);
+            TestHelper.SetUserId(ctrlContext, userId:3);
             controller.ControllerContext = ctrlContext.Object;
 
             // Act
@@ -187,7 +186,7 @@ namespace VocabInstaller.Tests.Controllers {
         public void CanNotDeleteTest() {
             // Arrange
             var controller = new HomeController(mockRepository.Object);
-            setControlContext(userId: 3);
+            TestHelper.SetUserId(ctrlContext, userId:3);
             controller.ControllerContext = ctrlContext.Object;
 
             // Act

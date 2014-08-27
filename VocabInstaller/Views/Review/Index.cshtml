@@ -29,9 +29,17 @@
                 <div class="reviewed_at">
                     @q.ReviewedAt.ToString("yyyy/MM/dd HH:mm")
                 </div>
+
+                <div>
+                    @q.ReviewLevel
+                </div>
+
                 <div class="answer">
                     @Html.ActionLink("Answer", "Answer",
                         new { id = q.Id, page = Model.Page })
+                     | 
+                    @Html.ActionLink("Edit", "Edit", "Home", 
+                            new { id = q.Id, page = Model.Page, from = "Review" }, null)
                 </div>
             </div>
         </section>

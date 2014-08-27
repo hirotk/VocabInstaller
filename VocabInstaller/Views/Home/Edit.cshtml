@@ -51,13 +51,14 @@
         <p>
             @Html.Hidden("page", (int)ViewBag.Page)
             @Html.Hidden("search", (string)ViewBag.Search)
+            @Html.Hidden("from", (string)ViewBag.From)
             <input type="submit" value="Save" />
         </p>
     </fieldset>
 }
 
 <div class="BackToList">
-    @Html.ActionLink("Back to List", "Index", "Home",
+    @Html.ActionLink("Back to List", "Index", (string)ViewBag.From,
                 new { page = ViewBag.Page, search = ViewBag.Search }, null)
 </div>
 

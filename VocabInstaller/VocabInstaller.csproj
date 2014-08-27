@@ -329,6 +329,7 @@
     <Content Include="Views\Home\Delete.cshtml" />
     <Content Include="_AppStart.cshtml" />
     <Content Include="Views\Review\Index.cshtml" />
+    <Content Include="Views\Review\Answer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201408250546457_Review.resx">

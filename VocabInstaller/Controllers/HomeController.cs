@@ -55,7 +55,7 @@ namespace VocabInstaller.Controllers {
                 UserId = userId,
                 CreatedAt = DateTime.Now,
                 ReviewedAt = DateTime.Now,
-                ReviewLevel = 1
+                ReviewLevel = 0
             };
 
             return View(question);
@@ -82,7 +82,7 @@ namespace VocabInstaller.Controllers {
         }
 
         // GET: /Home/Edit/5
-        public ActionResult Edit(int? id, int page = 0, string search = null) {
+        public ActionResult Edit(int? id, int page = 0, string search = null, string from = "Home") {
             if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -98,6 +98,7 @@ namespace VocabInstaller.Controllers {
 
             ViewBag.Page = page;
             ViewBag.Search = search;
+            ViewBag.From = from;
 
             return View(question);
         }
@@ -107,7 +108,7 @@ namespace VocabInstaller.Controllers {
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include =
             "Id, UserId, Word, Meaning, Note, CreatedAt, ReviewedAt, ReviewLevel")] 
-            Question question, int page = 0, string search = null) {
+            Question question, int page = 0, string search = null, string from = "Home") {
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
@@ -121,6 +122,7 @@ namespace VocabInstaller.Controllers {
 
             ViewBag.Page = page;
             ViewBag.Search = search;
+            ViewBag.From = from;
 
             return View(question);
         }

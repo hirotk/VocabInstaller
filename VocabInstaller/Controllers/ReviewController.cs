@@ -58,5 +58,56 @@ namespace VocabInstaller.Controllers {
             return View(viewModel);
         }
 
+
+        //
+        // GET: /Review/
+        public ActionResult Answer(int id, int page) {
+            int userId = (int)(Session["UserId"] ?? this.GetUserId());
+
+            var question = repository.Questions
+                .Where(q => q.UserId == userId && q.Id == id).SingleOrDefault();
+
+            if (question == null) {
+                return HttpNotFound();
+            }
+
+            ViewBag.Page = page;
+
+            return View(question);
+        }
+
+        //
+        // POST: /Review/Answer/
+        [HttpPost, ActionName("Answer")]
+        [ValidateAntiForgeryToken]
+        public ActionResult AnswerConfirmed(int id, int page, string answer) {
+            int userId = (int)(Session["UserId"] ?? this.GetUserId());
+
+            var question = repository.Questions
+                .Where(q => q.UserId == userId && q.Id == id).SingleOrDefault();
+
+            if (question == null) {
+                throw new Exception("User Account Error");
+            }
+
+            if (answer == "Perfect") {
+                if (question.ReviewLevel < 5) {
+                    question.ReviewLevel += 1;
+                }
+            } else {
+                if (question.ReviewLevel > 0) {
+                    question.ReviewLevel -= 1;
+                }
+            }
+
+            question.ReviewedAt = DateTime.Now;
+
+            if (ModelState.IsValid) {
+                repository.SaveQuestion(question);
+            }
+
+            return RedirectToAction("Index", "Review", new { page = page });
+        }
+
     }
 }

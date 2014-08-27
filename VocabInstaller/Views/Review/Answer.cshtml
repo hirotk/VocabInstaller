@@ -1,0 +1,46 @@
+﻿@model VocabInstaller.Models.Question
+
+@{
+    ViewBag.Title = "Answer";
+}
+
+<h2>Answer</h2>
+
+<section class="question">
+    <div class="left_side">
+        <div class="word">
+            @Model.Word
+        </div>
+        <div class="meaning">
+            @Model.Meaning
+        </div>
+        <div class="note">
+            @Model.Note
+        </div>
+    </div>
+
+    <div class="right_side">
+        <div class="reviewed_at">
+            @Model.ReviewedAt.ToString("yyyy/MM/dd HH:mm")
+        </div>
+        <div>
+            @using (Html.BeginForm()) {
+                @Html.AntiForgeryToken()
+
+                @Html.Hidden("id", Model.Id)
+                @Html.Hidden("page", (int)ViewBag.Page)
+                <p>
+                    <input type="submit" name="answer" value="Perfect" />
+                </p>
+                <p>
+                    <input type="submit" name="answer" value="Almost" />
+                </p>
+            }
+        </div>
+    </div>
+</section>
+
+<p>
+    @Html.ActionLink("Back to List", "Index",
+            new { page = ViewBag.Page }, null)
+</p>
