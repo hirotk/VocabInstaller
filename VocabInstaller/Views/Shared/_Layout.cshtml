@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+        <title>@ViewBag.Title - VocabInstaller</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
@@ -19,13 +19,7 @@
                     @Html.Partial("_LoginPartial")
                 </section>
 
-                <nav>
-                    <ul id="menu">
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("Review", "Index", "Review")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                    </ul>
-                </nav>
+                @RenderSection("navigations", required: false)
             </div>
         </header>
 
@@ -38,7 +32,7 @@
 
         <footer>
             <div class="content_wrapper">
-                <small>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</small>
+                <small>&copy; @DateTime.Now.Year - VocabInstaller</small>
             </div>
         </footer>
 

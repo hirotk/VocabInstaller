@@ -4,6 +4,16 @@
     ViewBag.Title = "Home Page";
 }
 
+@section navigations {
+    <nav>
+        <ul id="menu">
+            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+            <li>@Html.ActionLink("Review", "Index", "Review")</li>
+            <li>@Html.ActionLink("About", "About", "Home")</li>
+        </ul>
+    </nav>
+}
+
 <div class="search">
     @using (Html.BeginForm("Index", "Home", FormMethod.Get)) {
         @Html.TextBox("search")

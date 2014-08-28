@@ -2,6 +2,16 @@
     ViewBag.Title = "About";
 }
 
+@section navigations {
+    <nav>
+        <ul id="menu">
+            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+            <li>@Html.ActionLink("Review", "Index", "Review")</li>
+            <li>@Html.ActionLink("About", "About", "Home")</li>
+        </ul>
+    </nav>
+}
+
 <!--
 <hgroup class="title">
     <h1>@ViewBag.Title.</h1>

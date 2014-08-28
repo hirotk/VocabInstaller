@@ -60,7 +60,7 @@ namespace VocabInstaller.Controllers {
 
 
         //
-        // GET: /Review/
+        // GET: /Review/5
         public ActionResult Answer(int id, int page) {
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
@@ -77,10 +77,10 @@ namespace VocabInstaller.Controllers {
         }
 
         //
-        // POST: /Review/Answer/
-        [HttpPost, ActionName("Answer")]
+        // POST: /Review/Answer/5
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AnswerConfirmed(int id, int page, string answer) {
+        public ActionResult Answer(int id, int page, string answer) {
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
             var question = repository.Questions
@@ -109,5 +109,19 @@ namespace VocabInstaller.Controllers {
             return RedirectToAction("Index", "Review", new { page = page });
         }
 
+        //
+        // GET: /Status/
+        public ActionResult Status() {
+            int userId = (int)(Session["UserId"] ?? this.GetUserId());
+            var questions = repository.Questions
+                .Where(q => q.UserId == userId);
+
+            return View(questions);
+        }
+
+        protected override void Dispose(bool disposing) {
+            repository.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }

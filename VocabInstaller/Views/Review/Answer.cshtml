@@ -4,6 +4,16 @@
     ViewBag.Title = "Answer";
 }
 
+@section navigations {
+    <nav>
+        <ul id="menu">
+            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+            <li>@Html.ActionLink("Review", "Index", "Review")</li>
+            <li>@Html.ActionLink("Status", "Status", "Review")</li>
+        </ul>
+    </nav>
+}
+
 <h2>Answer</h2>
 
 <section class="question">
