@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.IO;
+using System.Drawing;
+using System.Web.UI.DataVisualization.Charting;
 using VocabInstaller.Models;
 using VocabInstaller.Helpers;
 using VocabInstaller.ViewModels;
@@ -117,6 +120,49 @@ namespace VocabInstaller.Controllers {
                 .Where(q => q.UserId == userId);
 
             return View(questions);
+        }
+
+        public ActionResult DisplayGraph(string revLvStr, int width = 400, int height = 300) {
+            string[] ary = revLvStr.Split(',');
+            int[] revLv = new int[ary.Length];
+            for (int i = 0; i < ary.Length; i++) {
+                revLv[i] = int.Parse(ary[i]);
+            }
+
+            // Draw a chart
+            var chart = new Chart();
+            chart.Width = width;
+            chart.Height = height;
+            chart.BackColor = Color.WhiteSmoke;
+
+            chart.ChartAreas.Add("Main");
+            chart.ChartAreas["Main"].BackColor = Color.Azure;
+
+            var AxisX = chart.ChartAreas["Main"].AxisX;
+            AxisX.LineColor = Color.Red;
+            AxisX.Title = "Review Level";
+
+            var AxisY = chart.ChartAreas["Main"].AxisY;
+            AxisY.LineColor = Color.Blue;
+            AxisY.Title = "Number of Items";
+
+            chart.Series.Add("ReviewStatus");
+            var reviewStatus = chart.Series["ReviewStatus"];
+            reviewStatus.ChartArea = "Main";
+            reviewStatus.ChartType = SeriesChartType.Bar;
+            reviewStatus.Color = Color.Orange;
+
+            string[] xValues = { "Lv1", "Lv2", "Lv3", "Lv4", "Lv5" };
+            int[] yValues = { revLv[0], revLv[1], revLv[2], revLv[3], revLv[4] };
+
+            reviewStatus.Points.DataBindXY(xValues, yValues);
+
+            // Output the chart to a png image
+            var imgStream = new MemoryStream();
+            chart.SaveImage(imgStream, ChartImageFormat.Png);
+            imgStream.Seek(0, SeekOrigin.Begin);
+
+            return File(imgStream, "image/png");
         }
 
         protected override void Dispose(bool disposing) {

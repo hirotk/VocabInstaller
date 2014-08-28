@@ -18,18 +18,25 @@
 
 @{
     int total = Model.Count();
-    int revLv5 = Model.Where(q => q.ReviewLevel == 5).Count();
-    int revLv1to4 = total - revLv5;
+    int[] revLv = new int[] {
+        Model.Where(q => q.ReviewLevel == 0).Count(),
+        Model.Where(q => q.ReviewLevel == 1).Count(),
+        Model.Where(q => q.ReviewLevel == 2).Count(),
+        Model.Where(q => q.ReviewLevel == 3).Count(),
+        Model.Where(q => q.ReviewLevel == 4).Count(),
+        Model.Where(q => q.ReviewLevel == 5).Count()
+    };    
 }
 
 <div>
-    <h3>Under Review: @revLv1to4 items</h3>
-<!--    <img class="review_status" alt="review status"
-         src="@Url.Action("DisplayGraph", "Review")" />-->
+    <h3>Under Review: @(total - revLv[5]) items</h3>
+    <img class="review_status" alt="review status"
+         src="@Url.Action("DisplayGraph", "Review",
+         new { revLvStr = string.Join(",", revLv), width=640, height=480 })" />
 </div>
 
 <div class="margin-10px">
-    <h3>Completed: @revLv5 items</h3>
+    <h3>Completed: @revLv[5] items</h3>
     <h3>Total: @total items</h3>
 </div>
 

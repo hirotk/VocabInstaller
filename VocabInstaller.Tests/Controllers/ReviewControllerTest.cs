@@ -68,5 +68,41 @@ namespace VocabInstaller.Tests.Controllers {
             Assert.AreEqual(viewQuestions.Length, 1);
             Assert.AreEqual(1, questions[0].Id);
         }
+
+        [TestMethod]
+        public void AnswerTest() {
+            // Arrange
+            var controller = new ReviewController(mockRepository.Object);
+            controller.ControllerContext = ctrlContext.Object;
+            int id = 1, page = 0;
+
+            // Act
+            var resultGet = controller.Answer(id, page) as ViewResult;
+            var question = resultGet.Model as Question;
+
+            var resultPost = controller.Answer(id, page, "Perfect") as RedirectToRouteResult;
+            mockRepository.Verify(m => m.SaveQuestion(question));
+
+            // Assert
+            Assert.IsNotNull(resultGet);
+            Assert.AreEqual("w1", question.Word);
+            Assert.IsNotNull(resultPost);
+            Assert.AreEqual("Index", resultPost.RouteValues["action"]);
+        }
+
+        [TestMethod]
+        public void StatusTest() {
+            // Arrange
+            var controller = new ReviewController(mockRepository.Object);
+            controller.ControllerContext = ctrlContext.Object;
+
+            // Act
+            var result = controller.Status() as ViewResult;
+            var questions = ((IQueryable<Question>)result.Model).ToArray();
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(questions.Length, 5);
+        }
     }
 }

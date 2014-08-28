@@ -179,6 +179,7 @@ namespace VocabInstaller.Tests.Controllers {
             // Assert
             Assert.IsNotNull(resultGet);
             Assert.AreEqual(1, question.Id);
+            Assert.IsNotNull(resultPost);
             Assert.AreEqual("Index", resultPost.RouteValues["action"]);
         }
 
