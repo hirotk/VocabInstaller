@@ -3,7 +3,6 @@ using System.Linq;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using VocabInstaller;
 using VocabInstaller.Models;
 using VocabInstaller.Controllers;
 using VocabInstaller.ViewModels;

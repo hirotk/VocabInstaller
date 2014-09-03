@@ -183,6 +183,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\FunctionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -332,6 +333,8 @@
     <Content Include="Views\Review\Index.cshtml" />
     <Content Include="Views\Review\Answer.cshtml" />
     <Content Include="Views\Review\Status.cshtml" />
+    <Content Include="Views\Function\Index.cshtml" />
+    <Content Include="Views\Function\Save.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201408250546457_Review.resx">

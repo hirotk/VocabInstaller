@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using VocabInstaller.Models;
 
 namespace VocabInstaller.ViewModels {
@@ -16,12 +13,12 @@ namespace VocabInstaller.ViewModels {
         public int PageSkip { get; set; }
         public int ItemNum { get; set; }
 
-        private int page;
+        private int _page;
         public int Page {
             get {
-                return page < 0 ? 0 : page > this.LastPage ? this.LastPage : page;
+                return _page < 0 ? 0 : _page > this.LastPage ? this.LastPage : _page;
             }
-            set { page = value; }
+            set { _page = value; }
         }
 
         public int LastPage {
@@ -31,11 +28,11 @@ namespace VocabInstaller.ViewModels {
         }
 
         public bool HasPrevPage(int n) {
-            return (0 <= Page - n) ? true : false;
+            return 0 <= Page - n;
         }
 
         public bool HasNextPage(int n) {
-            return ((Page + n) * ItemsPerPage < ItemNum) ? true : false;
+            return (Page + n) * ItemsPerPage < ItemNum;
         }
 
         private IQueryable<Question> questions;

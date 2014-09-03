@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using System.Drawing;
@@ -15,7 +13,7 @@ namespace VocabInstaller.Controllers {
         private IViRepository repository;
 
         // Default Constructor
-        public ReviewController() : this(new ViRepository()) { ;}
+        public ReviewController() : this(new ViRepository()) {}
 
         public ReviewController(IViRepository repository) {
             this.repository = repository;
@@ -138,13 +136,13 @@ namespace VocabInstaller.Controllers {
             chart.ChartAreas.Add("Main");
             chart.ChartAreas["Main"].BackColor = Color.Azure;
 
-            var AxisX = chart.ChartAreas["Main"].AxisX;
-            AxisX.LineColor = Color.Red;
-            AxisX.Title = "Review Level";
+            var axisX = chart.ChartAreas["Main"].AxisX;
+            axisX.LineColor = Color.Red;
+            axisX.Title = "Review Level";
 
-            var AxisY = chart.ChartAreas["Main"].AxisY;
-            AxisY.LineColor = Color.Blue;
-            AxisY.Title = "Number of Items";
+            var axisY = chart.ChartAreas["Main"].AxisY;
+            axisY.LineColor = Color.Blue;
+            axisY.Title = "Number of Items";
 
             chart.Series.Add("ReviewStatus");
             var reviewStatus = chart.Series["ReviewStatus"];
