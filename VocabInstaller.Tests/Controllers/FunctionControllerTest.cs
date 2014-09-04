@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Net.Mime;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace VocabInstaller.Tests.Controllers {
 
         [TestInitialize]
         public void BeginTestMethod() {
-            TestHelper.SetUserId(ctrlContext, userId: 2);
+            TestHelper.SetUser(ctrlContext, userId: 1, userRole: "Administrator");
 
             mockRepository.Setup(m => m.Questions).Returns(new Question[] {
                 new Question {Id = 1, UserId = 2,
@@ -40,7 +41,7 @@ namespace VocabInstaller.Tests.Controllers {
                     Word = "w7", Meaning = "m7",
                     CreatedAt = DateTime.Parse("2014/01/07")}
             }.OrderByDescending(q => q.CreatedAt)
-            .AsQueryable());
+            .AsQueryable());            
         }
 
         [TestMethod]
@@ -55,5 +56,24 @@ namespace VocabInstaller.Tests.Controllers {
             // Assert
             Assert.IsNotNull(result);
         }
+
+        [TestMethod]
+        public void SaveTest() {
+            // Arrange
+            var controller = new FunctionController(mockRepository.Object);
+            controller.ControllerContext = ctrlContext.Object;
+
+            // Act
+            var resultGet = controller.Index() as ViewResult;
+
+            var resultPost = controller.SaveConfirmed() as FileResult;
+
+            // Assert
+            Assert.IsNotNull(resultGet);
+            Assert.IsNotNull(resultPost);
+            Assert.AreEqual(resultPost.ContentType, "text/csv");            
+            Assert.AreEqual(resultPost.FileDownloadName.Substring(0, 6), "ViDat_");
+        }
+
     }
 }

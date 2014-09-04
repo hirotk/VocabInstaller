@@ -20,6 +20,11 @@ namespace VocabInstaller.Controllers {
         }
 
         public ActionResult Index(int page = 0, int itemsPerPage = 4, string search = null) {
+            var userRole = Session["UserRole"] as string;
+            if (userRole == null) {
+                Session["UserRole"] = this.GetUserRole();
+            }
+
             int userId ;
             var uid = Session["UserId"] as int?;
             if (uid == null) {
@@ -28,7 +33,7 @@ namespace VocabInstaller.Controllers {
             } else {
                 userId = (int)uid;
             }
-
+            
             var viewModel = new HomeViewModel(itemsPerPage, pageSkip: 2) {
                 Questions = repository.Questions.Where(q => q.UserId == userId),
                 Page = page

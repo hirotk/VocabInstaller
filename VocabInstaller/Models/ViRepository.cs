@@ -4,6 +4,10 @@ namespace VocabInstaller.Models {
     public class ViRepository : IViRepository{
         private ViDbContext context = new ViDbContext();
 
+//        public IQueryable<UserProfile> UserProfiles {
+//            get { return context.UserProfiles; }
+//        }
+
         public IQueryable<Question> Questions {
             get { return context.Questions; }
         }

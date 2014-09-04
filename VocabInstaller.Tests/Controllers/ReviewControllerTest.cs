@@ -16,7 +16,7 @@ namespace VocabInstaller.Tests.Controllers {
 
         [TestInitialize]
         public void BeginTestMethod() {
-            TestHelper.SetUserId(ctrlContext, userId: 2);
+            TestHelper.SetUser(ctrlContext, userId: 2);
 
             mockRepository.Setup(m => m.Questions).Returns(new Question[] {
                 new Question {Id = 1, UserId = 2,

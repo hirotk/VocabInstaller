@@ -16,7 +16,7 @@ namespace VocabInstaller.Tests.Controllers {
 
         [TestInitialize]
         public void BeginTestMethod() {
-            TestHelper.SetUserId(ctrlContext, userId:2);
+            TestHelper.SetUser(ctrlContext, userId: 2);
 
             mockRepository.Setup(m => m.Questions).Returns(new Question[] {
                 new Question {Id = 1, UserId = 2,
@@ -95,7 +95,7 @@ namespace VocabInstaller.Tests.Controllers {
         public void CanNotCreateTest() {
             // Arrange
             var controller = new HomeController(mockRepository.Object);
-            TestHelper.SetUserId(ctrlContext, userId:3);
+            TestHelper.SetUser(ctrlContext, userId: 3);
             controller.ControllerContext = ctrlContext.Object;
 
             // Act
@@ -141,7 +141,7 @@ namespace VocabInstaller.Tests.Controllers {
         public void CanNotEditTest() {
             // Arrange
             var controller = new HomeController(mockRepository.Object);
-            TestHelper.SetUserId(ctrlContext, userId:3);
+            TestHelper.SetUser(ctrlContext, userId: 3);
             controller.ControllerContext = ctrlContext.Object;
 
             // Act
@@ -183,7 +183,7 @@ namespace VocabInstaller.Tests.Controllers {
         public void CanNotDeleteTest() {
             // Arrange
             var controller = new HomeController(mockRepository.Object);
-            TestHelper.SetUserId(ctrlContext, userId:3);
+            TestHelper.SetUser(ctrlContext, userId: 3);
             controller.ControllerContext = ctrlContext.Object;
 
             // Act
