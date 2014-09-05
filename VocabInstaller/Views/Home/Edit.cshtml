@@ -47,6 +47,9 @@
             @Html.EditorFor(m => m.CreatedAt)
             @Html.ValidationMessageFor(m => m.CreatedAt)
         </div>
+        
+        @Html.HiddenFor(m => m.ReviewedAt)
+        @Html.HiddenFor(m => m.ReviewLevel)
 
         <p>
             @Html.Hidden("page", (int)ViewBag.Page)

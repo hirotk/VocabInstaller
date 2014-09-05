@@ -42,8 +42,13 @@
                 <div class="meaning">
                     @q.Meaning
                 </div>
-                <div class="note">
-                    @q.Note
+                <div class="note">                    
+                    @{
+                        var note = q.Note ?? string.Empty;
+                        note = Html.Encode(note)
+                            .Replace(" ", "&nbsp;").Replace("\n", "<br />");
+                    }
+                    @Html.Raw(note)
                 </div>
             </div>
 

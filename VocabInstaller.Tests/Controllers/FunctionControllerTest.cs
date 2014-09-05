@@ -1,4 +1,6 @@
-﻿using System.Net.Mime;
+﻿using System.Collections.Generic;
+using System.Net.Mime;
+using System.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -7,12 +9,14 @@ using System.Web.Mvc;
 using VocabInstaller.Controllers;
 using VocabInstaller.Models;
 using VocabInstaller.Tests.Helpers;
+using System.IO;
 
 namespace VocabInstaller.Tests.Controllers {
     [TestClass]
     public class FunctionControllerTest {
         private Mock<ControllerContext> ctrlContext = new Mock<ControllerContext>();
         private Mock<IViRepository> mockRepository = new Mock<IViRepository>();
+        private Mock<HttpPostedFileBase> uploadedFile = new Mock<HttpPostedFileBase>();
 
         [TestInitialize]
         public void BeginTestMethod() {
@@ -35,13 +39,13 @@ namespace VocabInstaller.Tests.Controllers {
                     Word = "2 * 3 + 6 / 2 = 9", Meaning = "m5",
                     CreatedAt = DateTime.Parse("2014/01/05")},
                 new Question {Id = 6, UserId = 3,
-                    Word = "w6", Meaning = "m6",
+                    Word = "word1", Meaning = "meaning1",
                     CreatedAt = DateTime.Parse("2014/01/06")},
                 new Question {Id = 7, UserId = 3,
-                    Word = "w7", Meaning = "m7",
+                    Word = "word2", Meaning = "meaning2",
                     CreatedAt = DateTime.Parse("2014/01/07")}
             }.OrderByDescending(q => q.CreatedAt)
-            .AsQueryable());            
+            .AsQueryable());
         }
 
         [TestMethod]
@@ -64,7 +68,7 @@ namespace VocabInstaller.Tests.Controllers {
             controller.ControllerContext = ctrlContext.Object;
 
             // Act
-            var resultGet = controller.Index() as ViewResult;
+            var resultGet = controller.Save() as ViewResult;
 
             var resultPost = controller.SaveConfirmed() as FileResult;
 
@@ -73,6 +77,34 @@ namespace VocabInstaller.Tests.Controllers {
             Assert.IsNotNull(resultPost);
             Assert.AreEqual(resultPost.ContentType, "text/csv");            
             Assert.AreEqual(resultPost.FileDownloadName.Substring(0, 6), "ViDat_");
+        }
+
+        [TestMethod]
+        public void LoadTest() {
+            // Arrange
+            var controller = new FunctionController(mockRepository.Object);
+            controller.ControllerContext = ctrlContext.Object;
+
+            string filePath = Path.GetFullPath(@"../../Files\ViDat_20140905_010203.csv");
+            var fileStream = new FileStream(filePath, FileMode.Open);
+
+            uploadedFile
+                .Setup(f => f.InputStream)
+                .Returns(fileStream);
+
+            // Act
+            var resultGet = controller.Load() as ViewResult;
+            var resultPost = controller.LoadConfirmed(
+                csvFile:uploadedFile.Object, overwrite:false) as ViewResult;
+            var model = resultPost.Model as List<Question>;
+            model = model.OrderBy(m => m.CreatedAt).ToList();
+
+            // Assert
+            Assert.IsNotNull(resultGet);
+            Assert.IsNotNull(resultPost);
+            Assert.AreEqual(model.Count, 7 + 5);
+            Assert.AreEqual(model.First().Word, "Why don't you try it?");
+            Assert.AreEqual(model.Last().Word, "word4");
         }
 
     }

@@ -335,6 +335,7 @@
     <Content Include="Views\Review\Status.cshtml" />
     <Content Include="Views\Function\Index.cshtml" />
     <Content Include="Views\Function\Save.cshtml" />
+    <Content Include="Views\Function\Load.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201408250546457_Review.resx">

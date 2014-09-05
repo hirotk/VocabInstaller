@@ -1,0 +1,31 @@
+﻿@model System.Collections.Generic.List<VocabInstaller.Models.Question>
+
+@{
+    ViewBag.Title = "Load";
+}
+
+@section navigations {
+    <nav>
+        <ul id="menu">
+            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+            <li>@Html.ActionLink("Function", "Index", "Function")</li>
+        </ul>
+    </nav>
+}
+
+<h2>Load</h2>
+
+@using (Html.BeginForm("Load", "Function",
+    FormMethod.Post, new { enctype = "multipart/form-data" })) {
+    @Html.AntiForgeryToken()
+
+    <p>
+        <input type="file" name="csvFile" />
+    </p>
+    <p>
+        overwrite: @Html.CheckBox("overwrite", false)
+    </p>
+    <p>
+        <input id="sbmLoad" type="submit" value="Load" />
+    </p>
+}
