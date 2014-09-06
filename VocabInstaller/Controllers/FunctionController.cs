@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
@@ -138,6 +139,36 @@ namespace VocabInstaller.Controllers {
             if (ModelState.IsValid) {
                 repository.SaveQuestion(question);
             }
+        }
+
+        // GET: /Function/Initialize
+        public ActionResult Initialize() {
+            return View();
+        }
+
+        // POST: /Function/Initialize
+        [HttpPost, ActionName("Initialize")]
+        [ValidateAntiForgeryToken]
+        public ActionResult InitializeConfirmed() {
+            var questions = repository.Questions;
+
+            string userRole = (string)(Session["UserRole"] ?? this.GetUserRole());
+            if (userRole == "User") {
+                int userId = (int)(Session["UserId"] ?? this.GetUserId());
+                questions = questions.Where(q => q.UserId == userId);
+            }
+
+            var questionList = questions.ToList();
+            var deletedList = new List<Question>();
+            foreach (var q in questionList) {
+                var deleted = repository.DeleteQuestion(q.Id);
+                deletedList.Add(deleted);
+            }
+
+            ViewBag.Result = "The database was initialized";
+            deletedList.ForEach(d => questionList.Remove(d));
+
+            return View(questionList);
         }
 
     }

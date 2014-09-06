@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Net.Mime;
 using System.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -22,30 +23,65 @@ namespace VocabInstaller.Tests.Controllers {
         public void BeginTestMethod() {
             TestHelper.SetUser(ctrlContext, userId: 1, userRole: "Administrator");
 
-            mockRepository.Setup(m => m.Questions).Returns(new Question[] {
-                new Question {Id = 1, UserId = 2,
-                    Word = "Why don't you try it?", Meaning = "m1",
-                    CreatedAt = DateTime.Parse("2014/01/01")},
-                new Question {Id = 2, UserId = 2,
-                    Word = "Even though it's difficult, it's worth trying.", Meaning = "m2",
-                    CreatedAt = DateTime.Parse("2014/01/02")},
-                new Question {Id = 3, UserId = 2,
-                    Word = "What a wonderful day!", Meaning = "m3",
-                    CreatedAt = DateTime.Parse("2014/01/03")},
-                new Question {Id = 4, UserId = 2,
-                    Word = "It's only 1.2$.", Meaning = "m4",
-                    CreatedAt = DateTime.Parse("2014/01/04")},
-                new Question {Id = 5, UserId = 2,
-                    Word = "2 * 3 + 6 / 2 = 9", Meaning = "m5",
-                    CreatedAt = DateTime.Parse("2014/01/05")},
-                new Question {Id = 6, UserId = 3,
-                    Word = "word1", Meaning = "meaning1",
-                    CreatedAt = DateTime.Parse("2014/01/06")},
-                new Question {Id = 7, UserId = 3,
-                    Word = "word2", Meaning = "meaning2",
-                    CreatedAt = DateTime.Parse("2014/01/07")}
+            var questions = new Question[] {
+                new Question {
+                    Id = 1,
+                    UserId = 2,
+                    Word = "Why don't you try it?",
+                    Meaning = "m1",
+                    CreatedAt = DateTime.Parse("2014/01/01")
+                },
+                new Question {
+                    Id = 2,
+                    UserId = 2,
+                    Word = "Even though it's difficult, it's worth trying.",
+                    Meaning = "m2",
+                    CreatedAt = DateTime.Parse("2014/01/02")
+                },
+                new Question {
+                    Id = 3,
+                    UserId = 2,
+                    Word = "What a wonderful day!",
+                    Meaning = "m3",
+                    CreatedAt = DateTime.Parse("2014/01/03")
+                },
+                new Question {
+                    Id = 4,
+                    UserId = 2,
+                    Word = "It's only 1.2$.",
+                    Meaning = "m4",
+                    CreatedAt = DateTime.Parse("2014/01/04")
+                },
+                new Question {
+                    Id = 5,
+                    UserId = 2,
+                    Word = "2 * 3 + 6 / 2 = 9",
+                    Meaning = "m5",
+                    CreatedAt = DateTime.Parse("2014/01/05")
+                },
+                new Question {
+                    Id = 6,
+                    UserId = 3,
+                    Word = "word1",
+                    Meaning = "meaning1",
+                    CreatedAt = DateTime.Parse("2014/01/06")
+                },
+                new Question {
+                    Id = 7,
+                    UserId = 3,
+                    Word = "word2",
+                    Meaning = "meaning2",
+                    CreatedAt = DateTime.Parse("2014/01/07")
+                }
             }.OrderByDescending(q => q.CreatedAt)
-            .AsQueryable());
+            .AsQueryable();
+
+            mockRepository.Setup(m => m.Questions).Returns(questions);
+
+            mockRepository.Setup(m => m.DeleteQuestion(It.IsAny<int>()))
+                .Callback((int id) => mockRepository.Object.Questions.ToList().Remove(questions.ToList().Find(q => q.Id == id)))
+                .Returns((int id) => questions.ToList().Find(q => q.Id == id));
+
         }
 
         [TestMethod]
@@ -107,5 +143,23 @@ namespace VocabInstaller.Tests.Controllers {
             Assert.AreEqual(model.Last().Word, "word4");
         }
 
+        [TestMethod]
+        public void InitializeTest() {
+            // Arrange
+            var controller = new FunctionController(mockRepository.Object);
+            controller.ControllerContext = ctrlContext.Object;
+
+            // Act
+            var resultGet = controller.Initialize() as ViewResult;
+            var resultPost = controller.InitializeConfirmed() as ViewResult;
+            var model = resultPost.Model as List<Question>;
+            var result = resultPost.ViewBag.Result as String;
+
+            // Assert
+            Assert.IsNotNull(resultGet);
+            Assert.IsNotNull(resultPost);
+            Assert.AreEqual(result, "The database was initialized");
+            Assert.AreEqual(model.Count(), 0);
+        }
     }
 }

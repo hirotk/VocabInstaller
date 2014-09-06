@@ -1,7 +1,7 @@
 ﻿@model System.Collections.Generic.List<VocabInstaller.Models.Question>
 
 @{
-    ViewBag.Title = "Load";
+    ViewBag.Title = "Initialize";
 }
 
 @section navigations {
@@ -13,25 +13,21 @@
     </nav>
 }
 
-<h2>Load</h2>
+<h2>Initialize</h2>
 
-@using (Html.BeginForm("Load", "Function",
-    FormMethod.Post, new { enctype = "multipart/form-data" })) {
+@using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
 
     <p>
-        <input type="file" name="csvFile" />
-    </p>
-    <p>
-        overwrite: @Html.CheckBox("overwrite", false)
-    </p>
-    <p>
-        <input id="sbmLoad" type="submit" value="Load" />
+        <input id="sbmInitialize" type="submit" value="Initialize" />
     </p>
 }
 
+<p>
+    @ViewBag.Result
+</p>
+
 @if (Model != null) {
-    <h2>Loaded</h2>
     <div>
         @foreach (var q in Model) {
             @q.Word @:<br />
