@@ -16,6 +16,13 @@
 
 <h2>Answer</h2>
 
+<div class="paging">
+    <p>
+        &nbsp;
+    </p>
+    <span>&nbsp;</span>
+</div>
+
 <section class="question">
     <div class="left_side">
         <div class="word">
@@ -24,28 +31,31 @@
         <div class="meaning">
             @Model.Meaning
         </div>
-        <div class="note">
-            @Model.Note
-        </div>
     </div>
 
-    <div class="right_side">
-        <div class="reviewed_at">
-            @Model.ReviewedAt.ToString("yyyy/MM/dd HH:mm")
-        </div>
-        <div>
+    <div class="right_side review_page">
+        <div id="answer_form">
             @using (Html.BeginForm()) {
                 @Html.AntiForgeryToken()
 
                 @Html.Hidden("id", Model.Id)
                 @Html.Hidden("page", (int)ViewBag.Page)
-                <p>
+
+                <p class="submit_button">
                     <input type="submit" name="answer" value="Perfect" />
                 </p>
-                <p>
+                <p class="submit_button">
                     <input type="submit" name="answer" value="Almost" />
                 </p>
             }
+        </div>
+        
+        <div class="note clear_both">
+            @Model.Note
+        </div>        
+
+        <div class="reviewed_at">
+            @Model.ReviewedAt.ToString("yyyy/MM/dd HH:mm")
         </div>
     </div>
 </section>

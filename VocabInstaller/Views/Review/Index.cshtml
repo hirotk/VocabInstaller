@@ -16,8 +16,15 @@
 
 <h2>Review</h2>
 
-<div class="record_num">
+<!--<div class="record_num">
     <h3>@Model.ItemNum items</h3>
+</div>-->
+
+<div class="paging">
+    <p>
+        [ @(Model.Page + 1) / @(Model.LastPage + 1) ]
+    </p>
+    @Html.Partial("_PagingPartial")
 </div>
 
 @if (Model.ViewQuestions != null && Model.ViewQuestions.Count() > 0) {
@@ -27,29 +34,39 @@
                 <div class="word">
                     @q.Word
                 </div>
-                @*<div class="meaning">
-                    @q.Meaning
+                <div class="meaning">
+                    ? @*q.Meaning*@
                 </div>
-                <div class="note">
-                    @q.Note
-                </div>*@
             </div>
 
-            <div class="right_side">
+            <div class="right_side review_page">
+                <div id="question_form">
+                    @using (Html.BeginForm("Answer", "Review",
+                    routeValues: new { id = q.Id }, method: FormMethod.Get, htmlAttributes: null)) {
+                        @*Html.AntiForgeryToken()*@
+
+                        @Html.Hidden("page", Model.Page)
+
+                        <p class="submit_button">
+                            <input type="submit" value="Answer" />
+                        </p>
+                    }
+                </div>
+
                 <div class="reviewed_at">
                     @q.ReviewedAt.ToString("yyyy/MM/dd HH:mm")
                 </div>
-
-                <div>
+                
+                <div class="review_level">
                     @q.ReviewLevel
                 </div>
 
-                <div class="answer">
-                    @Html.ActionLink("Answer", "Answer",
+                <div class="edit">
+                    @*Html.ActionLink("Answer", "Answer",
                         new { id = q.Id, page = Model.Page })
-                     | 
+                    | *@
                     @Html.ActionLink("Edit", "Edit", "Home", 
-                            new { id = q.Id, page = Model.Page, from = "Review" }, null)
+                        new { id = q.Id, page = Model.Page, from = "Review" }, null)
                 </div>
             </div>
         </section>
@@ -58,9 +75,3 @@
     <p>No item is found.</p>
 }
 
-<div class="paging">
-    @Html.Partial("_PagingPartial")
-    <p>
-        [ @(Model.Page + 1) / @(Model.LastPage + 1) ]
-    </p>
-</div>

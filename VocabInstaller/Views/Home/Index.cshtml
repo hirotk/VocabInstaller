@@ -1,4 +1,5 @@
-﻿@model VocabInstaller.ViewModels.HomeViewModel
+﻿@using System.Linq
+@model VocabInstaller.ViewModels.HomeViewModel
 
 @{
     ViewBag.Title = "Home Page";
@@ -24,15 +25,24 @@
     }
 </div>
 
-<div class="record_num">
-    <h3>@Model.ItemNum items</h3>
+<div class="float-left">
+    <div class="record_num">
+        <h3>@Model.ItemNum items</h3>
+    </div>
+
+    <div class="create_link">
+        @Html.ActionLink("Create", "Create")
+    </div>
 </div>
 
-<div class="create_link">
-    @Html.ActionLink("Create", "Create")
+<div class="paging">
+    <p>
+        [ @(Model.Page + 1) / @(Model.LastPage + 1) ]
+    </p>
+    @Html.Partial("_PagingPartial")
 </div>
 
-@if (Model.ViewQuestions != null && Model.ViewQuestions.Count() > 0) {
+@if (Model.ViewQuestions != null && Model.ViewQuestions.Any()) {
     foreach (var q in Model.ViewQuestions) {
         <section class="question">
             <div class="left_side">

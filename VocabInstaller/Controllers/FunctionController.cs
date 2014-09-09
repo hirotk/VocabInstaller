@@ -111,7 +111,7 @@ namespace VocabInstaller.Controllers {
             }
 
             var records = sb.ToString().TrimEnd().Split('\n');
-            var questionList = questions.ToList();
+            var questionList = questions.OrderByDescending(q => q.CreatedAt).ToList();
 
             questionList.AddRange(records.Select(record => record.Split('\t'))
                     .Select(fields => new Question() {

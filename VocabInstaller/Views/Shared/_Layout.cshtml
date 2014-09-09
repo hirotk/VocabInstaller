@@ -9,33 +9,34 @@
         @Scripts.Render("~/bundles/modernizr")
     </head>
     <body>
-        <header>            
-            <div class="content_wrapper">
-                <div class="site_title">
-                    @Html.ActionLink("VocabInstaller", "Index", "Home")
+        <div id="container">
+            <header>
+                <div class="content_wrapper">
+                    <div class="site_title">
+                        @Html.ActionLink("VocabInstaller", "Index", "Home")
+                    </div>
+
+                    <section id="login">
+                        @Html.Partial("_LoginPartial")
+                    </section>
+
+                    @RenderSection("navigations", required: false)
                 </div>
+            </header>
 
-                <section id="login">
-                    @Html.Partial("_LoginPartial")
+            <div id="layout_body">
+                @*RenderSection("featured", required: false)*@
+                <section class="content_wrapper main_content">
+                    @RenderBody()
                 </section>
-
-                @RenderSection("navigations", required: false)
             </div>
-        </header>
 
-        <div id="layout_body">
-            @*RenderSection("featured", required: false)*@
-            <section class="content_wrapper main_content">
-                @RenderBody()
-            </section>
+            <footer>
+                <div class="content_wrapper">
+                    <small>&copy; @DateTime.Now.Year - VocabInstaller</small>
+                </div>
+            </footer>
         </div>
-
-        <footer>
-            <div class="content_wrapper">
-                <small>&copy; @DateTime.Now.Year - VocabInstaller</small>
-            </div>
-        </footer>
-
         @Scripts.Render("~/bundles/jquery")
         @RenderSection("scripts", required: false)
     </body>
