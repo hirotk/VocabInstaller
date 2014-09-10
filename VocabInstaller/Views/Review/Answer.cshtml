@@ -26,9 +26,11 @@
 <section class="question">
     <div class="left_side">
         <div class="word">
+            <h3>Word</h3>
             @Model.Word
         </div>
         <div class="meaning">
+            <h3>Meaning</h3>
             @Model.Meaning
         </div>
     </div>
@@ -49,18 +51,34 @@
                 </p>
             }
         </div>
-        
-        <div class="note clear_both">
+    </div>
+
+    <div class="left_side review_page">
+        <div class="note">
+            <h3>Note</h3>
             @Model.Note
-        </div>        
+        </div>
+    </div>
+
+    <div class="right_side review_page">
+        <div class="created_at">
+            <h3>Created at</h3>
+            @Model.CreatedAt.ToString("yyyy/MM/dd HH:mm")
+        </div>
 
         <div class="reviewed_at">
+            <h3>Reviewed at</h3>
             @Model.ReviewedAt.ToString("yyyy/MM/dd HH:mm")
+        </div>
+        
+        <div class="review_level">
+            <h3>Review Level</h3>
+            @Model.ReviewLevel
         </div>
     </div>
 </section>
 
-<p>
-    @Html.ActionLink("Back to List", "Index",
+<div class="back_to">
+    @Html.ActionLink("Back", "Index",
             new { page = ViewBag.Page }, null)
-</p>
+</div>

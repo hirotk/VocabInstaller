@@ -13,7 +13,22 @@
     </nav>
 }
 
+@section scripts {
+    <script type="text/javascript">
+    $(function(){
+        $("#sbmInitialize").click(function(){
+            if (confirm("Are you sure you want to initialize this database?")){
+                return true;
+            }else{
+                return false;
+            }
+        });
+    });
+    </script>
+}
+
 <h2>Initialize</h2>
+<p>Click below button to initialize the database.</p>
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()

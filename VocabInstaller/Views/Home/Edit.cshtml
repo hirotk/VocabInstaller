@@ -16,51 +16,65 @@
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.UserId)
 
-        <div class="editor-label">
+        <div class="editor_label">
             @Html.LabelFor(model => model.Word)
         </div>
-        <div class="editor-field">
+        <div class="editor_field">
             @Html.TextBoxFor(m => m.Word, new { @class = "word" })
             @Html.ValidationMessageFor(m => m.Word)
         </div>
 
-        <div class="editor-label">
+        <div class="editor_label">
             @Html.LabelFor(m => m.Meaning)
         </div>
-        <div class="editor-field">
+        <div class="editor_field">
             @Html.TextBoxFor(m => m.Meaning, new { @class = "meaning" })
             @Html.ValidationMessageFor(m => m.Meaning)
         </div>
 
-        <div class="editor-label">
+        <div class="editor_label">
             @Html.LabelFor(m => m.Note)
         </div>
-        <div class="editor-field">
+        <div class="editor_field">
             @Html.TextAreaFor(m => m.Note, new { @class = "note", @cols = 60, @rows = 4 })
             @Html.ValidationMessageFor(m => m.Note)
         </div>
 
-        <div class="editor-label">
+        <div class="editor_label">
             @Html.LabelFor(m => m.CreatedAt)
         </div>
-        <div class="editor-field">
+        <div class="editor_field">
             @Html.EditorFor(m => m.CreatedAt)
             @Html.ValidationMessageFor(m => m.CreatedAt)
         </div>
         
-        @Html.HiddenFor(m => m.ReviewedAt)
-        @Html.HiddenFor(m => m.ReviewLevel)
+        <div class="editor_label">
+            @Html.LabelFor(m => m.ReviewedAt)
+        </div>
+        <div class="editor_field">
+            @Html.EditorFor(m => m.ReviewedAt)
+            @Html.ValidationMessageFor(m => m.ReviewedAt)
+        </div>
 
-        <p>
-            @Html.Hidden("page", (int)ViewBag.Page)
-            @Html.Hidden("search", (string)ViewBag.Search)
-            @Html.Hidden("from", (string)ViewBag.From)
+        <div class="editor_label">
+            @Html.LabelFor(m => m.ReviewLevel)
+        </div>
+        <div class="editor_field">
+            @Html.EditorFor(m => m.ReviewLevel)
+            @Html.ValidationMessageFor(m => m.ReviewLevel)
+        </div>
+        
+        @Html.Hidden("page", (int)ViewBag.Page)
+        @Html.Hidden("search", (string)ViewBag.Search)
+        @Html.Hidden("from", (string)ViewBag.From)
+
+        <div class="submit_button">
             <input type="submit" value="Save" />
-        </p>
+        </div>
     </fieldset>
 }
 
-<div class="BackToList">
+<div class="back_to">
     @Html.ActionLink("Back to List", "Index", (string)ViewBag.From,
                 new { page = ViewBag.Page, search = ViewBag.Search }, null)
 </div>

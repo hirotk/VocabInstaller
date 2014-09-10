@@ -16,48 +16,41 @@
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.UserId)
 
-        <div class="editor-label">
+        <div class="editor_label">
             @Html.LabelFor(m => m.Word)
         </div>
-        <div class="editor-field">
+        <div class="editor_field">
             @Html.EditorFor(m => m.Word)
             @Html.ValidationMessageFor(m => m.Word)
         </div>
 
-        <div class="editor-label">
+        <div class="editor_label">
             @Html.LabelFor(m => m.Meaning)
         </div>
-        <div class="editor-field">
+        <div class="editor_field">
             @Html.EditorFor(m => m.Meaning)
             @Html.ValidationMessageFor(m => m.Meaning)
         </div>
 
-        <div class="editor-label">
+        <div class="editor_label">
             @Html.LabelFor(m => m.Note)
         </div>
-        <div class="editor-field">
-            @Html.EditorFor(m => m.Note)
+        <div class="editor_field">
+            @Html.TextAreaFor(m => m.Note, new { @class = "note", @cols = 60, @rows = 4 })
             @Html.ValidationMessageFor(m => m.Note)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(m => m.CreatedAt)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(m => m.CreatedAt)
-            @Html.ValidationMessageFor(m => m.CreatedAt)
-        </div>
-
+        @Html.HiddenFor(m => m.CreatedAt)
         @Html.HiddenFor(m => m.ReviewedAt)
         @Html.HiddenFor(m => m.ReviewLevel)
 
-        <p>
+        <div class="submit_button">
             <input type="submit" value="Create" />
-        </p>
+        </div>
     </fieldset>
 }
 
-<div>
+<div class="back_to">
     @Html.ActionLink("Back to List", "Index")
 </div>
 

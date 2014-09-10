@@ -28,18 +28,17 @@
     };    
 }
 
-<div>
+<div class="review_status">
     <h3>Under Review: @(total - revLv[5]) items</h3>
-    <img class="review_status" alt="review status"
+
+    <img class="graph" alt="review status"
          src="@Url.Action("DisplayGraph", "Review",
          new { revLvStr = string.Join(",", revLv), width=640, height=480 })" />
-</div>
 
-<div class="margin-10px">
     <h3>Completed: @revLv[5] items</h3>
     <h3>Total: @total items</h3>
 </div>
 
-<p>
+<p class="back_to">
     @Html.ActionLink("Back to List", "Index")
 </p>

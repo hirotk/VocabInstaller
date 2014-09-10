@@ -11,43 +11,48 @@
 <fieldset>
     <legend>Question</legend>
 
-    <div class="display-label">
+    <div class="display_label">
          @Html.DisplayNameFor(m => m.Word)
     </div>
-    <div class="display-field">
+    <div class="display_field">
         @Html.DisplayFor(m => m.Word)
     </div>
 
-    <div class="display-label">
+    <div class="display_label">
          @Html.DisplayNameFor(m => m.Meaning)
     </div>
-    <div class="display-field">
+    <div class="display_field">
         @Html.DisplayFor(m => m.Meaning)
     </div>
 
-    <div class="display-label">
+    <div class="display_label">
          @Html.DisplayNameFor(m => m.Note)
     </div>
-    <div class="display-field">
+    <div class="display_field">
         @Html.DisplayFor(m => m.Note)
     </div>
 
-    <div class="display-label">
+    <div class="display_label">
          @Html.DisplayNameFor(m => m.CreatedAt)
     </div>
-    <div class="display-field">
+    <div class="display_field">
         @Html.DisplayFor(m => m.CreatedAt)
     </div>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        @Html.Hidden("page", (int)ViewBag.Page)
+        @Html.Hidden("search", (string)ViewBag.Search)
+
+        <div class="submit_button">
+            <input type="submit" value="Delete" />
+        </div>
+    }
 </fieldset>
 
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
 
-    @Html.Hidden("page", (int)ViewBag.Page)
-    @Html.Hidden("search", (string)ViewBag.Search)
-    <p>
-        <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index",
+<div class="back_to">
+    @Html.ActionLink("Back to List", "Index",
             new { page = ViewBag.Page, search = ViewBag.Search }, null)
-    </p>
-}
+</div>
