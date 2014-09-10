@@ -35,18 +35,18 @@ namespace VocabInstaller.Controllers {
             }
             
             var viewModel = new HomeViewModel(itemsPerPage, pageSkip: 2) {
-                Questions = repository.Questions.Where(q => q.UserId == userId),
+                Cards = repository.Cards.Where(c => c.UserId == userId),
                 Page = page
             };
 
             if (search != null) {
-                viewModel.Questions = viewModel.Filter(search);
+                viewModel.Cards = viewModel.Filter(search);
             }
 
-            viewModel.Questions = viewModel.Questions
-                .OrderByDescending(q => q.CreatedAt);
+            viewModel.Cards = viewModel.Cards
+                .OrderByDescending(c => c.CreatedAt);
 
-            viewModel.ViewQuestions = viewModel.GetQuestionsInPage(page);
+            viewModel.ViewCards = viewModel.GetCardsInPage(page);
             return View(viewModel);
         }
 
@@ -54,34 +54,34 @@ namespace VocabInstaller.Controllers {
         public ActionResult Create() {
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
-            var question = new Question() {
+            var card = new Card() {
                 UserId = userId,
                 CreatedAt = DateTime.Now,
                 ReviewedAt = DateTime.Now,
                 ReviewLevel = 0
             };
 
-            return View(question);
+            return View(card);
         }
 
         // POST: /Home/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include =
-            "Id, UserId, Word, Meaning, Note, CreatedAt, ReviewedAt, ReviewLevel")] 
-            Question question) {
+            "Id, UserId, Question, Answer, Note, CreatedAt, ReviewedAt, ReviewLevel")] 
+            Card card) {
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
-            if (question.UserId != userId) {
+            if (card.UserId != userId) {
                 throw new Exception("User Account Error");
             }
 
             if (ModelState.IsValid) {
-                repository.SaveQuestion(question);
+                repository.SaveCard(card);
                 return RedirectToAction("Create");
             }
 
-            return View(question);
+            return View(card);
         }
 
         // GET: /Home/Edit/5
@@ -92,10 +92,10 @@ namespace VocabInstaller.Controllers {
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
-            var question = repository.Questions
-                .Where(q => q.UserId == userId && q.Id == id).SingleOrDefault();
+            var card = repository.Cards
+                .Where(c => c.UserId == userId && c.Id == id).SingleOrDefault();
 
-            if (question == null) {
+            if (card == null) {
                 return HttpNotFound();
             }
 
@@ -103,31 +103,31 @@ namespace VocabInstaller.Controllers {
             ViewBag.Search = search;
             ViewBag.From = from;
 
-            return View(question);
+            return View(card);
         }
 
         // POST: /Home/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include =
-            "Id, UserId, Word, Meaning, Note, CreatedAt, ReviewedAt, ReviewLevel")] 
-            Question question, int page = 0, string search = null, string from = "Home") {
+            "Id, UserId, Question, Answer, Note, CreatedAt, ReviewedAt, ReviewLevel")] 
+            Card card, int page = 0, string search = null, string from = "Home") {
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
-            if (question.UserId != userId) {
+            if (card.UserId != userId) {
                 throw new Exception("User Account Error");
             }
 
             if (ModelState.IsValid) {
-                repository.SaveQuestion(question);
+                repository.SaveCard(card);
             }
 
             ViewBag.Page = page;
             ViewBag.Search = search;
             ViewBag.From = from;
 
-            return View(question);
+            return View(card);
         }
 
         // GET: /Home/Delete/5
@@ -138,17 +138,17 @@ namespace VocabInstaller.Controllers {
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
-            var question = repository.Questions
-                .Where(q => q.UserId == userId && q.Id == id).SingleOrDefault();
+            var card = repository.Cards
+                .Where(c => c.UserId == userId && c.Id == id).SingleOrDefault();
 
-            if (question == null) {
+            if (card == null) {
                 return HttpNotFound();
             }
 
             ViewBag.Page = page;
             ViewBag.Search = search;
 
-            return View(question);
+            return View(card);
         }
 
         // POST: /Home/Delete/5
@@ -157,14 +157,14 @@ namespace VocabInstaller.Controllers {
         public ActionResult DeleteConfirmed(int id, int page = 0, string search = null) {
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
             
-            var question = repository.Questions
-                .Where(q => q.UserId == userId && q.Id == id).SingleOrDefault();
+            var card = repository.Cards
+                .Where(c => c.UserId == userId && c.Id == id).SingleOrDefault();
 
-            if (question == null) {
+            if (card == null) {
                 throw new Exception("User Account Error");
             }
             
-            repository.DeleteQuestion(id);
+            repository.DeleteCard(id);
 
             return RedirectToAction("Index", new { page = page, search = search });
         }

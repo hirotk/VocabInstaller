@@ -18,29 +18,29 @@ namespace VocabInstaller.Tests.Controllers {
         public void BeginTestMethod() {
             TestHelper.SetUser(ctrlContext, userId: 2);
 
-            mockRepository.Setup(m => m.Questions).Returns(new Question[] {
-                new Question {Id = 1, UserId = 2,
-                    Word = "w1", Meaning = "m1",
+            mockRepository.Setup(m => m.Cards).Returns(new Card[] {
+                new Card {Id = 1, UserId = 2,
+                    Question = "w1", Answer = "m1",
                     ReviewedAt = DateTime.Parse("2014/01/01")},
-                new Question {Id = 2, UserId = 2,
-                    Word = "w2", Meaning = "m2",
+                new Card {Id = 2, UserId = 2,
+                    Question = "w2", Answer = "m2",
                     ReviewedAt = DateTime.Parse("2014/01/02")},
-                new Question {Id = 3, UserId = 2,
-                    Word = "w3", Meaning = "m3",
+                new Card {Id = 3, UserId = 2,
+                    Question = "w3", Answer = "m3",
                     ReviewedAt = DateTime.Parse("2014/01/03")},
-                new Question {Id = 4, UserId = 2,
-                    Word = "w4", Meaning = "m4",
+                new Card {Id = 4, UserId = 2,
+                    Question = "w4", Answer = "m4",
                     ReviewedAt = DateTime.Parse("2014/01/04")},
-                new Question {Id = 5, UserId = 2,
-                    Word = "w5", Meaning = "m5",
+                new Card {Id = 5, UserId = 2,
+                    Question = "w5", Answer = "m5",
                     ReviewedAt = DateTime.Parse("2014/01/05")},
-                new Question {Id = 6, UserId = 3,
-                    Word = "w6", Meaning = "m6",
+                new Card {Id = 6, UserId = 3,
+                    Question = "w6", Answer = "m6",
                     ReviewedAt = DateTime.Parse("2014/01/06")},
-                new Question {Id = 7, UserId = 3,
-                    Word = "w7", Meaning = "m7",
+                new Card {Id = 7, UserId = 3,
+                    Question = "w7", Answer = "m7",
                     ReviewedAt = DateTime.Parse("2014/01/07")}
-            }.OrderByDescending(q => q.CreatedAt)
+            }.OrderByDescending(c => c.CreatedAt)
             .AsQueryable());
         }
 
@@ -52,20 +52,20 @@ namespace VocabInstaller.Tests.Controllers {
 
             // Act
             var result = controller.Index(page: 0) as ViewResult;
-            var questions = ((ReviewViewModel)result.Model).Questions.ToArray();
-            var viewQuestions = ((ReviewViewModel)result.Model).ViewQuestions.ToArray();
+            var cards = ((ReviewViewModel)result.Model).Cards.ToArray();
+            var viewCards = ((ReviewViewModel)result.Model).ViewCards.ToArray();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(questions.Length, 5);
-            Assert.AreEqual(1, questions[0].Id);
-            Assert.AreEqual(2, questions[1].Id);
-            Assert.AreEqual(3, questions[2].Id);
-            Assert.AreEqual(4, questions[3].Id);
-            Assert.AreEqual(5, questions[4].Id);
+            Assert.AreEqual(cards.Length, 5);
+            Assert.AreEqual(1, cards[0].Id);
+            Assert.AreEqual(2, cards[1].Id);
+            Assert.AreEqual(3, cards[2].Id);
+            Assert.AreEqual(4, cards[3].Id);
+            Assert.AreEqual(5, cards[4].Id);
 
-            Assert.AreEqual(viewQuestions.Length, 1);
-            Assert.AreEqual(1, questions[0].Id);
+            Assert.AreEqual(viewCards.Length, 1);
+            Assert.AreEqual(1, cards[0].Id);
         }
 
         [TestMethod]
@@ -77,14 +77,14 @@ namespace VocabInstaller.Tests.Controllers {
 
             // Act
             var resultGet = controller.Answer(id, page) as ViewResult;
-            var question = resultGet.Model as Question;
+            var card = resultGet.Model as Card;
 
             var resultPost = controller.Answer(id, page, "Perfect") as RedirectToRouteResult;
-            mockRepository.Verify(m => m.SaveQuestion(question));
+            mockRepository.Verify(m => m.SaveCard(card));
 
             // Assert
             Assert.IsNotNull(resultGet);
-            Assert.AreEqual("w1", question.Word);
+            Assert.AreEqual("w1", card.Question);
             Assert.IsNotNull(resultPost);
             Assert.AreEqual("Index", resultPost.RouteValues["action"]);
         }
@@ -97,11 +97,11 @@ namespace VocabInstaller.Tests.Controllers {
 
             // Act
             var result = controller.Status() as ViewResult;
-            var questions = ((IQueryable<Question>)result.Model).ToArray();
+            var cards = ((IQueryable<Card>)result.Model).ToArray();
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(questions.Length, 5);
+            Assert.AreEqual(cards.Length, 5);
         }
     }
 }

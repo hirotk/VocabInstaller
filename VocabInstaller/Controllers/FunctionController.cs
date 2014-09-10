@@ -39,22 +39,22 @@ namespace VocabInstaller.Controllers {
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
         public ActionResult SaveConfirmed() {
-            var questions = repository.Questions;
+            var cards = repository.Cards;
 
             string userRole = (string)(Session["UserRole"] ?? this.GetUserRole());
             if (userRole == "User") {
                 int userId = (int)(Session["UserId"] ?? this.GetUserId());
-                questions = questions.Where(q => q.UserId == userId);
+                cards = cards.Where(c => c.UserId == userId);
             }
 
             var sb = new StringBuilder();
-            questions.OrderBy(q => q.Id).ToList().ForEach(q => sb.Append(
+            cards.OrderBy(c => c.Id).ToList().ForEach(c => sb.Append(
                 string.Format("{0}\t{1}\t{2}\t{3}\t\"{4}\"\t{5}\t{6}\t{7}\r\n",
-                q.Id, q.UserId,
-                (q.Word ?? string.Empty).Replace('"', '”'),
-                (q.Meaning ?? string.Empty).Replace('"', '”'),
-                (q.Note ?? string.Empty).Replace('"', '”'),
-                q.CreatedAt, q.ReviewedAt, q.ReviewLevel)
+                c.Id, c.UserId,
+                (c.Question ?? string.Empty).Replace('"', '”'),
+                (c.Answer ?? string.Empty).Replace('"', '”'),
+                (c.Note ?? string.Empty).Replace('"', '”'),
+                c.CreatedAt, c.ReviewedAt, c.ReviewLevel)
             ));
 
             string fileName = string.Format("ViDat_{0}.csv",
@@ -74,7 +74,7 @@ namespace VocabInstaller.Controllers {
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
         public ActionResult LoadConfirmed(HttpPostedFileBase csvFile = null, bool overwrite = false) {
-            var questions = repository.Questions;
+            var cards = repository.Cards;
 
             bool isAdmin = false;
             int userId = -1;
@@ -83,7 +83,7 @@ namespace VocabInstaller.Controllers {
                 isAdmin = true;
             } else if (userRole == "User") {
                 userId = (int)(Session["UserId"] ?? this.GetUserId());
-                questions = questions.Where(q => q.UserId == userId);
+                cards = cards.Where(c => c.UserId == userId);
             }
 
             if (csvFile == null) { throw new FileNotFoundException("csvFile should not be null"); }
@@ -111,33 +111,33 @@ namespace VocabInstaller.Controllers {
             }
 
             var records = sb.ToString().TrimEnd().Split('\n');
-            var questionList = questions.OrderByDescending(q => q.CreatedAt).ToList();
+            var cardList = cards.OrderByDescending(c => c.CreatedAt).ToList();
 
-            questionList.AddRange(records.Select(record => record.Split('\t'))
-                    .Select(fields => new Question() {
+            cardList.AddRange(records.Select(record => record.Split('\t'))
+                    .Select(fields => new Card() {
                         Id = overwrite ? int.Parse(fields[0]) : 0,
                         UserId = isAdmin ? int.Parse(fields[1]) : userId,
-                        Word = fields[2],
-                        Meaning = fields[3],
+                        Question = fields[2],
+                        Answer = fields[3],
                         Note = fields[4].Replace('\f', '\n'),
                         CreatedAt = DateTime.Parse(fields[5]),
                         ReviewedAt = DateTime.Parse(fields[6]),
                         ReviewLevel = int.Parse(fields[7])
                     }));
 
-            foreach (var q in questionList) {
-                create(q);
+            foreach (var c in cardList) {
+                create(c);
             }
 
-            return View(questionList);
+            return View(cardList);
         }
 
         private void create([Bind(Include =
-            "Id, UserId, Word, Meaning, Note, CreatedAt, ReviewedAt, ReviewLevel")] 
-            Question question) {
+            "Id, UserId, Question, Answer, Note, CreatedAt, ReviewedAt, ReviewLevel")] 
+            Card card) {
 
             if (ModelState.IsValid) {
-                repository.SaveQuestion(question);
+                repository.SaveCard(card);
             }
         }
 
@@ -150,25 +150,25 @@ namespace VocabInstaller.Controllers {
         [HttpPost, ActionName("Initialize")]
         [ValidateAntiForgeryToken]
         public ActionResult InitializeConfirmed() {
-            var questions = repository.Questions;
+            var cards = repository.Cards;
 
             string userRole = (string)(Session["UserRole"] ?? this.GetUserRole());
             if (userRole == "User") {
                 int userId = (int)(Session["UserId"] ?? this.GetUserId());
-                questions = questions.Where(q => q.UserId == userId);
+                cards = cards.Where(c => c.UserId == userId);
             }
 
-            var questionList = questions.ToList();
-            var deletedList = new List<Question>();
-            foreach (var q in questionList) {
-                var deleted = repository.DeleteQuestion(q.Id);
+            var cardList = cards.ToList();
+            var deletedList = new List<Card>();
+            foreach (var c in cardList) {
+                var deleted = repository.DeleteCard(c.Id);
                 deletedList.Add(deleted);
             }
 
             ViewBag.Result = "The database was initialized";
-            deletedList.ForEach(d => questionList.Remove(d));
+            deletedList.ForEach(d => cardList.Remove(d));
 
-            return View(questionList);
+            return View(cardList);
         }
 
     }

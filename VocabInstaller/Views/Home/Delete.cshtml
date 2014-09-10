@@ -1,4 +1,4 @@
-﻿@model VocabInstaller.Models.Question
+﻿@model VocabInstaller.Models.Card
 
 @{
     ViewBag.Title = "Delete";
@@ -9,20 +9,20 @@
 <h3>Are you sure you want to delete this?</h3>
 
 <fieldset>
-    <legend>Question</legend>
+    <legend>Card</legend>
 
     <div class="display_label">
-         @Html.DisplayNameFor(m => m.Word)
+         @Html.DisplayNameFor(m => m.Question)
     </div>
     <div class="display_field">
-        @Html.DisplayFor(m => m.Word)
+        @Html.DisplayFor(m => m.Question)
     </div>
 
     <div class="display_label">
-         @Html.DisplayNameFor(m => m.Meaning)
+         @Html.DisplayNameFor(m => m.Answer)
     </div>
     <div class="display_field">
-        @Html.DisplayFor(m => m.Meaning)
+        @Html.DisplayFor(m => m.Answer)
     </div>
 
     <div class="display_label">

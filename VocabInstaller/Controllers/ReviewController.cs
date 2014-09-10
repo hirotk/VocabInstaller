@@ -39,22 +39,22 @@ namespace VocabInstaller.Controllers {
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
             var viewModel = new ReviewViewModel(itemsPerPage:1, pageSkip:2) {
-                Questions = repository.Questions.Where(q => q.UserId == userId),
+                Cards = repository.Cards.Where(c => c.UserId == userId),
                 Page = page
             };
 
-            viewModel.Questions = viewModel.Questions.Where(q =>
-                (q.ReviewLevel == 0 && q.ReviewedAt < dt0) ||
-                (q.ReviewLevel == 1 && q.ReviewedAt < dt1) ||
-                (q.ReviewLevel == 2 && q.ReviewedAt < dt2) ||
-                (q.ReviewLevel == 3 && q.ReviewedAt < dt3) ||
-                (q.ReviewLevel == 4 && q.ReviewedAt < dt4)
+            viewModel.Cards = viewModel.Cards.Where(c =>
+                (c.ReviewLevel == 0 && c.ReviewedAt < dt0) ||
+                (c.ReviewLevel == 1 && c.ReviewedAt < dt1) ||
+                (c.ReviewLevel == 2 && c.ReviewedAt < dt2) ||
+                (c.ReviewLevel == 3 && c.ReviewedAt < dt3) ||
+                (c.ReviewLevel == 4 && c.ReviewedAt < dt4)
                 );
 
-            viewModel.Questions = viewModel.Questions
-                .OrderBy(q => q.ReviewLevel).ThenBy(q => q.ReviewedAt);
+            viewModel.Cards = viewModel.Cards
+                .OrderBy(c => c.ReviewLevel).ThenBy(c => c.ReviewedAt);
 
-            viewModel.ViewQuestions = viewModel.GetQuestionsInPage(page);
+            viewModel.ViewCards = viewModel.GetCardsInPage(page);
 
             return View(viewModel);
         }
@@ -65,16 +65,16 @@ namespace VocabInstaller.Controllers {
         public ActionResult Answer(int id, int page) {
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
-            var question = repository.Questions
-                .Where(q => q.UserId == userId && q.Id == id).SingleOrDefault();
+            var card = repository.Cards
+                .Where(c => c.UserId == userId && c.Id == id).SingleOrDefault();
 
-            if (question == null) {
+            if (card == null) {
                 return HttpNotFound();
             }
 
             ViewBag.Page = page;
 
-            return View(question);
+            return View(card);
         }
 
         //
@@ -84,27 +84,27 @@ namespace VocabInstaller.Controllers {
         public ActionResult Answer(int id, int page, string answer) {
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
-            var question = repository.Questions
-                .Where(q => q.UserId == userId && q.Id == id).SingleOrDefault();
+            var card = repository.Cards
+                .Where(c => c.UserId == userId && c.Id == id).SingleOrDefault();
 
-            if (question == null) {
+            if (card == null) {
                 throw new Exception("User Account Error");
             }
 
             if (answer == "Perfect") {
-                if (question.ReviewLevel < 5) {
-                    question.ReviewLevel += 1;
+                if (card.ReviewLevel < 5) {
+                    card.ReviewLevel += 1;
                 }
             } else {
-                if (question.ReviewLevel > 0) {
-                    question.ReviewLevel -= 1;
+                if (card.ReviewLevel > 0) {
+                    card.ReviewLevel -= 1;
                 }
             }
 
-            question.ReviewedAt = DateTime.Now;
+            card.ReviewedAt = DateTime.Now;
 
             if (ModelState.IsValid) {
-                repository.SaveQuestion(question);
+                repository.SaveCard(card);
             }
 
             return RedirectToAction("Index", "Review", new { page = page });
@@ -114,10 +114,10 @@ namespace VocabInstaller.Controllers {
         // GET: /Status/
         public ActionResult Status() {
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
-            var questions = repository.Questions
-                .Where(q => q.UserId == userId);
+            var cards = repository.Cards
+                .Where(c => c.UserId == userId);
 
-            return View(questions);
+            return View(cards);
         }
 
         public ActionResult DisplayGraph(string revLvStr, int width = 400, int height = 300) {

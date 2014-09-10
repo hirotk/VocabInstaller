@@ -18,7 +18,7 @@ namespace VocabInstaller.Migrations
                 .PrimaryKey(t => t.UserId);
             
             CreateTable(
-                "dbo.Questions",
+                "dbo.Cards",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -36,7 +36,7 @@ namespace VocabInstaller.Migrations
         
         public override void Down()
         {
-            DropTable("dbo.Questions");
+            DropTable("dbo.Cards");
             DropTable("dbo.UserProfile");
         }
     }

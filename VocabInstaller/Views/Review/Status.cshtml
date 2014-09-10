@@ -1,4 +1,4 @@
-﻿@model IQueryable<VocabInstaller.Models.Question>
+﻿@model IQueryable<VocabInstaller.Models.Card>
 
 @{
     ViewBag.Title = "Status";
@@ -19,12 +19,12 @@
 @{
     int total = Model.Count();
     int[] revLv = new int[] {
-        Model.Where(q => q.ReviewLevel == 0).Count(),
-        Model.Where(q => q.ReviewLevel == 1).Count(),
-        Model.Where(q => q.ReviewLevel == 2).Count(),
-        Model.Where(q => q.ReviewLevel == 3).Count(),
-        Model.Where(q => q.ReviewLevel == 4).Count(),
-        Model.Where(q => q.ReviewLevel == 5).Count()
+        Model.Count(c => c.ReviewLevel == 0),
+        Model.Count(c => c.ReviewLevel == 1),
+        Model.Count(c => c.ReviewLevel == 2),
+        Model.Count(c => c.ReviewLevel == 3),
+        Model.Count(c => c.ReviewLevel == 4),
+        Model.Count(c => c.ReviewLevel == 5)
     };    
 }
 

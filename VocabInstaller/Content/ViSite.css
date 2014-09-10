@@ -185,9 +185,9 @@ nav {
     background: #a8ffff;
 }
 
-/* question
+/* card
 ----------------------------------------------------------*/
-section.question{
+section.card{
     margin: 0;
     padding: 10px;
     overflow: hidden;
@@ -199,11 +199,11 @@ section.question{
     background-color: #fcfcfc;
 }
 
-section.question:nth-of-type(1) {
+section.card:nth-of-type(1) {
     border-top: 1px solid gray;
 }
 
-section.question .left_side{
+section.card .left_side{
     float: left;
     /*width: auto;*/
     width: 540px;
@@ -211,54 +211,54 @@ section.question .left_side{
     background-color: #f0fff0;
 }
 
-section.question .right_side{
+section.card .right_side{
     float: right;
     width: 135px;
 
     background-color: #f0f0ff;
 }
 
-.question .word{
+.card .question{
     margin-bottom: 10px;
     font-size: 20px;
 
     background-color: #fff0f0;
 }
 
-.question .meaning{
+.card .answer{
     margin-bottom: 10px;
     font-size: 18px;
 
     background-color: #ffe;
 }
 
-.question .note{
+.card .note{
     font-size: 16px;
 
     background-color: #eff;
 }
 
-.question .created_at,
-.question .reviewed_at {
+.card .created_at,
+.card .reviewed_at {
     margin-bottom: 5px;
 /*    text-align: right;*/
     font-style: italic;
     background-color: #ffe;
 }
 
-    .question .created_at h3,
-    .question .reviewed_at h3 {
+    .card .created_at h3,
+    .card .reviewed_at h3 {
         font-style: normal;
     }
 
-.question .edit_delete, 
-.question .edit {
+.card .edit_delete, 
+.card .edit {
     margin: 0;
     text-align: center;
     background-color: #fee;
 }
 
-.question .edit {
+.card .edit {
     margin: 20px 0 0 0;
 }
 
@@ -378,7 +378,7 @@ fieldset .submit_button {
 
 /* Review/Index
 ----------------------------------------------------------*/
-.question .review_level {
+.card .review_level {
     margin-bottom: 5px;
 /*    text-align: right;*/
 
@@ -440,18 +440,18 @@ fieldset .submit_button {
         margin-bottom: 0;
     }
 
-    section.question .left_side {
+    section.card .left_side {
         width: 440px;
     }
 
-    section.question .right_side {
+    section.card .right_side {
         clear: both;
         float: right;
         width: 240px;
         margin: 0;
     }
 
-    section.question .review_page {
+    section.card .review_page {
         float: left;
     }
 
@@ -467,7 +467,7 @@ fieldset .submit_button {
         text-align: left;
     }
 
-    .question .edit_delete {
+    .card .edit_delete {
         text-align: right;
     }
 

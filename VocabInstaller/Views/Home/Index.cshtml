@@ -42,19 +42,19 @@
     @Html.Partial("_PagingPartial")
 </div>
 
-@if (Model.ViewQuestions != null && Model.ViewQuestions.Any()) {
-    foreach (var q in Model.ViewQuestions) {
-        <section class="question">
+@if (Model.ViewCards != null && Model.ViewCards.Any()) {
+    foreach (var c in Model.ViewCards) {
+        <section class="card">
             <div class="left_side">
-                <div class="word">
-                    @q.Word
+                <div class="question">
+                    @c.Question
                 </div>
-                <div class="meaning">
-                    @q.Meaning
+                <div class="answer">
+                    @c.Answer
                 </div>
                 <div class="note">                    
                     @{
-                        var note = q.Note ?? string.Empty;
+                        var note = c.Note ?? string.Empty;
                         note = Html.Encode(note)
                             .Replace(" ", "&nbsp;").Replace("\n", "<br />");
                     }
@@ -64,14 +64,14 @@
 
             <div class="right_side">
                 <div class="created_at">
-                    @q.CreatedAt.ToString("yyyy/MM/dd HH:mm")
+                    @c.CreatedAt.ToString("yyyy/MM/dd HH:mm")
                 </div>
                 <div class="edit_delete">
                     @Html.ActionLink("Edit", "Edit",
-                        new { id = q.Id, page = Model.Page, search = Model.Search })
+                        new { id = c.Id, page = Model.Page, search = Model.Search })
                      | 
                     @Html.ActionLink("Delete", "Delete",
-                        new { id = q.Id, page = Model.Page, search = Model.Search })
+                        new { id = c.Id, page = Model.Page, search = Model.Search })
                 </div>
             </div>
         </section>

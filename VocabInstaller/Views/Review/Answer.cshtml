@@ -1,4 +1,4 @@
-﻿@model VocabInstaller.Models.Question
+﻿@model VocabInstaller.Models.Card
 
 @{
     ViewBag.Title = "Answer";
@@ -23,15 +23,15 @@
     <span>&nbsp;</span>
 </div>
 
-<section class="question">
+<section class="card">
     <div class="left_side">
-        <div class="word">
-            <h3>Word</h3>
-            @Model.Word
+        <div class="question">
+            <h3>Question</h3>
+            @Model.Question
         </div>
-        <div class="meaning">
-            <h3>Meaning</h3>
-            @Model.Meaning
+        <div class="answer">
+            <h3>Answer</h3>
+            @Model.Answer
         </div>
     </div>
 

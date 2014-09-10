@@ -1,4 +1,4 @@
-﻿@model System.Collections.Generic.List<VocabInstaller.Models.Question>
+﻿@model System.Collections.Generic.List<VocabInstaller.Models.Card>
 
 @{
     ViewBag.Title = "Load";
@@ -48,8 +48,8 @@
 @if (Model != null) {
     <h2>Loaded</h2>
     <div>
-        @foreach (var q in Model) {
-            @q.Word @:<br />
+        @foreach (var c in Model) {
+            @c.Question @:<br />
         }
     </div>
 }

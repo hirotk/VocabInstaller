@@ -4,9 +4,9 @@ using System.Linq;
 namespace VocabInstaller.Models {
     public interface IViRepository : IDisposable {
 //        IQueryable<UserProfile> UserProfiles { get; }
-        IQueryable<Question> Questions { get; }
+        IQueryable<Card> Cards { get; }
 
-        void SaveQuestion(Question question);
-        Question DeleteQuestion(int questionId);
+        void SaveCard(Card card);
+        Card DeleteCard(int cardId);
     }
 }

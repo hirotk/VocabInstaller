@@ -198,7 +198,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\IViRepository.cs" />
-    <Compile Include="Models\Question.cs" />
+    <Compile Include="Models\Card.cs" />
     <Compile Include="Models\ViDbContext.cs" />
     <Compile Include="Models\ViRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

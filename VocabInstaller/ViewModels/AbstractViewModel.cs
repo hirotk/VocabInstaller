@@ -35,20 +35,20 @@ namespace VocabInstaller.ViewModels {
             return (Page + n) * ItemsPerPage < ItemNum;
         }
 
-        private IQueryable<Question> questions;
-        public IQueryable<Question> Questions {
-            get { return questions; }
+        private IQueryable<Card> cards;
+        public IQueryable<Card> Cards {
+            get { return cards; }
             set {
-                questions = value;
-                ItemNum = questions == null ? 0 : questions.Count();
+                cards = value;
+                ItemNum = cards == null ? 0 : cards.Count();
             }
         }
 
-        public IQueryable<Question> ViewQuestions { get; set; }
+        public IQueryable<Card> ViewCards { get; set; }
 
-        public IQueryable<Question> GetQuestionsInPage(int? page = null) {
+        public IQueryable<Card> GetCardsInPage(int? page = null) {
             int pg = page ?? Page;
-            return Questions.Skip(pg * ItemsPerPage).Take(ItemsPerPage);
+            return Cards.Skip(pg * ItemsPerPage).Take(ItemsPerPage);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model VocabInstaller.Models.Question
+﻿@model VocabInstaller.Models.Card
 
 @{
     ViewBag.Title = "Create";
@@ -11,25 +11,25 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Question</legend>
+        <legend>Card</legend>
 
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.UserId)
 
         <div class="editor_label">
-            @Html.LabelFor(m => m.Word)
+            @Html.LabelFor(m => m.Question)
         </div>
         <div class="editor_field">
-            @Html.EditorFor(m => m.Word)
-            @Html.ValidationMessageFor(m => m.Word)
+            @Html.EditorFor(m => m.Question)
+            @Html.ValidationMessageFor(m => m.Question)
         </div>
 
         <div class="editor_label">
-            @Html.LabelFor(m => m.Meaning)
+            @Html.LabelFor(m => m.Answer)
         </div>
         <div class="editor_field">
-            @Html.EditorFor(m => m.Meaning)
-            @Html.ValidationMessageFor(m => m.Meaning)
+            @Html.EditorFor(m => m.Answer)
+            @Html.ValidationMessageFor(m => m.Answer)
         </div>
 
         <div class="editor_label">

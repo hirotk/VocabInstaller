@@ -7,6 +7,6 @@ namespace VocabInstaller.Models {
         }
 
         public DbSet<UserProfile> UserProfiles { get; set; }
-        public DbSet<Question> Questions { get; set; }
+        public DbSet<Card> Cards { get; set; }
     }
 }

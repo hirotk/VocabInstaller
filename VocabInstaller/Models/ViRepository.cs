@@ -8,34 +8,34 @@ namespace VocabInstaller.Models {
 //            get { return context.UserProfiles; }
 //        }
 
-        public IQueryable<Question> Questions {
-            get { return context.Questions; }
+        public IQueryable<Card> Cards {
+            get { return context.Cards; }
         }
 
-        public void SaveQuestion(Question question) {
-            question.Word = question.Word.Trim();
-            question.Meaning = question.Meaning.Trim();
+        public void SaveCard(Card card) {
+            card.Question = card.Question.Trim();
+            card.Answer = card.Answer.Trim();
 
-            if (question.Id == 0) {
-                context.Questions.Add(question);
+            if (card.Id == 0) {
+                context.Cards.Add(card);
             } else {
-                Question dbEntry = context.Questions.Find(question.Id);
+                Card dbEntry = context.Cards.Find(card.Id);
                 if (dbEntry != null) {
-                    dbEntry.Word = question.Word;
-                    dbEntry.Meaning = question.Meaning;
-                    dbEntry.Note = question.Note;
-                    dbEntry.CreatedAt = question.CreatedAt;
-                    dbEntry.ReviewedAt = question.ReviewedAt;
-                    dbEntry.ReviewLevel = question.ReviewLevel;
+                    dbEntry.Question = card.Question;
+                    dbEntry.Answer = card.Answer;
+                    dbEntry.Note = card.Note;
+                    dbEntry.CreatedAt = card.CreatedAt;
+                    dbEntry.ReviewedAt = card.ReviewedAt;
+                    dbEntry.ReviewLevel = card.ReviewLevel;
                 }
             }
             context.SaveChanges();
         }
 
-        public Question DeleteQuestion(int questionId) {
-            Question dbEntry = context.Questions.Find(questionId);
+        public Card DeleteCard(int cardId) {
+            Card dbEntry = context.Cards.Find(cardId);
             if (dbEntry != null) {
-                context.Questions.Remove(dbEntry);
+                context.Cards.Remove(dbEntry);
                 context.SaveChanges();
             }
             return dbEntry;

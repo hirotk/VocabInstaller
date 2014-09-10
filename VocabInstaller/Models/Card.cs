@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace VocabInstaller.Models {
-    public class Question {
+    public class Card {
         [HiddenInput(DisplayValue = false)]
         public int Id { get; set; }
 
@@ -12,11 +12,11 @@ namespace VocabInstaller.Models {
 
         [Required]
         [StringLength(maximumLength: 128)]
-        public string Word { get; set; }        
+        public string Question { get; set; }        
         
         [Required]
         [StringLength(maximumLength: 256)]
-        public string Meaning { get; set; }
+        public string Answer { get; set; }
 
         [StringLength(maximumLength: 512)]
         public string Note { get; set; }

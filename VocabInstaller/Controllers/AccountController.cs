@@ -312,7 +312,7 @@ namespace VocabInstaller.Controllers {
                     return "The password retrieval answer provided is invalid. Please check the value and try again.";
 
                 case MembershipCreateStatus.InvalidQuestion:
-                    return "The password retrieval question provided is invalid. Please check the value and try again.";
+                    return "The password retrieval card provided is invalid. Please check the value and try again.";
 
                 case MembershipCreateStatus.InvalidUserName:
                     return "The user name provided is invalid. Please check the value and try again.";

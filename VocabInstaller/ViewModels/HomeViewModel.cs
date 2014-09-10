@@ -13,8 +13,8 @@ namespace VocabInstaller.ViewModels {
 
         public string Search { get; set; }
 
-        private IQueryable<Question> filter(
-            IQueryable<Question> models, Func<Question, string[]> searchFields, string search) {
+        private IQueryable<Card> filter(
+            IQueryable<Card> models, Func<Card, string[]> searchFields, string search) {
 
             if (!String.IsNullOrEmpty(search)) {
                 search = HttpUtility.HtmlEncode(search)
@@ -59,8 +59,8 @@ namespace VocabInstaller.ViewModels {
                     var inputList = isOrSearch ? models.ToList() : filteredlList;
 
                     var outputList = isCompMatch
-                            ? inputList.Where(q => {
-                                foreach (var s in searchFields(q)) {
+                            ? inputList.Where(c => {
+                                foreach (var s in searchFields(c)) {
                                     if (s == null) { continue; }
                                     if (Regex.IsMatch(s, string.Format(
                                         @"(^|\s+){0}(\s+|$)", key))) {
@@ -71,8 +71,8 @@ namespace VocabInstaller.ViewModels {
                             }
                             ).ToList()
                             : inputList.Where(
-                                    q => {
-                                        foreach (var s in searchFields(q)) {
+                                    c => {
+                                        foreach (var s in searchFields(c)) {
                                             if (s == null) { continue; }
                                             if (s.ToLower().Contains(k.ToLower())) {
                                                 return true;
@@ -94,16 +94,16 @@ namespace VocabInstaller.ViewModels {
             return models;
         }
 
-        public IQueryable<Question> Filter(string search = null) {
+        public IQueryable<Card> Filter(string search = null) {
             if (search != null) { Search = search; }
-            Func<Question, string[]> searchFields = q =>
-                new string[] { q.Word, q.Meaning, q.Note };
-            var questions = this.filter(Questions, searchFields, Search);
-            this.ItemNum = questions.Count();
+            Func<Card, string[]> searchFields = c =>
+                new string[] { c.Question, c.Answer, c.Note };
+            var cards = this.filter(Cards, searchFields, Search);
+            this.ItemNum = cards.Count();
 
             if (this.Page > this.LastPage) { this.Page = this.LastPage; }
 
-            return questions;
+            return cards;
         }
 
     }

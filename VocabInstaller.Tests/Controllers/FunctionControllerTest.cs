@@ -23,64 +23,64 @@ namespace VocabInstaller.Tests.Controllers {
         public void BeginTestMethod() {
             TestHelper.SetUser(ctrlContext, userId: 1, userRole: "Administrator");
 
-            var questions = new Question[] {
-                new Question {
+            var cards = new Card[] {
+                new Card {
                     Id = 1,
                     UserId = 2,
-                    Word = "Why don't you try it?",
-                    Meaning = "m1",
+                    Question = "Why don't you try it?",
+                    Answer = "a1",
                     CreatedAt = DateTime.Parse("2014/01/01")
                 },
-                new Question {
+                new Card {
                     Id = 2,
                     UserId = 2,
-                    Word = "Even though it's difficult, it's worth trying.",
-                    Meaning = "m2",
+                    Question = "Even though it's difficult, it's worth trying.",
+                    Answer = "a2",
                     CreatedAt = DateTime.Parse("2014/01/02")
                 },
-                new Question {
+                new Card {
                     Id = 3,
                     UserId = 2,
-                    Word = "What a wonderful day!",
-                    Meaning = "m3",
+                    Question = "What a wonderful day!",
+                    Answer = "a3",
                     CreatedAt = DateTime.Parse("2014/01/03")
                 },
-                new Question {
+                new Card {
                     Id = 4,
                     UserId = 2,
-                    Word = "It's only 1.2$.",
-                    Meaning = "m4",
+                    Question = "It's only 1.2$.",
+                    Answer = "a4",
                     CreatedAt = DateTime.Parse("2014/01/04")
                 },
-                new Question {
+                new Card {
                     Id = 5,
                     UserId = 2,
-                    Word = "2 * 3 + 6 / 2 = 9",
-                    Meaning = "m5",
+                    Question = "2 * 3 + 6 / 2 = 9",
+                    Answer = "a5",
                     CreatedAt = DateTime.Parse("2014/01/05")
                 },
-                new Question {
+                new Card {
                     Id = 6,
                     UserId = 3,
-                    Word = "word1",
-                    Meaning = "meaning1",
+                    Question = "question1",
+                    Answer = "answer1",
                     CreatedAt = DateTime.Parse("2014/01/06")
                 },
-                new Question {
+                new Card {
                     Id = 7,
                     UserId = 3,
-                    Word = "word2",
-                    Meaning = "meaning2",
+                    Question = "question2",
+                    Answer = "answer2",
                     CreatedAt = DateTime.Parse("2014/01/07")
                 }
-            }.OrderByDescending(q => q.CreatedAt)
+            }.OrderByDescending(c => c.CreatedAt)
             .AsQueryable();
 
-            mockRepository.Setup(m => m.Questions).Returns(questions);
+            mockRepository.Setup(m => m.Cards).Returns(cards);
 
-            mockRepository.Setup(m => m.DeleteQuestion(It.IsAny<int>()))
-                .Callback((int id) => mockRepository.Object.Questions.ToList().Remove(questions.ToList().Find(q => q.Id == id)))
-                .Returns((int id) => questions.ToList().Find(q => q.Id == id));
+            mockRepository.Setup(m => m.DeleteCard(It.IsAny<int>()))
+                .Callback((int id) => mockRepository.Object.Cards.ToList().Remove(cards.ToList().Find(c => c.Id == id)))
+                .Returns((int id) => cards.ToList().Find(c => c.Id == id));
 
         }
 
@@ -121,7 +121,7 @@ namespace VocabInstaller.Tests.Controllers {
             var controller = new FunctionController(mockRepository.Object);
             controller.ControllerContext = ctrlContext.Object;
 
-            string filePath = Path.GetFullPath(@"../../Files\ViDat_20140905_010203.csv");
+            string filePath = Path.GetFullPath(@"../../Files\ViDat_20140910_010203.csv");
             var fileStream = new FileStream(filePath, FileMode.Open);
 
             uploadedFile
@@ -132,15 +132,15 @@ namespace VocabInstaller.Tests.Controllers {
             var resultGet = controller.Load() as ViewResult;
             var resultPost = controller.LoadConfirmed(
                 csvFile:uploadedFile.Object, overwrite:false) as ViewResult;
-            var model = resultPost.Model as List<Question>;
+            var model = resultPost.Model as List<Card>;
             model = model.OrderBy(m => m.CreatedAt).ToList();
 
             // Assert
             Assert.IsNotNull(resultGet);
             Assert.IsNotNull(resultPost);
             Assert.AreEqual(model.Count, 7 + 5);
-            Assert.AreEqual(model.First().Word, "Why don't you try it?");
-            Assert.AreEqual(model.Last().Word, "word4");
+            Assert.AreEqual(model.First().Question, "Why don't you try it?");
+            Assert.AreEqual(model.Last().Question, "question4");
         }
 
         [TestMethod]
@@ -152,7 +152,7 @@ namespace VocabInstaller.Tests.Controllers {
             // Act
             var resultGet = controller.Initialize() as ViewResult;
             var resultPost = controller.InitializeConfirmed() as ViewResult;
-            var model = resultPost.Model as List<Question>;
+            var model = resultPost.Model as List<Card>;
             var result = resultPost.ViewBag.Result as String;
 
             // Assert
