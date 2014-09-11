@@ -56,7 +56,12 @@
     <div class="left_side review_page">
         <div class="note">
             <h3>Note</h3>
-            @Model.Note
+            @{
+                var note = Model.Note ?? string.Empty;
+                note = Html.Encode(note)
+                    .Replace(" ", "&nbsp;").Replace("\n", "<br />");
+            }
+            @Html.Raw(note)
         </div>
     </div>
 
@@ -73,7 +78,8 @@
         
         <div class="review_level">
             <h3>Review Level</h3>
-            @Model.ReviewLevel
+            <img src="~/Images/rev@(Model.ReviewLevel).png" alt="review icon" />
+            <p>@Model.ReviewLevel</p>
         </div>
     </div>
 </section>

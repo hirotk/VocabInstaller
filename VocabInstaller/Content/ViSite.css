@@ -4,6 +4,7 @@
 
 body {
     background-color: #444;
+    background-image: url("/Images/back.png");
 }
 
 .float-left {
@@ -181,8 +182,9 @@ nav {
 }
 
 .main_content a:hover,
-.main_content a:active {
-    background: #a8ffff;
+.main_content a:active{
+    background: #a0ffff;
+    background: rgba(165, 255, 255, 0.5);
 }
 
 /* card
@@ -208,34 +210,47 @@ section.card .left_side{
     /*width: auto;*/
     width: 540px;
 
-    background-color: #f0fff0;
+/*    background-color: #c0ffc0;*/
 }
 
 section.card .right_side{
     float: right;
     width: 135px;
 
-    background-color: #f0f0ff;
+/*    background-color: #c0c0ff;*/
 }
 
 .card .question{
     margin-bottom: 10px;
-    font-size: 20px;
+    font-size: 24px;
+    color: red;
 
-    background-color: #fff0f0;
+/*    background-color: #fff0f0;*/
 }
 
 .card .answer{
     margin-bottom: 10px;
-    font-size: 18px;
+    font-size: 20px;
+    color: navy;
 
-    background-color: #ffe;
+/*    background-color: #ffe;*/
 }
 
 .card .note{
+    margin: 5px 5px 5px 0;
+    padding: 5px;
     font-size: 16px;
+    background-color: #f4faf4;
+    border: 1px solid silver;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+/*    background-color: #eff;*/
+}
 
-    background-color: #eff;
+.card .question h3, 
+.card .answer h3{
+    color: black;
 }
 
 .card .created_at,
@@ -243,7 +258,8 @@ section.card .right_side{
     margin-bottom: 5px;
 /*    text-align: right;*/
     font-style: italic;
-    background-color: #ffe;
+    font-size: 14px;
+/*    background-color: #ffe;*/
 }
 
     .card .created_at h3,
@@ -253,9 +269,13 @@ section.card .right_side{
 
 .card .edit_delete, 
 .card .edit {
+    font-size: 16px;
+/*    background-color: #fee;*/
+}
+
+.card .edit_delete {
     margin: 0;
-    text-align: center;
-    background-color: #fee;
+    text-align: center;    
 }
 
 .card .edit {
@@ -268,6 +288,7 @@ section.card .right_side{
     clear: both;
     margin: 10px 0;
     text-align: center;
+    font-size: 16px;
 }
     .paging p{
         margin: 5px 0;
@@ -339,6 +360,7 @@ section.card .right_side{
 /* create_link */
 .create_link {
     margin: 5px 0;
+    font-size: 16px;
 }
 
 #record_num_create_link_wrapper {
@@ -359,7 +381,8 @@ section.card .right_side{
     font-weight: bold;
 }
 
-
+.editor_field .question,
+.editor_field .answer,
 .editor_field .note {
     width: 600px;
 }
@@ -382,17 +405,31 @@ fieldset .submit_button {
     margin-bottom: 5px;
 /*    text-align: right;*/
 
-    background-color: #efe;
+/*    background-color: #efe;*/
+}
+
+.card .review_level img {
+    display: block;
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+}
+
+.card .review_level p {
+    margin: 0 0 0 24px;
 }
 
 #question_form {
     margin: 0 0 20px 0;
-    text-align: center;
+/*    text-align: center;*/
 }
 
 #question_form .submit_button input {
-    width: 70px;
-    height: 30px;
+    width: 80px;
+    height: 40px;
+    font-size: 18px;
 }
 
 /* Review/Answer
@@ -400,17 +437,21 @@ fieldset .submit_button {
 #answer_form {
     clear: both;
     margin: 0 0 20px 0;
-    text-align: center;
+/*    text-align: center;*/
 }
 
 #answer_form  .submit_button {
     margin: 10px;
     padding: 0;
+    font-size: 18px;
 }
 
     #answer_form .submit_button input {
-        width: 70px;
-        height: 30px;
+        width: 80px;
+        height: 40px;
+    }
+    #answer_form .submit_button:nth-of-type(2) {
+        margin: 40px 0 20px 10px;
     }
 
 /* Review/Status
@@ -419,7 +460,7 @@ fieldset .submit_button {
     margin: 10px;
 }
 .review_status .graph {
-    width: 640px;
+    width: 600px;
     height: auto;
 }
 
@@ -440,6 +481,12 @@ fieldset .submit_button {
         margin-bottom: 0;
     }
 
+    .editor_field .question,
+    .editor_field .answer,
+    .editor_field .note {
+        width: 400px;
+    }
+
     section.card .left_side {
         width: 440px;
     }
@@ -455,6 +502,11 @@ fieldset .submit_button {
         float: left;
     }
 
+    .created_at {
+        float: left;
+/*        background-color: pink;*/
+    }
+
     .created_at,
     .reviewed_at,
     .review_level {
@@ -468,7 +520,10 @@ fieldset .submit_button {
     }
 
     .card .edit_delete {
+        float: left;
+        margin-left: 20px;
         text-align: right;
+/*        background-color: cyan;*/
     }
 
     .review_page .edit { 
@@ -483,10 +538,13 @@ fieldset .submit_button {
     .review_page #answer_form  .submit_button {
         float: left;
     }
+    
+    #answer_form .submit_button:nth-of-type(2) {
+        margin: 10px 10px 10px 40px;
+    }
 
     .review_status .graph {
-        margin-left: -10px;
-        width: 460px;
+        width: 450px;
         height: auto;
     }
 }

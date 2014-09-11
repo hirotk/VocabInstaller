@@ -20,7 +20,7 @@
             @Html.LabelFor(m => m.Question)
         </div>
         <div class="editor_field">
-            @Html.EditorFor(m => m.Question)
+            @Html.TextBoxFor(m => m.Question, new { @class = "question" })
             @Html.ValidationMessageFor(m => m.Question)
         </div>
 
@@ -28,7 +28,7 @@
             @Html.LabelFor(m => m.Answer)
         </div>
         <div class="editor_field">
-            @Html.EditorFor(m => m.Answer)
+            @Html.TextBoxFor(m => m.Answer, new { @class = "answer" })
             @Html.ValidationMessageFor(m => m.Answer)
         </div>
 

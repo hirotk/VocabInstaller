@@ -120,7 +120,7 @@ namespace VocabInstaller.Controllers {
             return View(cards);
         }
 
-        public ActionResult DisplayGraph(string revLvStr, int width = 400, int height = 300) {
+        public ActionResult DrawGraph(string revLvStr, int width = 400, int height = 300) {
             string[] ary = revLvStr.Split(',');
             int[] revLv = new int[ary.Length];
             for (int i = 0; i < ary.Length; i++) {
@@ -131,29 +131,52 @@ namespace VocabInstaller.Controllers {
             var chart = new Chart();
             chart.Width = width;
             chart.Height = height;
-            chart.BackColor = Color.WhiteSmoke;
+            chart.BackColor = Color.Gainsboro;
+            chart.BackSecondaryColor = Color.LightGray;
+            chart.BackGradientStyle = GradientStyle.TopBottom;
+            chart.BorderSkin.SkinStyle = BorderSkinStyle.Emboss;
+            chart.BorderSkin.PageColor = Color.Transparent;
 
             chart.ChartAreas.Add("Main");
-            chart.ChartAreas["Main"].BackColor = Color.Azure;
+            chart.ChartAreas["Main"].BackColor = Color.WhiteSmoke;
+            chart.ChartAreas["Main"].BorderColor = Color.Gray;
 
             var axisX = chart.ChartAreas["Main"].AxisX;
-            axisX.LineColor = Color.Red;
+            axisX.LineColor = Color.LightGray;
+            axisX.MajorGrid.LineColor = Color.DarkGray;
             axisX.Title = "Review Level";
+            axisX.TitleFont = new Font(FontFamily.GenericSerif, 12.0f, FontStyle.Bold);
 
             var axisY = chart.ChartAreas["Main"].AxisY;
-            axisY.LineColor = Color.Blue;
+            axisY.LineColor = Color.LightGray;
+            axisY.MajorGrid.LineColor = Color.DarkGray;
             axisY.Title = "Number of Items";
+            axisY.TitleFont = new Font(FontFamily.GenericSerif, 12.0f, FontStyle.Bold);
 
             chart.Series.Add("ReviewStatus");
             var reviewStatus = chart.Series["ReviewStatus"];
             reviewStatus.ChartArea = "Main";
             reviewStatus.ChartType = SeriesChartType.Bar;
-            reviewStatus.Color = Color.Orange;
+            reviewStatus.MarkerStyle = MarkerStyle.Circle;
+            reviewStatus.MarkerColor = Color.DimGray;
+            reviewStatus.IsValueShownAsLabel = true; 
+            reviewStatus.LabelFormat = "#0";
 
-            string[] xValues = { "Lv1", "Lv2", "Lv3", "Lv4", "Lv5" };
+            string[] xValues = { "Lv0", "Lv1", "Lv2", "Lv3", "Lv4" };
             int[] yValues = { revLv[0], revLv[1], revLv[2], revLv[3], revLv[4] };
 
             reviewStatus.Points.DataBindXY(xValues, yValues);
+            reviewStatus.Points[0].Color = Color.Red;
+            reviewStatus.Points[0].BackSecondaryColor = Color.FromArgb(192, 255, 192, 192);
+            reviewStatus.Points[1].Color = Color.Magenta;
+            reviewStatus.Points[1].BackSecondaryColor = Color.FromArgb(192, 255, 192, 255);
+            reviewStatus.Points[2].Color = Color.Orange;
+            reviewStatus.Points[2].BackSecondaryColor = Color.FromArgb(192, 255, 224, 192);
+            reviewStatus.Points[3].Color = Color.Gold;
+            reviewStatus.Points[3].BackSecondaryColor = Color.FromArgb(192, 255, 245, 192);
+            reviewStatus.Points[4].Color = Color.Turquoise;
+            reviewStatus.Points[4].BackSecondaryColor = Color.FromArgb(192, 192, 255, 250);
+            reviewStatus.BackGradientStyle = GradientStyle.HorizontalCenter;
 
             // Output the chart to a png image
             var imgStream = new MemoryStream();

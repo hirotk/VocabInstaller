@@ -20,7 +20,7 @@
 
 <div class="search">
     @using (Html.BeginForm("Index", "Home", FormMethod.Get)) {
-        @Html.TextBox("search")
+        @Html.TextBox("search")        
         <input type="submit" value="Search" />
     }
 </div>
@@ -56,7 +56,9 @@
                     @{
                         var note = c.Note ?? string.Empty;
                         note = Html.Encode(note)
-                            .Replace(" ", "&nbsp;").Replace("\n", "<br />");
+                            .Replace("\r", "")
+                            .Replace("\n", "<br />")
+                            .Replace("&amp;nbsp;", "&nbsp;");
                     }
                     @Html.Raw(note)
                 </div>
@@ -69,7 +71,7 @@
                 <div class="edit_delete">
                     @Html.ActionLink("Edit", "Edit",
                         new { id = c.Id, page = Model.Page, search = Model.Search })
-                     | 
+                     &nbsp;|&nbsp; 
                     @Html.ActionLink("Delete", "Delete",
                         new { id = c.Id, page = Model.Page, search = Model.Search })
                 </div>

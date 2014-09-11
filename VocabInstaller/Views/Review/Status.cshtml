@@ -32,8 +32,8 @@
     <h3>Under Review: @(total - revLv[5]) items</h3>
 
     <img class="graph" alt="review status"
-         src="@Url.Action("DisplayGraph", "Review",
-         new { revLvStr = string.Join(",", revLv), width=640, height=480 })" />
+         src="@Url.Action("DrawGraph", "Review",
+                  new { revLvStr = string.Join(",", revLv), width=600, height=450 })" />
 
     <h3>Completed: @revLv[5] items</h3>
     <h3>Total: @total items</h3>
