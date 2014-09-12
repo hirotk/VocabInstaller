@@ -193,7 +193,7 @@ section.card{
     margin: 0;
     padding: 10px;
     overflow: hidden;
-    min-height: 100px;
+    min-height: 80px;
     border-left: 1px solid gray;
     border-right: 1px solid gray;
     border-bottom: 1px solid gray;
@@ -216,8 +216,11 @@ section.card .left_side{
 section.card .right_side{
     float: right;
     width: 135px;
-
 /*    background-color: #c0c0ff;*/
+}
+
+section.review_page {
+    min-height: 360px;
 }
 
 .card .question{
@@ -255,7 +258,7 @@ section.card .right_side{
 
 .card .created_at,
 .card .reviewed_at {
-    margin-bottom: 5px;
+    margin: 0 0 5px 0;
 /*    text-align: right;*/
     font-style: italic;
     font-size: 14px;
@@ -274,12 +277,24 @@ section.card .right_side{
 }
 
 .card .edit_delete {
-    margin: 0;
-    text-align: center;    
+    margin: 0 0 0 10px;
+/*    text-align: center;    */
 }
 
 .card .edit {
     margin: 20px 0 0 0;
+}
+
+/* field-validation
+----------------------------------------------------------*/
+.field-validation-error:before {
+    content: ".";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+.field-validation-error {
+    color: red;
 }
 
 /* paging
@@ -399,12 +414,17 @@ fieldset .submit_button {
     margin: 20px 10px 10px;
 }
 
+/* Home/About
+----------------------------------------------------------*/
+#about {
+    min-height: 350px;
+}
+
 /* Review/Index
 ----------------------------------------------------------*/
 .card .review_level {
-    margin-bottom: 5px;
+    margin: 0 0 5px 0;
 /*    text-align: right;*/
-
 /*    background-color: #efe;*/
 }
 
@@ -446,11 +466,11 @@ fieldset .submit_button {
     font-size: 18px;
 }
 
-    #answer_form .submit_button input {
+    #answer_form p.submit_button input {
         width: 80px;
         height: 40px;
     }
-    #answer_form .submit_button:nth-of-type(2) {
+    #answer_form p.submit_button:nth-of-type(2) {
         margin: 40px 0 20px 10px;
     }
 
@@ -472,9 +492,41 @@ fieldset .submit_button {
         width: 480px;
     }
 
+    .site_title {
+        margin: 5px 10px;
+    }
+
+    footer .content_wrapper small {
+        margin: 8px 10px;
+    }
+
+    .main_content h2 {
+        margin: 0 0 10px;
+    }
+
+    h2.review_title {
+        margin: 10px 0 -30px;
+    }
+
+    .back_to {
+        margin: 10px 5px 0;
+    }
+
     nav {
         clear:both;
-        margin: 0 15px 10px;
+        margin: 0 15px 5px;
+    }
+
+    #layout_body section.main_content div.paging:nth-of-type(2n) {
+        margin: 10px 0 0;
+    }
+
+    #layout_body section.main_content div.paging:nth-of-type(2n) p {
+        margin: 5px 0 0;
+    }
+
+    .card .note {
+        margin: 5px 5px 10px 0;
     }
 
     #login {
@@ -494,16 +546,20 @@ fieldset .submit_button {
     section.card .right_side {
         clear: both;
         float: right;
-        width: 240px;
+        width: 440px;
         margin: 0;
     }
 
-    section.card .review_page {
+    section.review_page {
         float: left;
+        margin-bottom: 10px;
+        padding: 0 10px 2px;
     }
 
-    .created_at {
+    .card .created_at,
+    .card .reviewed_at {
         float: left;
+        margin: 0 20px 0 0;
 /*        background-color: pink;*/
     }
 
@@ -526,8 +582,9 @@ fieldset .submit_button {
 /*        background-color: cyan;*/
     }
 
-    .review_page .edit { 
+    .review_page .edit {         
         text-align: left;
+        margin: 10px 0 0 0;
     }
 
     .review_page #question_form,
@@ -539,7 +596,7 @@ fieldset .submit_button {
         float: left;
     }
     
-    #answer_form .submit_button:nth-of-type(2) {
+    #answer_form p.submit_button:nth-of-type(2) {
         margin: 10px 10px 10px 40px;
     }
 

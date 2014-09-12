@@ -14,7 +14,7 @@
     </nav>
 }
 
-<h2>Review</h2>
+<h2 class="review_title">Review</h2>
 
 <!--<div class="record_num">
     <h3>@Model.ItemNum items</h3>
@@ -29,7 +29,7 @@
 
 @if (Model.ViewCards != null && Model.ViewCards.Count() > 0) {
     foreach (var c in Model.ViewCards) {
-        <section class="card">
+        <section class="card review_page">
             <div class="left_side">
                 <div class="question">
                     <h3>Question</h3>
@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <div class="right_side review_page">
+            <div class="right_side">
                 <div id="question_form">
                     @using (Html.BeginForm("Answer", "Review",
                         routeValues: new { id = c.Id }, method: FormMethod.Get, htmlAttributes: null)) {
@@ -56,12 +56,12 @@
                 </div>
             </div>
             
-            <div class="left_side review_page">
+            <div class="left_side">
                 <h3></h3>
                 &nbsp;
             </div>
 
-            <div class="right_side review_page">
+            <div class="right_side">
                 <div class="created_at">
                     <h3>Created at</h3>
                     @c.CreatedAt.ToString("yyyy/MM/dd HH:mm")
@@ -80,7 +80,7 @@
 
                 <div class="edit">
                     @Html.ActionLink("Edit", "Edit", "Home",
-                    new { id = c.Id, page = Model.Page, from = "Review" }, null)
+                        new { id = c.Id, page = Model.Page, from = "Review" }, null)
                 </div>
             </div>
 
@@ -90,3 +90,6 @@
     <p>No item is found.</p>
 }
 
+<div class="back_to">
+    &nbsp;
+</div>

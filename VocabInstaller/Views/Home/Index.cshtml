@@ -52,16 +52,18 @@
                 <div class="answer">
                     @c.Answer
                 </div>
-                <div class="note">                    
-                    @{
-                        var note = c.Note ?? string.Empty;
+                @{
+                    var note = c.Note;
+                    if (note != null) {
                         note = Html.Encode(note)
                             .Replace("\r", "")
                             .Replace("\n", "<br />")
                             .Replace("&amp;nbsp;", "&nbsp;");
+                        @:<div class="note">
+                            @Html.Raw(note)
+                        @:</div>
                     }
-                    @Html.Raw(note)
-                </div>
+                }
             </div>
 
             <div class="right_side">

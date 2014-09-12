@@ -54,14 +54,14 @@ namespace VocabInstaller.Controllers {
         public ActionResult Create() {
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
-            var card = new Card() {
+            var cardCreateModel = new CardCreateModel() {
                 UserId = userId,
                 CreatedAt = DateTime.Now,
                 ReviewedAt = DateTime.Now,
                 ReviewLevel = 0
             };
 
-            return View(card);
+            return View(cardCreateModel);
         }
 
         // POST: /Home/Create
@@ -69,19 +69,19 @@ namespace VocabInstaller.Controllers {
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include =
             "Id, UserId, Question, Answer, Note, CreatedAt, ReviewedAt, ReviewLevel")] 
-            Card card) {
+            CardCreateModel cardCreateModel) {
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
-            if (card.UserId != userId) {
+            if (cardCreateModel.UserId != userId) {
                 throw new Exception("User Account Error");
             }
 
             if (ModelState.IsValid) {
-                repository.SaveCard(card);
+                repository.SaveCard(cardCreateModel.CardInstance);
                 return RedirectToAction("Create");
             }
 
-            return View(card);
+            return View(cardCreateModel);
         }
 
         // GET: /Home/Edit/5

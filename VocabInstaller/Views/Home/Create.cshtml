@@ -1,4 +1,4 @@
-﻿@model VocabInstaller.Models.Card
+﻿@model VocabInstaller.ViewModels.CardCreateModel
 
 @{
     ViewBag.Title = "Create";
@@ -20,7 +20,7 @@
             @Html.LabelFor(m => m.Question)
         </div>
         <div class="editor_field">
-            @Html.TextBoxFor(m => m.Question, new { @class = "question" })
+            @Html.TextBoxFor(m => m.Question, new { @id="tbQuestion", @class = "question" })
             @Html.ValidationMessageFor(m => m.Question)
         </div>
 
@@ -56,4 +56,10 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+    $(function () {
+        $("#tbQuestion").focus();
+    });
+</script>
 }

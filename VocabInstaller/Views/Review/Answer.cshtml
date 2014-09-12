@@ -14,7 +14,7 @@
     </nav>
 }
 
-<h2>Answer</h2>
+<h2 class="review_title">Answer</h2>
 
 <div class="paging">
     <p>
@@ -23,7 +23,7 @@
     <span>&nbsp;</span>
 </div>
 
-<section class="card">
+<section class="card review_page">
     <div class="left_side">
         <div class="question">
             <h3>Question</h3>
@@ -35,7 +35,7 @@
         </div>
     </div>
 
-    <div class="right_side review_page">
+    <div class="right_side">
         <div id="answer_form">
             @using (Html.BeginForm()) {
                 @Html.AntiForgeryToken()
@@ -53,19 +53,23 @@
         </div>
     </div>
 
-    <div class="left_side review_page">
-        <div class="note">
-            <h3>Note</h3>
-            @{
-                var note = Model.Note ?? string.Empty;
+    <div class="left_side">
+        @{
+            var note = Model.Note;
+            if (note != null) {
                 note = Html.Encode(note)
-                    .Replace(" ", "&nbsp;").Replace("\n", "<br />");
+                    .Replace("\r", "")
+                    .Replace("\n", "<br />")
+                    .Replace("&amp;nbsp;", "&nbsp;");                
+                @:<div class="note">
+                    @:<h3>Note</h3>
+                    @Html.Raw(note)
+                @:</div>
             }
-            @Html.Raw(note)
-        </div>
+        }
     </div>
 
-    <div class="right_side review_page">
+    <div class="right_side">
         <div class="created_at">
             <h3>Created at</h3>
             @Model.CreatedAt.ToString("yyyy/MM/dd HH:mm")
