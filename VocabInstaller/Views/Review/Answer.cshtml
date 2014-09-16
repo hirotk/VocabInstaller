@@ -60,13 +60,16 @@
                 note = Html.Encode(note)
                     .Replace("\r", "")
                     .Replace("\n", "<br />")
-                    .Replace("&amp;nbsp;", "&nbsp;");                
+                    .Replace("&amp;nbsp;", "&nbsp;");
                 @:<div class="note">
-                    @:<h3>Note</h3>
-                    @Html.Raw(note)
+                @:<h3>Note</h3>
+                @Html.Raw(note)
                 @:</div>
+            } else {
+                @:<h3></h3>
+                @:&nbsp;
             }
-        }
+}
     </div>
 
     <div class="right_side">

@@ -278,6 +278,9 @@
     <Content Include="Images\rev2.png" />
     <Content Include="Images\rev3.png" />
     <Content Include="Images\rev4.png" />
+    <Content Include="Screenshots\ViScreenshot0.png.png" />
+    <Content Include="Screenshots\ViScreenshot1.png.png" />
+    <Content Include="Screenshots\ViScreenshot2.png.png" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -340,6 +343,7 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
