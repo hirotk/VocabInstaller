@@ -78,13 +78,12 @@ namespace VocabInstaller.Tests.Controllers {
 
             // Act
             var resultGet = controller.Create() as ViewResult;
-            var card = resultGet.Model as Card;
-            card.Question = "w6";
-            card.Answer = "m6";
-            card.CreatedAt = DateTime.Parse("2014/01/06");
-
-            var resultPost = controller.Create(card) as RedirectToRouteResult;
-            mockRepository.Verify(m => m.SaveCard(card));
+            var cardCreateModel = resultGet.Model as CardCreateModel;
+            cardCreateModel.Question = "q6";
+            cardCreateModel.Answer = "a6";
+            cardCreateModel.CreatedAt = DateTime.Parse("2014/01/06");
+            var resultPost = controller.Create(cardCreateModel) as RedirectToRouteResult;
+            mockRepository.Verify(m => m.SaveCard(It.IsAny<Card>()));
             
             // Assert
             Assert.IsNotNull(resultGet);
@@ -102,8 +101,8 @@ namespace VocabInstaller.Tests.Controllers {
             var resultGet = controller.Create() as ActionResult;
             Exception ex = null;
             try {
-                var card = new Card() { UserId = 2, Question = "w", Answer = "m" };
-                var resultPost = controller.Create(card) as ActionResult;
+                var cardCreateModel = new CardCreateModel() { UserId = 2, Question = "w", Answer = "m" };
+                var resultPost = controller.Create(cardCreateModel) as ActionResult;
             } catch (Exception e) {
                 ex = e;
             }

@@ -44,10 +44,10 @@
                 @Html.Hidden("page", (int)ViewBag.Page)
 
                 <p class="submit_button">
-                    <input type="submit" name="answer" value="Perfect" />
+                    <input id="sbmPerfect" type="submit" name="answer" value="Perfect" />
                 </p>
                 <p class="submit_button">
-                    <input type="submit" name="answer" value="Almost" />
+                    <input id="sbmAlmost" type="submit" name="answer" value="Almost" />
                 </p>
             }
         </div>
@@ -92,3 +92,11 @@
     @Html.ActionLink("Back", "Index",
             new { page = ViewBag.Page }, null)
 </div>
+
+@section scripts{
+<script type="text/javascript">
+    $(function () {
+        $("#sbmPerfect").focus();
+    });
+</script>    
+}

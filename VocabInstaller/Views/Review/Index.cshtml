@@ -50,7 +50,7 @@
                         @Html.Hidden("page", Model.Page)
 
                         <p class="submit_button">
-                            <input type="submit" value="Answer" />
+                            <input id="sbmAnswer" type="submit" value="Answer" />
                         </p>
                     }
                 </div>
@@ -93,3 +93,11 @@
 <div class="back_to">
     &nbsp;
 </div>
+
+@section scripts {
+<script type="text/javascript">
+    $(function () {
+        $("#sbmAnswer").focus();
+    });
+</script>    
+}
