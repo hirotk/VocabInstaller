@@ -3,12 +3,11 @@
 }
 
 @section navigations {
-    <nav>
-        <ul id="menu">
-            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-            <li>@Html.ActionLink("About", "About", "Home")</li>
-        </ul>
-    </nav>
+<ul class="nav navbar-nav">
+    <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+    <li class="divider_vertical"></li>
+    <li><a href="@Url.Action("About", "Home")">About</a></li>
+</ul>
 }
 
 <h2>@ViewBag.Title</h2>
@@ -18,5 +17,4 @@
         This vocabulary building system is based on the Ebbinghaus forgetting curve and
         allows you to memorize English words and sentences at full efficiency.
     </p>
-
 </article>

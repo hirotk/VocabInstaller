@@ -1,0 +1,72 @@
+﻿/*
+* ViSiteMobile.css
+*/
+
+@media (max-width: 767px) {
+    /* navbar
+    ----------------------------------------------------------*/
+    .navbar .divider_vertical,
+    .dropdown-menu .divider {
+        display: none;
+    }
+
+    .navbar li {
+        border-top: 1px solid silver;
+        background-color: whitesmoke;
+    }
+
+    /* Home/Index
+    ----------------------------------------------------------*/
+    .card .card_left {
+        float: none;
+        margin: 0;
+        padding: 0;
+    }        
+
+    .card .card_right {
+        overflow: hidden;
+        width: auto;
+        padding: 0 5px;
+    }
+        .card_right .created_at {
+            float: left;
+            margin-right: 10px;
+            width: auto;
+        }
+        .card_right .reviewed_at {
+            float: left;
+            margin-right: 10px;
+            width: auto;
+        }
+
+    /* Review/Index, Answer, Status
+    ----------------------------------------------------------*/
+    #review .card_right {
+        float: left;
+        text-align: left;
+    }
+
+    #sbmPerfect {
+        float: left;
+        margin-bottom: 0;
+        margin-right: 40px;
+    }
+
+    #sbmAnswer {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+    #sbmPerfect,
+    #sbmAlmost {
+        margin-top: 18px;
+        margin-bottom: 20px;
+    }
+
+    #review .graph {
+        min-width: 400px;
+        width: 95%;
+        max-width: 560px;
+        height: auto;
+        font-size: 16px;
+    }
+}

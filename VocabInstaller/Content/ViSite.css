@@ -1,12 +1,9 @@
-﻿html{
-    background-color: transparent;/*#fff;*/
-}
+﻿/* 
+* ViSite.css 
+*/
 
-body {
-    background-color: #444;
-    background-image: url("/Images/back.png");
-}
-
+/* Util
+----------------------------------------------------------*/
 .float-left {
     float: left;
 }
@@ -15,593 +12,364 @@ body {
     float: right;
 }
 
-.clear_both {
+.clear-both {
     clear: both;
 }
 
-.clear_fix:after {
-    content: ".";
-    clear: both;
-    display: block;
-    height: 0;
-    visibility: hidden;
-}
-
-/* main layout
+/* Layout
 ----------------------------------------------------------*/
-#container {
-    width: 720px;
-    background-color: #eee;
+html{
+    background-color: transparent;
 }
 
-.content_wrapper {
-    margin: 0 auto;
-    max-width: 960px;
+body {
+    background-color: #444;
+    background-image: url("/Images/back.png");
 }
 
-header{
-    overflow: hidden;
-    background-color: #eee;
+.container {
+    background-color: #f8f8f8;
+    min-width: 440px;
 }
 
-header,
+header, footer {
+    background: -moz-linear-gradient(#e8e8e8 0,silver 100%) !important;
+    background: -webkit-linear-gradient(#e8e8e8 0,silver 100%) !important;
+    background: -ms-linear-gradient(#e8e8e8 0,silver 100%) !important;
+    background-color: silver !important;
+    font-family: Rockwell, Times, "Times New Roman", serif;        
+}
+
+.main_content {
+    padding-bottom: 15px;    
+}
+
 footer {
-    background: -moz-linear-gradient(#e8e8e8 0,silver 100%);
-    background: -webkit-linear-gradient(#e8e8e8 0,silver 100%);
-    background: -ms-linear-gradient(#e8e8e8 0,silver 100%);
-}
-
-#layout_body{
-    clear: both;
-    overflow: auto;
-    background-color: #f4f4f4;
-}
-
-    .main_content {
-        padding: 10px 10px;
-    }
-
-footer{
-    clear: both;
-    overflow:hidden;
-    background-color: #eee;
-}
-
-    footer .content_wrapper small {
-        display: block;
-        margin: 10px;
-        text-align: center;
-/*        background-color: #efe;*/
-        font-size: 14px;
-        font-family: Rockwell, Times, "Times New Roman", serif;
-    }
-
-
-/* site title
-----------------------------------------------------------*/
-.site_title {
-    float: left;
-    margin: 10px;
-    font-size: 28px;
-    line-height: 30px;
-/*    background-color: #efe;*/
-}
-
-.site_title a, .site_title a:hover, .site_title a:active {
-    background: none;
-    color: #444;
-    outline: none;
-    text-decoration: none;
-    font-family: Rockwell, Times, "Times New Roman", serif;
-}
-
-/* menu
-----------------------------------------------------------*/
-nav {
-    float: left;
-    margin: 15px 5px;
-    font-size: 20px;
-/*    background-color: #ffe;*/
-}
-
-    nav ul#menu {
-        margin: 0;
-        padding: 0;
-    }
-
-        nav ul#menu li {
-            display: inline;
-            list-style: none;
-            padding-left: 5px;
-        }
-        nav ul#menu li:nth-of-type(1) {
-            padding-left: 0;
-        }
-
-        ul#menu li a {
-            background: none;
-            color: #888;
-            text-decoration: none;
-            font-family: Rockwell, Times, "Times New Roman", serif;
-        }
-            ul#menu li a:hover,
-            ul#menu li a:active {
-                color: #444;
-            }
-
-/* login
-----------------------------------------------------------*/
-#login {
-    float: right;
-    margin: 15px 10px;
-    text-align: right;
-
-/*    background-color: #eff; */
-}
-    #login ul{
-        margin: 0;
-        padding: 0;
-    }
-
-        #login ul li {
-            display: inline;
-            list-style: none;
-        }
-
-        #login a,
-        #logion a:visited {
-            text-decoration: none;
-            color: #444;
-            line-height: 20px;
-        }
-            #login a:hover,
-            #login a:active {
-                background-color: #f0f0ff;
-            }
-
-        #login form {
-            float: right;
-            margin-left: 10px;
-        }
-
-/* h2 */
-.main_content h2 {
-    font-family: Rockwell, Times, "Times New Roman", serif;
-}
-
-.main_content h3 {
-    margin: 10px 0;
-    padding: 0;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
     font-size: 16px;
 }
 
-.main_content a,
-.main_content a:visited {
-    color: #06c;
-    text-decoration: none;
+h1, h2, h3, h4, h5, h6, 
+label, .display_label, legend {
+    font-family: Rockwell, Times, "Times New Roman", serif;    
 }
 
-.main_content a:hover,
-.main_content a:active{
-    background: #a0ffff;
-    background: rgba(165, 255, 255, 0.5);
+a:focus,
+button:focus {
+    outline: 1px dashed #66afe9 !important;    
 }
 
-/* card
+.btn-primary:focus,
+.btn-info:focus,
+.btn-success:focus,
+.btn-warning:focus,
+.btn-danger:focus {
+    color: gold;
+    border-color: #66afe9;
+    -webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+    box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+}
+
+/* navbar
 ----------------------------------------------------------*/
-section.card{
-    margin: 0;
-    padding: 10px;
-    overflow: hidden;
-    min-height: 80px;
-    border-left: 1px solid gray;
-    border-right: 1px solid gray;
-    border-bottom: 1px solid gray;
-
-    background-color: #fcfcfc;
+.navbar {
+    margin-bottom: 0;    
 }
 
+    .navbar a:hover {
+        color: #333 !important;
+    }
+
+    .navbar .divider_vertical {
+        height: 30px;
+        margin: 10px 0;
+        border-left: 1px solid silver;
+        border-right: 1px solid darkgray;
+    }
+
+    .navbar-inverse .divider_vertical {
+        border-right-color: #222222;
+        border-left-color: #111111;
+    }
+
+/* pagination
+----------------------------------------------------------*/
+.page_position {
+    text-align: center;
+    padding: 2px 0;
+}
+
+    .page_position .badge {
+        background: -moz-linear-gradient(#e8e8e8 0,silver 100%);
+        background: -webkit-linear-gradient(#e8e8e8 0,silver 100%);
+        background: -ms-linear-gradient(#e8e8e8 0,silver 100%);
+        background-color: silver;
+        color: dimgray;
+        font-size: 15px;
+    }
+
+.page_controller {
+    text-align: center;
+    line-height: 0;
+    padding: 5px 0;
+}
+
+.pagination li > a {
+    background: -moz-linear-gradient(#e8e8e8 0,silver 100%);
+    background: -webkit-linear-gradient(#e8e8e8 0,silver 100%);
+    background: -ms-linear-gradient(#e8e8e8 0,silver 100%);
+    background-color: silver;
+    color: dimgray;
+    font-weight: bold;
+    width: 60px;
+}
+    
+    .pagination li > a.first_link,
+    .pagination li > a.last_link {
+        line-height: 1em;
+        font-family: Rockwell, Times, "Times New Roman", serif;
+    }
+
+    .pagination li > a:hover,
+    .pagination li > a:active,
+    .pagination li > a:focus {
+        background: -moz-linear-gradient(#f0f0f0 0,lightgray 100%);
+        background: -webkit-linear-gradient(#f0f0f0 0, lightgray 100%);
+        background: -ms-linear-gradient(#f0f0f0 0, lightgray 100%);
+        background-color: lightgray;
+        color: black;
+    }
+
+    .pagination li.disabled > a,
+    .pagination li.disabled > a:hover,
+    .pagination li.disabled > a:active,
+    .pagination li.disabled > a:focus {
+        outline: none !important;    
+        font-weight: normal;
+        background: none;
+        background-color: whitesmoke;
+        color: silver;
+    }
+
+/* form
+----------------------------------------------------------*/
+.form-horizontal .form-group {
+    margin: 0;
+}
+
+legend {
+    margin-bottom: 5px;
+}
+
+label,
+.display_label,
+.editor_label {
+    margin: 0;
+    color: black;
+    font-style: normal;
+    font-weight: bold;
+    font-family: Rockwell, Times, "Times New Roman", serif;
+    font-size: 15px;
+}
+
+.display_field {
+    padding: 5px 5px 10px;
+    font-size: 16px;
+}
+
+.editor_field {
+    margin-top: 1px;
+    font-size: 18px;
+}
+
+.message_error {
+    color: darkred;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.message_success {
+    color: darkgreen;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+fieldset .submit_button {
+    margin: 20px 0  10px !important;
+}
+
+.back_to {
+    margin: 10px 5px 5px;    
+}
+
+/* Home/Index
+----------------------------------------------------------*/
+.row_top {
+    overflow: hidden;
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+
+.col_create {
+    float: left;
+    overflow: hidden;
+    padding: 0 5px;
+}
+
+    .col_create .item_num {
+        float: left;
+        margin-right: 5px;
+        background: -moz-linear-gradient(#e8e8e8 0,silver 100%);
+        background: -webkit-linear-gradient(#e8e8e8 0,silver 100%);
+        background: -ms-linear-gradient(#e8e8e8 0,silver 100%);
+        background-color: silver;
+        color: dimgray;
+        font-size: 15px;
+    }
+
+    .col_create .create_link {
+        float: left;
+    }
+
+.col_search {
+    float: right;
+    overflow: hidden;
+    padding: 0 5px;
+}
+
+    .col_search .text_box {
+        float: left;
+        width: 180px;
+        margin-right: 5px;        
+    }
+
+    .col_search .submit_button {
+        float: left;
+        width: auto;
+    }
+
+    .col_search .form-group {
+        margin-bottom: 0;
+    }
+
+/* card */
 section.card:nth-of-type(1) {
     border-top: 1px solid gray;
 }
 
-section.card .left_side{
-    float: left;
-    /*width: auto;*/
-    width: 540px;
-
-/*    background-color: #c0ffc0;*/
+section.card {
+    overflow: hidden;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+    border-bottom: 1px solid gray;
+    padding: 5px;
 }
 
-section.card .right_side{
-    float: right;
-    width: 135px;
-/*    background-color: #c0c0ff;*/
+    .card .card_left {
+        float: left;
+        width: 100%;
+        padding-right: 120px;
+        margin-right: -120px;
+    }
+
+    .card .card_right {
+        float: right;
+        width: 120px;
+        text-align: center;
+    }
+
+.question .display_field {
+    font-size: 26px;
+    color: #f00000;
+    letter-spacing: 1px;
 }
 
-section.review_page {
-    min-height: 360px;
-}
-
-.card .question{
-    margin-bottom: 10px;
-    font-size: 24px;
-    color: red;
-
-/*    background-color: #fff0f0;*/
-}
-
-.card .answer{
-    margin-bottom: 10px;
+.answer .display_field {
     font-size: 20px;
     color: navy;
-
-/*    background-color: #ffe;*/
+    letter-spacing: 1px;
 }
 
-.card .note{
-    margin: 5px 5px 5px 0;
+.note .display_field {
+    margin: 5px 5px 10px;
     padding: 5px;
-    font-size: 16px;
-    background-color: #f4faf4;
+    font-size: 18px;
+    background-color: #e8f4e8;
     border: 1px solid silver;
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
-/*    background-color: #eff;*/
 }
 
-.card .question h3, 
-.card .answer h3{
-    color: black;
-}
-
-.card .created_at,
-.card .reviewed_at {
-    margin: 0 0 5px 0;
-/*    text-align: right;*/
-    font-style: italic;
+.created_at .display_field,
+.reviewed_at .display_field{
     font-size: 14px;
-/*    background-color: #ffe;*/
+    font-style: italic;
 }
 
-    .card .created_at h3,
-    .card .reviewed_at h3 {
-        font-style: normal;
-    }
-
-.card .edit_delete, 
-.card .edit {
-    font-size: 16px;
-/*    background-color: #fee;*/
+.btn_edit,
+.btn_del {
+    width: 50px;    
 }
 
-.card .edit_delete {
-    margin: 0 0 0 10px;
-/*    text-align: center;    */
+.btn_edit {
+    margin-right: 10px;
 }
 
-.card .edit {
-    margin: 20px 0 0 0;
-}
-
-/* field-validation
-----------------------------------------------------------*/
-.field-validation-error:before {
-    content: ".";
-    display: block;
-    height: 0;
-    visibility: hidden;
-}
-.field-validation-error {
-    color: red;
-}
-
-/* paging
-----------------------------------------------------------*/
-.paging{
-    clear: both;
-    margin: 10px 0;
-    text-align: center;
-    font-size: 16px;
-}
-    .paging p{
-        margin: 5px 0;
-    }
-    .paging span {
-        color: #c0c0c0;
-    }
-/* Login Page, Register Page, Manage Page
-----------------------------------------------------------*/
-#login_form,
-#register_form,
-#change_password_form {
-    max-width: 480px;
-}
-    #login_form .field-validation-error {
-        margin-left: 5px;
-        color: red;
-    }
-
-    #login_form .validation-summary-errors ul li,
-    #register_form .validation-summary-errors ul li,
-    #change_password_form .validation-summary-errors ul li {
-        margin: 10px 0;
-        color: red;
-    }
-
-    #login_form fieldset,
-    #login_form fieldset ul,
-    #register_form fieldset,
-    #register_form fieldset ul,
-    #change_password_form fieldset,
-    #change_password_form fieldset ul {
-        margin: 0;
-        padding: 10px;
-    }
-
-    #login_form fieldset ul li,
-    #register_form fieldset ul li,
-    #change_password_form fieldset ul li {
-        margin: 0 0 15px;
-        list-style:none;
-    }
-
-    #login_form fieldset .submit_button,
-    #register_form fieldset .submit_button,
-    #change_password_form fieldset .submit_button {
-        padding: 0 10px 0 0;
-        text-align: right;
-    }
-
-    #login_form .register_link {
-        margin: 20px 20px 0;
-    }
-
-/* Home/Index
-----------------------------------------------------------*/
-
-/* search */
-.search {
-    float: right;
-    margin: 10px 0;
-}
-
-/* record_num */
-.record_num h3 {
-    margin: 5px 0;
-}
-
-/* create_link */
-.create_link {
-    margin: 5px 0;
-    font-size: 16px;
-}
-
-#record_num_create_link_wrapper {
-    float: left;
-}
-
-/* Home/Create, Home/Edit
-----------------------------------------------------------*/
-.display_label,
-.display_field,
-.editor_label,
-.editor_field {
-    margin: 10px;
-}
-
-.display_label,
-.editor_label {
-    font-weight: bold;
-}
-
-.editor_field .question,
-.editor_field .answer,
-.editor_field .note {
-    width: 600px;
-}
-
-.submit_button {
-    margin: 10px;
-}
-
-fieldset .submit_button {
-    margin: 30px 10px 10px;
-}
-
-.back_to {
-    margin: 20px 10px 10px;
-}
-
-/* Home/About
-----------------------------------------------------------*/
 #about {
     min-height: 350px;
+    font-size: 16px;
 }
 
-/* Review/Index
+/* Review/Index, Answer, Status
 ----------------------------------------------------------*/
-.card .review_level {
-    margin: 0 0 5px 0;
-/*    text-align: right;*/
-/*    background-color: #efe;*/
+.review_icon {
+    margin-bottom: 2px;
+    width: 30px;
+}
+#sbmAnswer,
+#sbmPerfect {
+    margin-top: 10px;
 }
 
-.card .review_level img {
-    display: block;
-    float: left;
-    margin: 0;
-    padding: 0;
-    width: 20px;
-    height: 20px;
+#sbmPerfect {
+    margin-bottom: 20px;
 }
 
-.card .review_level p {
-    margin: 0 0 0 24px;
+.dummy_pagination {
+    height: 70px;
 }
 
-#question_form {
-    margin: 0 0 20px 0;
-/*    text-align: center;*/
+#review .answer .display_field span {
+    font-size: 26px;
 }
 
-#question_form .submit_button input {
-    width: 80px;
-    height: 40px;
-    font-size: 18px;
-}
-
-/* Review/Answer
-----------------------------------------------------------*/
-#answer_form {
-    clear: both;
-    margin: 0 0 20px 0;
-/*    text-align: center;*/
-}
-
-#answer_form  .submit_button {
-    margin: 10px;
-    padding: 0;
-    font-size: 18px;
-}
-
-    #answer_form p.submit_button input {
-        width: 80px;
-        height: 40px;
-    }
-    #answer_form p.submit_button:nth-of-type(2) {
-        margin: 40px 0 20px 10px;
-    }
-
-/* Review/Status
-----------------------------------------------------------*/
-.review_status {
-    margin: 10px;
-}
-.review_status .graph {
-    width: 600px;
+#review .graph {
+    width: 560px;
     height: auto;
 }
 
+.review_level .badge {
+        background: -moz-linear-gradient(#e8e8e8 0,silver 100%);
+        background: -webkit-linear-gradient(#e8e8e8 0,silver 100%);
+        background: -ms-linear-gradient(#e8e8e8 0,silver 100%);
+        background-color: silver;
+        color: dimgray;
+        font-size: 15px;
+}
 
-/* Mobile Styles
+/* Account/Login, Manage
 ----------------------------------------------------------*/
-@media only screen and (max-width: 720px) {
-    #container {
-        width: 480px;
-    }
+#login_form .form-control {
+    width: 300px;
+}
 
-    .site_title {
-        margin: 5px 10px;
-    }
-
-    footer .content_wrapper small {
-        margin: 8px 10px;
-    }
-
-    .main_content h2 {
-        margin: 0 0 10px;
-    }
-
-    h2.review_title {
-        margin: 10px 0 -30px;
-    }
-
-    .back_to {
-        margin: 10px 5px 0;
-    }
-
-    nav {
-        clear:both;
-        margin: 0 15px 5px;
-    }
-
-    #layout_body section.main_content div.paging:nth-of-type(2n) {
-        margin: 10px 0 0;
-    }
-
-    #layout_body section.main_content div.paging:nth-of-type(2n) p {
-        margin: 5px 0 0;
-    }
-
-    .card .note {
-        margin: 5px 5px 10px 0;
-    }
-
-    #login {
-        margin-bottom: 0;
-    }
-
-    .editor_field .question,
-    .editor_field .answer,
-    .editor_field .note {
-        width: 400px;
-    }
-
-    section.card .left_side {
-        width: 440px;
-    }
-
-    section.card .right_side {
-        clear: both;
-        float: right;
-        width: 440px;
-        margin: 0;
-    }
-
-    section.review_page {
-        float: left;
-        margin-bottom: 10px;
-        padding: 0 10px 2px;
-    }
-
-    .card .created_at,
-    .card .reviewed_at {
-        float: left;
-        margin: 0 20px 0 0;
-/*        background-color: pink;*/
-    }
-
-    .created_at,
-    .reviewed_at,
-    .review_level {
-        text-align: right;
-    }
-
-    .review_page .created_at,
-    .review_page .reviewed_at,
-    .review_page .review_level {
-        text-align: left;
-    }
-
-    .card .edit_delete {
-        float: left;
-        margin-left: 20px;
-        text-align: right;
-/*        background-color: cyan;*/
-    }
-
-    .review_page .edit {         
-        text-align: left;
-        margin: 10px 0 0 0;
-    }
-
-    .review_page #question_form,
-    .review_page #answer_form {
-        text-align: left;     
-    }
-
-    .review_page #answer_form  .submit_button {
-        float: left;
-    }
-    
-    #answer_form p.submit_button:nth-of-type(2) {
-        margin: 10px 10px 10px 40px;
-    }
-
-    .review_status .graph {
-        width: 450px;
-        height: auto;
-    }
+.login_user {
+    font-size: 16px;
+}
+.login_user strong {
+    font-size: 24px;
+    color: darkorange;
 }

@@ -2,93 +2,100 @@
 
 @{
     ViewBag.Title = "Review";
+    var questionedAt = DateTime.Now;
 }
 
 @section navigations {
-    <nav>
-        <ul id="menu">
-            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-            <li>@Html.ActionLink("Review", "Index", "Review")</li>
-            <li>@Html.ActionLink("Status", "Status", "Review")</li>
-        </ul>
-    </nav>
+    <ul class="nav navbar-nav">
+        <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+        <li class="divider_vertical"></li>
+        <li><a href="@Url.Action("Index", "Review")">Review</a></li>
+        <li class="divider_vertical"></li>
+        <li><a href="@Url.Action("Status", "Review")">Status</a></li>
+    </ul>
 }
 
-<h2 class="review_title">Review</h2>
+<h2>Review</h2>
 
-<!--<div class="record_num">
-    <h3>@Model.ItemNum items</h3>
-</div>-->
-
-<div class="paging">
-    <p>
-        [ @(Model.Page + 1) / @(Model.LastPage + 1) ]
-    </p>
-    @Html.Partial("_PagingPartial")
+<!-- Pagination -->
+<div class="row">
+    <div class="page_position">
+        <span class="badge">[ @(Model.Page + 1) / @(Model.LastPage + 1) ]</span>
+    </div>
+    <div class="page_controller">
+        @Html.Partial("_PagingPartial")
+    </div>
 </div>
 
-@if (Model.ViewCards != null && Model.ViewCards.Count() > 0) {
-    foreach (var c in Model.ViewCards) {
-        <section class="card review_page">
-            <div class="left_side">
-                <div class="question">
-                    <h3>Question</h3>
-                    @c.Question
-                </div>
-                <div class="answer">
-                    <h3>Answer</h3>
-                    ? @*c.Answer*@
-                </div>
-            </div>
+<!-- Card -->
+<div id="review" class="row">
+    @if (Model.ViewCards != null) {
+        var c = Model.ViewCards.ToArray()[0];
+        <section class="card">
+            @using (Html.BeginForm("Answer", "Review",
+            routeValues: new { id = c.Id }, method: FormMethod.Get,
+            htmlAttributes: new { @class = "form-horizontal" })) {
 
-            <div class="right_side">
-                <div id="question_form">
-                    @using (Html.BeginForm("Answer", "Review",
-                        routeValues: new { id = c.Id }, method: FormMethod.Get, htmlAttributes: null)) {
-                        @*Html.AntiForgeryToken()*@
+                @Html.Hidden("page", Model.Page)
+                @Html.Hidden("questionedAt", questionedAt)
 
-                        @Html.Hidden("page", Model.Page)
-
-                        <p class="submit_button">
-                            <input id="sbmAnswer" type="submit" value="Answer" />
-                        </p>
-                    }
-                </div>
-            </div>
-            
-            <div class="left_side">
-                <h3></h3>
-                &nbsp;
-            </div>
-
-            <div class="right_side">
-                <div class="created_at">
-                    <h3>Created at</h3>
-                    @c.CreatedAt.ToString("yyyy/MM/dd HH:mm")
+                <div class="card_left">
+                    <div class="question">
+                        <div class="display_label">Question</div>
+                        <div class="display_field">@c.Question</div>
+                    </div>
+                    
+                    <div class="answer">
+                        <div class="display_label">Answer</div>
+                        <div class="display_field"><span>?</span></div>
+                    </div>
                 </div>
 
-                <div class="reviewed_at">
-                    <h3>Reviewed at</h3>
-                    @c.ReviewedAt.ToString("yyyy/MM/dd HH:mm")
+                <div class="card_right">
+                    <div class="form-group submit_button">
+                        <button type="submit" id="sbmAnswer" class="btn btn-primary">
+                            Answer
+                        </button>
+                    </div>
+                </div>
+            }
+                <div class="card_left clear-both">
                 </div>
 
-                <div class="review_level">
-                    <h3>Review Level</h3>
-                    <img src="~/Images/rev@(c.ReviewLevel).png" alt="review icon" />
-                    <p>@c.ReviewLevel</p>
-                </div>
+                <div class="card_right">
+                    <div class="created_at">
+                        <div class="display_label">Created at</div>
+                        <div class="display_field">
+                            @c.CreatedAt.ToString("yyyy/MM/dd HH:mm")
+                        </div>
+                    </div>
 
-                <div class="edit">
-                    @Html.ActionLink("Edit", "Edit", "Home",
-                        new { id = c.Id, page = Model.Page, from = "Review" }, null)
-                </div>
-            </div>
+                    <div class="reviewed_at">
+                        <div class="display_label">Reviewed at</div>
+                        <div class="display_field">
+                            @c.ReviewedAt.ToString("yyyy/MM/dd HH:mm")
+                        </div>
+                    </div>
 
-</section>
+                    <div class="review_level">
+                        <div class="display_label">Review Level</div>
+                        <div class="display_field">
+                            <img src="~/Images/rev@(c.ReviewLevel).png" alt="review icon" class="review_icon" />
+                            <span class="badge">@(c.ReviewLevel + 1)</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        @Html.ActionLink("Edit", "Edit", "Home", new { id = c.Id, page = Model.Page, from = "Review" },
+                            new { @id = "btnEdit", @class = "btn btn-primary" })
+                    </div>
+
+            </div> <!-- div class="card_right" -->
+        </section>
+    } else {
+        <p>No item was found.</p>
     }
-} else {
-    <p>No item is found.</p>
-}
+</div> <!-- div class="row" -->
 
 <div class="back_to">
     &nbsp;
@@ -99,5 +106,5 @@
     $(function () {
         $("#sbmAnswer").focus();
     });
-</script>    
+</script>
 }

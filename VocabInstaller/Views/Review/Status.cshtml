@@ -5,13 +5,13 @@
 }
 
 @section navigations {
-    <nav>
-        <ul id="menu">
-            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-            <li>@Html.ActionLink("Review", "Index", "Review")</li>
-            <li>@Html.ActionLink("Status", "Status", "Review")</li>
-        </ul>
-    </nav>
+    <ul class="nav navbar-nav">
+        <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+        <li class="divider_vertical"></li>
+        <li><a href="@Url.Action("Index", "Review")">Review</a></li>
+        <li class="divider_vertical"></li>
+        <li><a href="@Url.Action("Status", "Review")">Status</a></li>
+    </ul>
 }
 
 <h2>Status</h2>
@@ -28,12 +28,12 @@
     };    
 }
 
-<div class="review_status">
+<div id="review">
     <h3>Under Review: @(total - revLv[5]) items</h3>
 
     <img class="graph" alt="review status"
          src="@Url.Action("DrawGraph", "Review",
-                  new { revLvStr = string.Join(",", revLv), width=600, height=450 })" />
+                  new { revLvStr = string.Join(",", revLv), width=480, height=360 })" />
 
     <h3>Completed: @revLv[5] items</h3>
     <h3>Total: @total items</h3>

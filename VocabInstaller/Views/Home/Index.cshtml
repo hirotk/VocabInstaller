@@ -6,87 +6,114 @@
 }
 
 @section navigations {
-    <nav>
-        <ul id="menu">
-            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-            <li>@Html.ActionLink("Review", "Index", "Review")</li>
-            <li>@Html.ActionLink("About", "About", "Home")</li>
-            @if (User.IsInRole("Administrator")) {
-                <li>@Html.ActionLink("Function", "Index", "Function")</li>
-            }
-        </ul>
-    </nav>
+<ul class="nav navbar-nav">
+    <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+    <li class="divider_vertical"></li>
+    <li><a href="@Url.Action("Index", "Review")">Review</a></li>
+    <li class="divider_vertical"></li>
+    <li><a href="@Url.Action("About", "Home")">About</a></li>
+    @if (User.IsInRole("Administrator")) {
+        <li class="divider_vertical"></li>
+        <li><a href="@Url.Action("Index", "Function")">Function</a></li>
+    }
+</ul>
 }
 
-<div class="search">
-    @using (Html.BeginForm("Index", "Home", FormMethod.Get)) {
-        @Html.TextBox("search")        
-        <input type="submit" value="Search" />
-    }
-</div>
+<!-- ItemNum/Create, Search -->
+<div class="row row_top">
+    <div class="col_create">
+        <div class="badge item_num">
+            <!--<i class="glyphicon glyphicon-book"></i>-->
+            @Model.ItemNum
+            items
+        </div>
 
-<div class="float-left">
-    <div class="record_num">
-        <h3>@Model.ItemNum items</h3>
+        <div class="create_link">
+            @Html.ActionLink("Add", "Create", null,
+                        new { @class = "btn btn-primary" })
+        </div>
     </div>
 
-    <div class="create_link">
-        @Html.ActionLink("Create", "Create")
+    <div class="col_search">
+        @using (Html.BeginForm("Index", "Home", FormMethod.Get, 
+            new { @class = "form-inline" })) {
+            <div class="form-group text_box">
+                @Html.TextBox("search", null, new { @class = "form-control" })
+            </div>
+            
+            <div class="form-group submit_button">
+                <button type="submit" class="btn btn-primary">
+                    Find
+                </button>
+            </div>
+        }
     </div>
 </div>
 
-<div class="paging">
-    <p>
-        [ @(Model.Page + 1) / @(Model.LastPage + 1) ]
-    </p>
-    @Html.Partial("_PagingPartial")
+<!-- Top Pagenation -->
+<div class="row">
+    <div class="page_position">
+        <span class="badge">[ @(Model.Page + 1) / @(Model.LastPage + 1) ]</span>
+    </div>
+    <div class="page_controller">
+        @Html.Partial("_PagingPartial")
+    </div>
 </div>
 
-@if (Model.ViewCards != null && Model.ViewCards.Any()) {
-    foreach (var c in Model.ViewCards) {
-        <section class="card">
-            <div class="left_side">
-                <div class="question">
-                    @c.Question
-                </div>
-                <div class="answer">
-                    @c.Answer
-                </div>
-                @{
-                    var note = c.Note;
-                    if (note != null) {
-                        note = Html.Encode(note)
-                            .Replace("\r", "")
-                            .Replace("\n", "<br />")
-                            .Replace("&amp;nbsp;", "&nbsp;");
-                        @:<div class="note">
-                            @Html.Raw(note)
-                        @:</div>
+<!-- Cards -->
+<div id="home" class="row">
+    @if (Model.ViewCards != null && Model.ViewCards.Any()) {
+        foreach (var c in Model.ViewCards) {
+            <section class="card">
+                <div class="card_left">
+                    <div class="question">
+                        <div class="display_field">@c.Question</div>
+                    </div>
+
+                    <div class="answer">
+                        <div class="display_field">@c.Answer</div>
+                    </div>
+
+                    @{
+                        var note = c.Note;
+                        if (!string.IsNullOrEmpty(note)) {
+                            note = Html.Encode(note)
+                                .Replace("\r", "")
+                                .Replace("\n", "<br />")
+                                .Replace("&amp;nbsp;", "&nbsp;");
+                            <div class="note">
+                                <div class="display_field">@Html.Raw(note)</div>
+                            </div>
+                        }
                     }
-                }
-            </div>
+                </div>
 
-            <div class="right_side">
-                <div class="created_at">
-                    @c.CreatedAt.ToString("yyyy/MM/dd HH:mm")
+                <div class="card_right">
+                    <div class="created_at">
+                        <div class="display_field">
+                            @c.CreatedAt.ToString("yyyy/MM/dd HH:mm")
+                        </div>
+                    </div>
+
+                    <div>
+                        @Html.ActionLink("Edit", "Edit", new { id = c.Id, page = Model.Page, search = Model.Search },
+                            new { @class = "btn btn-primary btn_edit" })
+
+                        @Html.ActionLink("Del", "Delete", new { id = c.Id, page = Model.Page, search = Model.Search },
+                            new { @class = "btn btn-primary btn_del" })
+                    </div>
                 </div>
-                <div class="edit_delete">
-                    @Html.ActionLink("Edit", "Edit",
-                        new { id = c.Id, page = Model.Page, search = Model.Search })
-                     &nbsp;|&nbsp; 
-                    @Html.ActionLink("Delete", "Delete",
-                        new { id = c.Id, page = Model.Page, search = Model.Search })
-                </div>
-            </div>
-        </section>
+            </section>
+        }
     }
-} else {
-    <p>No item is found.</p>
-}
+</div>
 
-<div class="paging">
-    @Html.Partial("_PagingPartial")
-    <p>
-        [ @(Model.Page + 1) / @(Model.LastPage + 1) ]
-    </p>
+<!-- Bottom Pagenation -->
+<div class="row">
+    <div class="page_controller">
+        @Html.Partial("_PagingPartial")
+    </div>
+    <div class="page_position">
+        <span class="badge">[ @(Model.Page + 1) / @(Model.LastPage + 1) ]</span>
+    </div>
 </div>

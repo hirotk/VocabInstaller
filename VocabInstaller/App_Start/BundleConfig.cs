@@ -20,10 +20,18 @@ namespace VocabInstaller {
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                        "~/Scripts/bootstrap.js"
+                        ));
+
 //            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/normalize.css",
-                "~/Content/ViSite.css"
+                "~/Content/bootstrap.css",
+                "~/Content/bootstrap-theme.css",
+                "~/Content/bootstrap-ex.css",
+                "~/Content/ViSite.css",
+                "~/Content/ViSiteMobile.css"
             ));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(

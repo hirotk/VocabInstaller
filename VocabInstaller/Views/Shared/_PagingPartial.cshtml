@@ -3,60 +3,87 @@
     object firstArgs, prev2Args, prevArgs, nextArgs, next2Args, lastArgs;
     if (Model.GetType() == typeof(VocabInstaller.ViewModels.ReviewViewModel)) {
         controller = "Review";
-        firstArgs = new { page = 0 };
-        prev2Args = new { page = Model.Page - Model.PageSkip };
-        prevArgs = new { page = Model.Page - 1 };
-        nextArgs = new { page = Model.Page + 1 };
-        next2Args = new { page = Model.Page + Model.PageSkip };
-        lastArgs = new { page = Model.LastPage };
+        firstArgs = new { page = 0};
+        prev2Args = new { page = Model.Page - Model.PageSkip};
+        prevArgs = new { page = Model.Page - 1};
+        nextArgs = new { page = Model.Page + 1};
+        next2Args = new { page = Model.Page + Model.PageSkip};
+        lastArgs = new { page = Model.LastPage};
     } else {
         firstArgs = new { page = 0, search = Model.Search };
         prev2Args = new { page = Model.Page - Model.PageSkip, search = Model.Search };
         prevArgs = new { page = Model.Page - 1, search = Model.Search };
         nextArgs = new { page = Model.Page + 1, search = Model.Search };
         next2Args = new { page = Model.Page + Model.PageSkip, search = Model.Search };
-        lastArgs = new { page = Model.LastPage, search = Model.Search };        
+        lastArgs = new { page = Model.LastPage, search = Model.Search };
     }
 }
 
-@if (Model.HasPrevPage(1)) {
-    <span>
-        @Html.ActionLink("[First]", "Index", controller, firstArgs, htmlAttributes: null)
-    </span>
+<ul class="pagination">
+    @if (Model.HasPrevPage(1)) {
+        <li>
+            <a href="@Url.Action("Index", controller, firstArgs)">
+                <span class="first_link">First</span>
+            </a>
+        </li>
 
-    if (Model.HasPrevPage(Model.PageSkip)) {
-        <span>
-            @Html.ActionLink("[ << ]", "Index", controller, prev2Args, htmlAttributes: null)
-        </span>
+        if (Model.HasPrevPage(Model.PageSkip)) {
+            <li>
+                <a href="@Url.Action("Index", controller, prev2Args)">&lt;&lt;</a>
+            </li>
+        } else {
+            <li class="disabled">
+                <a href="#" tabindex="-1">&lt;&lt;</a>
+            </li>
+        }
+
+        <li>
+            <a href="@Url.Action("Index", controller, prevArgs)">&lt;</a>
+        </li>
     } else {
-        <span>[ &lt;&lt; ]</span>
+        <li class="disabled">
+            <a href="#" tabindex="-1"><span class="first_link">First</span></a>
+        </li>
+        <li class="disabled">
+            <a href="#" tabindex="-1">&lt;&lt;</a>
+        </li>
+        <li class="disabled">
+            <a href="#" tabindex="-1">&lt;</a>
+        </li>
     }
 
-    <span>
-        @Html.ActionLink("[  <  ]", "Index", controller, prevArgs, htmlAttributes: null)
-    </span>
-} else {
-    <span>[First]</span> <span>[ &lt;&lt; ]</span> <span>[  &lt;  ]</span>
-}
 
-<span>|</span>
+    @if (Model.HasNextPage(1)) {
+        <li>
+            <a href="@Url.Action("Index", controller, nextArgs)">&gt;</a>
+        </li>
 
-@if (Model.HasNextPage(1)) {
-    <span>
-        @Html.ActionLink("[  >  ]", "Index", controller, nextArgs, htmlAttributes: null)
-    </span>
+        if (Model.HasNextPage(Model.PageSkip)) {
+            <li>
+                <a href="@Url.Action("Index", controller, next2Args)">
+                    &gt;&gt;
+                </a>
+            </li>
+        } else {
+            <li class="disabled">
+                <a href="#" tabindex="-1">&gt;&gt;</a>
+            </li>
+        }
 
-    if (Model.HasNextPage(Model.PageSkip)) {
-        <span>
-            @Html.ActionLink("[ >> ]", "Index", controller, next2Args, htmlAttributes: null)
-        </span>
+        <li>
+            <a href="@Url.Action("Index", controller, lastArgs)">
+                <span class="last_link">Last</span>
+            </a>
+        </li>
     } else {
-        <span>[ &gt;&gt; ]</span>
+        <li class="disabled">
+            <a href="#" tabindex="-1">&gt;</a>
+        </li>
+        <li class="disabled">
+            <a href="#" tabindex="-1">&gt;&gt;</a>
+        </li>
+        <li class="disabled">
+            <a href="#" tabindex="-1"><span class="last_link">Last</span></a>
+        </li>
     }
-
-    <span>
-        @Html.ActionLink("[Last]", "Index", controller, lastArgs, htmlAttributes: null)
-    </span>
-} else {
-    <span>[  &gt;  ]</span> <span>[ &gt;&gt; ]</span> <span>[Last]</span>
-}
+</ul>

@@ -4,9 +4,18 @@
     ViewBag.Title = "Create";
 }
 
+@section navigations {
+    <ul class="nav navbar-nav">
+        <li>
+            <a href="@Url.Action("Index", "Home")">Home</a>
+        </li>
+    </ul>
+}
+
 <h2>Create</h2>
 
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("Create", "Home", FormMethod.Post,
+    htmlAttributes: new { @class = "form-horizontal" })) {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
@@ -16,36 +25,32 @@
         @Html.HiddenFor(m => m.Id)
         @Html.HiddenFor(m => m.UserId)
 
-        <div class="editor_label">
-            @Html.LabelFor(m => m.Question)
-        </div>
-        <div class="editor_field">
-            @Html.TextBoxFor(m => m.Question, new { @id="tbQuestion", @class = "question" })
-            @Html.ValidationMessageFor(m => m.Question)
+        <div class="form-group">
+            @Html.LabelFor(m => m.Question, new { @class = "control-label", @for = "tbQuestion" })
+            @Html.TextBoxFor(m => m.Question, new { @id = "tbQuestion", @class = "form-control editor_field" })
+            <span class="text-danger">@Html.ValidationMessageFor(m => m.Question)</span>
         </div>
 
-        <div class="editor_label">
-            @Html.LabelFor(m => m.Answer)
-        </div>
-        <div class="editor_field">
-            @Html.TextBoxFor(m => m.Answer, new { @class = "answer" })
-            @Html.ValidationMessageFor(m => m.Answer)
+        <div class="form-group">
+            @Html.LabelFor(m => m.Answer, new { @class = "control-label", @for = "tbAnswer" })
+            @Html.TextBoxFor(m => m.Answer, new { @id = "tbAnswer", @class = "form-control editor_field" })
+            <span class="text-danger">@Html.ValidationMessageFor(m => m.Answer)</span>
         </div>
 
-        <div class="editor_label">
-            @Html.LabelFor(m => m.Note)
-        </div>
-        <div class="editor_field">
-            @Html.TextAreaFor(m => m.Note, new { @class = "note", @cols = 60, @rows = 4 })
-            @Html.ValidationMessageFor(m => m.Note)
+        <div class="form-group">
+            @Html.LabelFor(m => m.Note, new { @class = "control-label", @for = "tbNote" })
+            @Html.TextAreaFor(m => m.Note, new { @id = "tbNote", @class = "form-control editor_field", @cols = 60, @rows = 4 })
+            <span class="text-danger">@Html.ValidationMessageFor(m => m.Note)</span>
         </div>
 
         @Html.HiddenFor(m => m.CreatedAt)
         @Html.HiddenFor(m => m.ReviewedAt)
         @Html.HiddenFor(m => m.ReviewLevel)
 
-        <div class="submit_button">
-            <input type="submit" value="Create" />
+        <div class="form-group submit_button">
+            <button type="submit" class="btn btn-success">
+                Create
+            </button>
         </div>
     </fieldset>
 }

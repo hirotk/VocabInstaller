@@ -81,7 +81,7 @@ namespace VocabInstaller.Controllers {
         // POST: /Review/Answer/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Answer(int id, int page, string answer) {
+        public ActionResult Answer(int id, int page, string evaluation) {
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
             var card = repository.Cards
@@ -91,7 +91,7 @@ namespace VocabInstaller.Controllers {
                 throw new Exception("User Account Error");
             }
 
-            if (answer == "Perfect") {
+            if (evaluation == "Perfect") {
                 if (card.ReviewLevel < 5) {
                     card.ReviewLevel += 1;
                 }
