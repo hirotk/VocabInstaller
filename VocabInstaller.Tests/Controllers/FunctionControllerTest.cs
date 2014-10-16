@@ -98,15 +98,15 @@ namespace VocabInstaller.Tests.Controllers {
         }
 
         [TestMethod]
-        public void SaveTest() {
+        public void ExportTest() {
             // Arrange
             var controller = new FunctionController(mockRepository.Object);
             controller.ControllerContext = ctrlContext.Object;
 
             // Act
-            var resultGet = controller.Save() as ViewResult;
+            var resultGet = controller.Export() as ViewResult;
 
-            var resultPost = controller.SaveConfirmed() as FileResult;
+            var resultPost = controller.ExportConfirmed() as FileResult;
 
             // Assert
             Assert.IsNotNull(resultGet);
@@ -116,7 +116,7 @@ namespace VocabInstaller.Tests.Controllers {
         }
 
         [TestMethod]
-        public void LoadTest() {
+        public void ImportTest() {
             // Arrange
             var controller = new FunctionController(mockRepository.Object);
             controller.ControllerContext = ctrlContext.Object;
@@ -129,8 +129,8 @@ namespace VocabInstaller.Tests.Controllers {
                 .Returns(fileStream);
 
             // Act
-            var resultGet = controller.Load() as ViewResult;
-            var resultPost = controller.LoadConfirmed(
+            var resultGet = controller.Import() as ViewResult;
+            var resultPost = controller.ImportConfirmed(
                 csvFile:uploadedFile.Object, overwrite:false) as ViewResult;
             var model = resultPost.Model as List<Card>;
             model = model.OrderBy(m => m.CreatedAt).ToList();

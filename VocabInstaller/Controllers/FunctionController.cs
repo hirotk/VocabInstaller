@@ -28,17 +28,17 @@ namespace VocabInstaller.Controllers {
         }
 
         //
-        // GET: /Function/Save
-        public ActionResult Save() {
+        // GET: /Function/Export
+        public ActionResult Export() {
             return View();
         }
 
         //
-        // POST: /Function/Save
-        [HttpPost, ActionName("Save")]
+        // POST: /Function/Export
+        [HttpPost, ActionName("Export")]
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
-        public ActionResult SaveConfirmed() {
+        public ActionResult ExportConfirmed() {
             var cards = repository.Cards;
 
             string userRole = (string)(Session["UserRole"] ?? this.GetUserRole());
@@ -64,16 +64,16 @@ namespace VocabInstaller.Controllers {
         }
 
         //
-        // GET: /Function/Load
-        public ActionResult Load() {
+        // GET: /Function/Import
+        public ActionResult Import() {
             return View();
         }
 
-        // POST: /Function/Load
-        [HttpPost, ActionName("Load")]
+        // POST: /Function/Import
+        [HttpPost, ActionName("Import")]
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
-        public ActionResult LoadConfirmed(HttpPostedFileBase csvFile = null, bool overwrite = false) {
+        public ActionResult ImportConfirmed(HttpPostedFileBase csvFile = null, bool overwrite = false) {
             var cards = repository.Cards;
 
             bool isAdmin = false;
@@ -166,9 +166,8 @@ namespace VocabInstaller.Controllers {
             }
 
             ViewBag.Result = "The database was initialized";
-            deletedList.ForEach(d => cardList.Remove(d));
 
-            return View(cardList);
+            return View(deletedList);
         }
 
     }

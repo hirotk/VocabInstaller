@@ -339,8 +339,8 @@
     <Content Include="Views\Review\Answer.cshtml" />
     <Content Include="Views\Review\Status.cshtml" />
     <Content Include="Views\Function\Index.cshtml" />
-    <Content Include="Views\Function\Save.cshtml" />
-    <Content Include="Views\Function\Load.cshtml" />
+    <Content Include="Views\Function\Export.cshtml" />
+    <Content Include="Views\Function\Import.cshtml" />
     <Content Include="Views\Function\Initialize.cshtml" />
   </ItemGroup>
   <ItemGroup>

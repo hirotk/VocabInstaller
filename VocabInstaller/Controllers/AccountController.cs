@@ -43,6 +43,8 @@ namespace VocabInstaller.Controllers {
         [ValidateAntiForgeryToken]
         public ActionResult LogOff() {
             Session["UserId"] = null;
+            Session["UserRole"] = null;
+
             WebSecurity.Logout();
             return RedirectToAction("Index", "Home");
         }

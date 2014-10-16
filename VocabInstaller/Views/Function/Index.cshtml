@@ -5,19 +5,23 @@
 <h2>Function</h2>
 
 @section navigations {
-    <nav>
-        <ul id="menu">
-            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-            <li>@Html.ActionLink("Function", "Index", "Function")</li>
-            <li>@Html.ActionLink("Initialize", "Initialize", "Function")</li>
-            <li>@Html.ActionLink("Load", "Load", "Function")</li>
-            <li>@Html.ActionLink("Save", "Save", "Function")</li>
-        </ul>
-    </nav>
+<ul class="nav navbar-nav">
+    <li><a href="@Url.Action("Index", "Home")">Home</a></li>
+    <li class="divider_vertical"></li>
+    <li><a href="@Url.Action("Index", "Function")">Function</a></li>
+    <li class="divider_vertical"></li>
+    <li><a href="@Url.Action("Initialize", "Function")">Initialize</a></li>
+    <li class="divider_vertical"></li>
+    <li><a href="@Url.Action("Import", "Function")">Import</a></li>
+    <li class="divider_vertical"></li>
+    <li><a href="@Url.Action("Export", "Function")">Export</a></li>
+</ul>
 }
 
-<ul>
-    <li>@Html.ActionLink("Initialize the database", "Initialize", "Function")</li>
-    <li>@Html.ActionLink("Load data from csv file", "Load", "Function")</li>
-    <li>@Html.ActionLink("Save data to csv file", "Save", "Function")</li>
-</ul>
+<div id="function">
+    <ul>
+        <li>@Html.ActionLink("Initialize the database", "Initialize", "Function")</li>
+        <li>@Html.ActionLink("Import data from csv file", "Import", "Function")</li>
+        <li>@Html.ActionLink("Export data to csv file", "Export", "Function")</li>
+    </ul>
+</div>
