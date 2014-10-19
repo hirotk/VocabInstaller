@@ -159,7 +159,7 @@ namespace VocabInstaller.Tests.Controllers {
             Assert.IsNotNull(resultGet);
             Assert.IsNotNull(resultPost);
             Assert.AreEqual(result, "The database was initialized");
-            Assert.AreEqual(model.Count(), 0);
+            Assert.AreEqual(model.Count(), mockRepository.Object.Cards.Count());
         }
     }
 }

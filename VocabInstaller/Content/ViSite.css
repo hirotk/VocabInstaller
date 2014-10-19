@@ -29,7 +29,7 @@ body {
 
 .container {
     background-color: #f8f8f8;
-    min-width: 440px;
+    min-width: 320px;
 }
 
 header, footer {
@@ -214,8 +214,11 @@ fieldset .submit_button {
 
 .col_create {
     float: left;
+    width: 140px;
     overflow: hidden;
-    padding: 0 5px;
+    padding: 0 4px;
+
+    /*background-color: pink;*/
 }
 
     .col_create .item_num {
@@ -235,18 +238,27 @@ fieldset .submit_button {
 
 .col_search {
     float: right;
+    width: 100%;
     overflow: hidden;
-    padding: 0 5px;
+    margin-left: -140px;
+    padding-left: 140px;
+
+    /*background-color: orange;*/
 }
 
     .col_search .text_box {
-        float: left;
-        width: 180px;
-        margin-right: 5px;        
+        float: right;
+        width: 60%;
+        max-width: 200px;
+        margin-right: 4px;  
     }
 
+        .col_search .text_box input {
+            width: 100%;
+        }
+
     .col_search .submit_button {
-        float: left;
+        float: right;
         width: auto;
     }
 
@@ -269,6 +281,7 @@ section.card {
 
     .card .card_left {
         float: left;
+        overflow: hidden;
         width: 100%;
         padding-right: 120px;
         margin-right: -120px;
@@ -276,6 +289,7 @@ section.card {
 
     .card .card_right {
         float: right;
+        overflow: hidden;
         width: 120px;
         text-align: center;
     }
@@ -290,6 +304,8 @@ section.card {
     font-size: 20px;
     color: navy;
     letter-spacing: 1px;
+
+    background-color: pink;
 }
 
 .note .display_field {
@@ -301,6 +317,11 @@ section.card {
     border-radius: 5px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
+}
+
+.created_at,
+.reviewed_at {
+    width: 120px;
 }
 
 .created_at .display_field,
@@ -330,7 +351,8 @@ section.card {
     width: 30px;
 }
 #sbmAnswer,
-#sbmPerfect {
+#sbmPerfect,
+#sbmAlmost {
     margin-top: 10px;
 }
 
@@ -346,9 +368,30 @@ section.card {
     font-size: 26px;
 }
 
+.my_answer .display_field {
+    font-size: 24px;
+    color: dimgray;
+    letter-spacing: 1px;    
+}
+
+.my_answer .display_field .perfect {
+    color: darkgreen;
+}
+
+.my_answer .display_field .error {
+    color: red;
+    font-size: 1.25em;
+}
+
 #review .graph {
     width: 560px;
     height: auto;
+}
+
+.review_level,
+.answer_time {
+    float: left;
+    width: 120px;
 }
 
 .review_level .badge {
@@ -358,6 +401,15 @@ section.card {
         background-color: silver;
         color: dimgray;
         font-size: 15px;
+}
+
+.review_mode  {
+    float: left;
+    width: 120px;
+    margin-bottom: 10px;
+}
+.review_mode .form-control {
+    font-size: 12px;
 }
 
 /* Account/Login, Manage

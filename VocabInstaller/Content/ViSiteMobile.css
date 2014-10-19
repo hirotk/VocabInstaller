@@ -15,8 +15,31 @@
         background-color: whitesmoke;
     }
 
+    /* pagination
+    ----------------------------------------------------------*/
+    .pagination li > a {
+        width: 50px;
+    }
+
     /* Home/Index
     ----------------------------------------------------------*/
+    .col_create {
+        width: 80px;
+    }
+
+    .col_search {
+        margin-left: -80px;
+        padding-left: 80px;
+    }
+
+    .col_create .item_num {
+        margin-bottom: 5px;
+    }
+
+    .col_create .create_link {
+        clear: both;
+    }
+
     .card .card_left {
         float: none;
         margin: 0;
@@ -31,19 +54,45 @@
         .card_right .created_at {
             float: left;
             margin-right: 10px;
-            width: auto;
         }
         .card_right .reviewed_at {
             float: left;
             margin-right: 10px;
-            width: auto;
         }
+
+    .question .display_field {
+        font-size: 24px;
+        letter-spacing: 0.5px;
+    }
+
+    .answer .display_field {
+        font-size: 18px;
+        letter-spacing: 0.5px;
+    }
+
+    .note .display_field {
+        font-size: 16px;
+    }
 
     /* Review/Index, Answer, Status
     ----------------------------------------------------------*/
     #review .card_right {
         float: left;
         text-align: left;
+    }
+    #review .created_at {
+        margin-bottom: 10px;
+    }
+    
+    #review .reviewed_at {
+        margin-bottom: 10px;
+    }
+
+    .review_level,
+    .anser_time,
+    .review_mode {
+        float: left;
+        margin-right: 10px;
     }
 
     #sbmPerfect {
@@ -58,13 +107,12 @@
     }
     #sbmPerfect,
     #sbmAlmost {
-        margin-top: 18px;
+        margin-top: 10px;
         margin-bottom: 20px;
     }
 
     #review .graph {
-        min-width: 400px;
-        width: 95%;
+        width: 100%;
         max-width: 560px;
         height: auto;
         font-size: 16px;

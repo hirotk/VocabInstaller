@@ -1,7 +1,10 @@
-﻿@model VocabInstaller.Models.Card
+﻿@using VocabInstaller.Migrations
+@model VocabInstaller.Models.Card
 
 @{
     ViewBag.Title = "Edit";
+    var fromController = (string) ViewBag.FromController;
+    var revModel = ViewBag.ReviewViewModel;    
 }
 
 @section navigations {
@@ -68,8 +71,19 @@
 
         @Html.Hidden("page", (int)ViewBag.Page)
         @Html.Hidden("search", (string)ViewBag.Search)
-        @Html.Hidden("from", (string)ViewBag.From)
-
+        @Html.Hidden("fromController", fromController)
+        @Html.Hidden("fromAction", (string)ViewBag.FromAction)
+                        
+        @if (fromController == "Review") {
+            @Html.Hidden("ItemsPerPage", (int) revModel.ItemsPerPage)
+            @Html.Hidden("PageSkip", (int) revModel.PageSkip)
+            @Html.Hidden("LastPage", (int)revModel.LastPage)
+            @Html.Hidden("ItemNum", (int)revModel.ItemNum)
+            @Html.Hidden("ReviewMode", (string) revModel.ReviewMode)
+            @Html.Hidden("MyAnswer", (string) revModel.MyAnswer)
+            @Html.Hidden("AnswerTime", (TimeSpan) revModel.AnswerTime)
+        }
+        
         <div class="form-group submit_button">
             <button type="submit" class="btn btn-success">
                 Save
@@ -79,8 +93,16 @@
 }
 
 <div class="back_to">
-    @Html.ActionLink("Back to List", "Index", (string)ViewBag.From,
-                new { page = ViewBag.Page, search = ViewBag.Search }, null)
+    @if (fromController == "Review") {
+        @Html.ActionLink("Back to List", (string) ViewBag.FromAction, (string) ViewBag.FromController,
+            new { id = Model.Id, 
+                ViewBag.Page,
+                revModel.ItemsPerPage, revModel.PageSkip, revModel.LastPage, revModel.ItemNum, revModel.ReviewMode,
+                revModel.MyAnswer, revModel.AnswerTime}, null)
+    } else {
+        @Html.ActionLink("Back to List", (string) ViewBag.FromAction, (string) ViewBag.FromController,
+            new {id = Model.Id, page = ViewBag.Page, search = ViewBag.Search}, null)
+    }
 </div>
 
 @section Scripts {

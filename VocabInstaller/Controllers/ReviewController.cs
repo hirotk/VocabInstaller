@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.IO;
 using System.Drawing;
 using System.Web.UI.DataVisualization.Charting;
+using VocabInstaller.Migrations;
 using VocabInstaller.Models;
 using VocabInstaller.Helpers;
 using VocabInstaller.ViewModels;
@@ -19,9 +21,31 @@ namespace VocabInstaller.Controllers {
             this.repository = repository;
         }
 
+        private static List<SelectListItem> reviewModeList = null;
+
+        private static List<SelectListItem> createReviewModeList() {
+            if (reviewModeList == null) {
+                reviewModeList = new List<SelectListItem> {
+                    new SelectListItem() {
+                        Value = "Fast",
+                        Text = "Fast Mode"
+                    },
+                    new SelectListItem() {
+                        Value = "Typing",
+                        Text = "Typing Mode"
+                    },
+/*                    new SelectListItem() {
+                        Value = "Blank",
+                        Text = "Blank Mode"
+                    }*/
+                };
+            }
+            return reviewModeList;
+        }
+
         //
         // GET: /Review/
-        public ActionResult Index(int page = 0) {
+        public ActionResult Index(int page = 0, string reviewMode = "Fast") {
 #if DEBUG
             DateTime dt0 = DateTime.Now.AddMilliseconds(-6),
                            dt1 = DateTime.Now.AddMilliseconds(-12),
@@ -38,12 +62,11 @@ namespace VocabInstaller.Controllers {
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
-            var viewModel = new ReviewViewModel(itemsPerPage:1, pageSkip:2) {
-                Cards = repository.Cards.Where(c => c.UserId == userId),
-                Page = page
-            };
+            ViewBag.ReviewModeList = createReviewModeList();
 
-            viewModel.Cards = viewModel.Cards.Where(c =>
+            var cards = repository.Cards.Where(c => c.UserId == userId);
+
+            cards = cards.Where(c =>
                 (c.ReviewLevel == 0 && c.ReviewedAt < dt0) ||
                 (c.ReviewLevel == 1 && c.ReviewedAt < dt1) ||
                 (c.ReviewLevel == 2 && c.ReviewedAt < dt2) ||
@@ -51,41 +74,71 @@ namespace VocabInstaller.Controllers {
                 (c.ReviewLevel == 4 && c.ReviewedAt < dt4)
                 );
 
-            viewModel.Cards = viewModel.Cards
-                .OrderBy(c => c.ReviewLevel).ThenBy(c => c.ReviewedAt);
+            cards = cards.OrderBy(c => c.ReviewLevel).ThenBy(c => c.ReviewedAt);
 
-            viewModel.ViewCards = viewModel.GetCardsInPage(page);
+            var viewModel = new ReviewViewModel(itemsPerPage: 1, pageSkip: 2) {
+                Cards = cards,
+                Page = page,
+                QuestionedAt = DateTime.Now,
+                ReviewMode = reviewMode                
+            };
+            viewModel.ViewCard = viewModel.GetCardsInPage().SingleOrDefault();
 
             return View(viewModel);
         }
 
-
         //
         // GET: /Review/5
-        public ActionResult Answer(int id, int page) {
+        public ActionResult Answer(int id,
+            [Bind(Include = "Page, ItemsPerPage, PageSkip, LastPage, ItemNum, ReviewMode, MyAnswer, QuestionedAt, AnswerTime")]
+            ReviewViewModel reviewViewModel) {
+
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
-            var card = repository.Cards
-                .Where(c => c.UserId == userId && c.Id == id).SingleOrDefault();
-
+            var card = repository.Cards.SingleOrDefault(c => c.UserId == userId && c.Id == id);
             if (card == null) {
                 return HttpNotFound();
             }
+            reviewViewModel.ViewCard = card;
 
-            ViewBag.Page = page;
+            var qstAt = reviewViewModel.QuestionedAt;
+            if (qstAt != null) {
+                reviewViewModel.AnswerTime = 
+                    DateTime.Now - (DateTime)qstAt;
+            }
 
-            return View(card);
+            var mode = reviewViewModel.ReviewMode;
+            if (mode == "Typing") {
+                var myAns = reviewViewModel.MyAnswer ?? string.Empty;
+                myAns = myAns.Trim();
+                reviewViewModel.MyAnswer = myAns;
+
+                var isPerfect = card.Question == myAns;
+                int? missIndex = null;
+                if (isPerfect == false) {
+                    for (int i = 0; i < myAns.Length; i++) {
+                        if (i >= card.Question.Length ||
+                            myAns[i] != card.Question[i]) {
+                            missIndex = i;
+                            break;
+                        }
+                    }
+                }
+                reviewViewModel.IsPerfect = isPerfect;
+                reviewViewModel.MissIndex = missIndex;
+            }
+
+            return View(reviewViewModel);
         }
 
         //
         // POST: /Review/Answer/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Answer(int id, int page, string evaluation) {
+        public ActionResult Answer(int id, int page, string evaluation, string reviewMode) {
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
-            var card = repository.Cards
-                .Where(c => c.UserId == userId && c.Id == id).SingleOrDefault();
+            var card = repository.Cards.SingleOrDefault(c => c.UserId == userId && c.Id == id);
 
             if (card == null) {
                 throw new Exception("User Account Error");
@@ -107,7 +160,7 @@ namespace VocabInstaller.Controllers {
                 repository.SaveCard(card);
             }
 
-            return RedirectToAction("Index", "Review", new { page = page });
+            return RedirectToAction("Index", "Review", new { page, reviewMode });
         }
 
         //

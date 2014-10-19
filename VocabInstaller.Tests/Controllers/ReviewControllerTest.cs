@@ -53,7 +53,7 @@ namespace VocabInstaller.Tests.Controllers {
             // Act
             var result = controller.Index(page: 0) as ViewResult;
             var cards = ((ReviewViewModel)result.Model).Cards.ToArray();
-            var viewCards = ((ReviewViewModel)result.Model).ViewCards.ToArray();
+            var viewCard = ((ReviewViewModel)result.Model).ViewCard;
 
             // Assert
             Assert.IsNotNull(result);
@@ -64,8 +64,7 @@ namespace VocabInstaller.Tests.Controllers {
             Assert.AreEqual(4, cards[3].Id);
             Assert.AreEqual(5, cards[4].Id);
 
-            Assert.AreEqual(viewCards.Length, 1);
-            Assert.AreEqual(1, cards[0].Id);
+            Assert.AreEqual(1, viewCard.Id);
         }
 
         [TestMethod]
@@ -75,11 +74,15 @@ namespace VocabInstaller.Tests.Controllers {
             controller.ControllerContext = ctrlContext.Object;
             int id = 1, page = 0;
 
-            // Act
-            var resultGet = controller.Answer(id, page) as ViewResult;
-            var card = resultGet.Model as Card;
+            var result = controller.Index(page: 0) as ViewResult;
+            var viewModel = result.Model as ReviewViewModel;
 
-            var resultPost = controller.Answer(id, page, "Perfect") as RedirectToRouteResult;
+            // Act
+            var resultGet = controller.Answer(id, viewModel) as ViewResult;
+            viewModel = resultGet.Model as ReviewViewModel;
+            var card = viewModel.ViewCard;
+
+            var resultPost = controller.Answer(id, page, "Perfect", viewModel.ReviewMode) as RedirectToRouteResult;
             mockRepository.Verify(m => m.SaveCard(card));
 
             // Assert

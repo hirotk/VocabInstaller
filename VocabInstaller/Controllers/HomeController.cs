@@ -67,8 +67,8 @@ namespace VocabInstaller.Controllers {
         // POST: /Home/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include =
-            "Id, UserId, Question, Answer, Note, CreatedAt, ReviewedAt, ReviewLevel")] 
+        public ActionResult Create(
+            [Bind(Include = "Id, UserId, Question, Answer, Note, CreatedAt, ReviewedAt, ReviewLevel")] 
             CardCreateModel cardCreateModel) {
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
@@ -85,15 +85,20 @@ namespace VocabInstaller.Controllers {
         }
 
         // GET: /Home/Edit/5
-        public ActionResult Edit(int? id, int page = 0, string search = null, string from = "Home") {
+        public ActionResult Edit(int? id, 
+            int page = 0, string search = null, 
+            string fromController = "Home", string fromAction = "Index",
+
+            [Bind(Include = "ItemsPerPage, PageSkip, LastPage, ItemNum, ReviewMode, MyAnswer, AnswerTime")]
+            ReviewViewModel reviewViewModel = null) {
+
             if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
-            var card = repository.Cards
-                .Where(c => c.UserId == userId && c.Id == id).SingleOrDefault();
+            var card = repository.Cards.SingleOrDefault(c => c.UserId == userId && c.Id == id);
 
             if (card == null) {
                 return HttpNotFound();
@@ -101,7 +106,11 @@ namespace VocabInstaller.Controllers {
 
             ViewBag.Page = page;
             ViewBag.Search = search;
-            ViewBag.From = from;
+
+            ViewBag.FromController = fromController;
+            ViewBag.FromAction = fromAction;
+
+            ViewBag.ReviewViewModel = reviewViewModel;
 
             return View(card);
         }
@@ -109,9 +118,14 @@ namespace VocabInstaller.Controllers {
         // POST: /Home/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include =
-            "Id, UserId, Question, Answer, Note, CreatedAt, ReviewedAt, ReviewLevel")] 
-            Card card, int page = 0, string search = null, string from = "Home") {
+        public ActionResult Edit(
+            [Bind(Include = "Id, UserId, Question, Answer, Note, CreatedAt, ReviewedAt, ReviewLevel")] 
+            Card card, 
+            int page = 0, string search = null, 
+            string fromController = "Home", string fromAction = "Index",
+
+            [Bind(Include = "ItemsPerPage, PageSkip, LastPage, ItemNum, ReviewMode, MyAnswer, AnswerTime")]
+            ReviewViewModel reviewViewModel = null) {
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
@@ -125,7 +139,11 @@ namespace VocabInstaller.Controllers {
 
             ViewBag.Page = page;
             ViewBag.Search = search;
-            ViewBag.From = from;
+
+            ViewBag.FromController = fromController;
+            ViewBag.FromAction = fromAction;
+
+            ViewBag.ReviewViewModel = reviewViewModel;
 
             return View(card);
         }

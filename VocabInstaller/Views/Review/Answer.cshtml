@@ -1,8 +1,8 @@
-﻿@model VocabInstaller.Models.Card
+﻿@model VocabInstaller.ViewModels.ReviewViewModel
 
 @{
     ViewBag.Title = "Answer";
-    var note = Model.Note;
+    var c = Model.ViewCard;
 }
 
 @section navigations {
@@ -25,16 +25,45 @@
 <!-- Card -->
 <div id="review" class="row">
     <section class="card">
-        <div class="card_left">            
-            <div class="question">
-                <div class="display_label">Question</div>
-                <div class="display_field">@Model.Question</div>
-            </div>
-            
-            <div class="answer">
-                <div class="display_label">Answer</div>
-                <div class="display_field">@Model.Answer</div>
-            </div>
+        <div class="card_left">
+            @if (Model.ReviewMode == "Fast") {
+                <div class="question">
+                    <div class="display_label">Question</div>
+                    <div class="display_field">@c.Question</div>
+                </div>
+
+                <div class="answer">
+                    <div class="display_label">Answer</div>
+                    <div class="display_field">@c.Answer<span></span></div>
+                </div>
+            } else if (Model.ReviewMode == "Typing") {
+                <div class="answer">
+                    <div class="display_label">Question</div>
+                    <div class="display_field">@c.Answer</div>
+                </div>
+
+                <div class="question">
+                    <div class="display_label">Answer</div>
+                    <div class="display_field">@c.Question</div>
+                </div>
+
+                <div class="my_answer">
+                    <div class="display_label">My Answer</div>
+                    <div class="display_field">
+                        @if (Model.IsPerfect) {
+                            <span class="perfect">@Model.MyAnswer</span>
+                        } else if (Model.MissIndex != null) {
+                            string myAns = Model.MyAnswer;
+                            for (int i = 0; i < myAns.Length; i++) {
+                                if (i == Model.MissIndex) {<span class="error">@myAns[i]</span>}
+                                else {@myAns[i]}
+                            }
+                        }
+                    </div>
+                </div>
+            } else if (Model.ReviewMode == "Blank") {
+                @*Todo: Implement Blank Mode*@
+            }
         </div>
 
         <div class="card_right">
@@ -43,26 +72,30 @@
                 htmlAttributes: new { @class = "form-horizontal" })) {
                 @Html.AntiForgeryToken()
 
-                @Html.Hidden("id", Model.Id)
-                @Html.Hidden("page", (int)ViewBag.Page)
+                @Html.Hidden("id", Model.ViewCard.Id)
+                @Html.Hidden("page", Model.Page)
+                @Html.Hidden("reviewMode", Model.ReviewMode)
 
                 <div class="form-group">
-                    <button type="submit" id="sbmPerfect" class="btn btn-success"
-                            name="evaluation" value="Perfect">
-                        Perfect
-                    </button>
-
-                    <button type="submit" id="sbmAlmost" class="btn btn-warning"
-                            name="evaluation" value="Almost">
-                        Almost
-                    </button>
+                    @if (Model.ReviewMode == "Fast" || Model.IsPerfect) {
+                        <button type="submit" id="sbmPerfect" class="btn btn-success"
+                                name="evaluation" value="Perfect">
+                            Perfect
+                        </button>
+                    }
+                    @if (Model.ReviewMode == "Fast" || !Model.IsPerfect) {
+                        <button type="submit" id="sbmAlmost" class="btn btn-warning"
+                                name="evaluation" value="Almost">
+                            Almost
+                        </button>
+                    }
                 </div>
             }
         </div> <!-- div class="card_right" -->
 
         <div class="card_left clear-both">
-            @if (!string.IsNullOrEmpty(note)) {
-                note = Html.Encode(note)
+            @if (!string.IsNullOrEmpty(c.Note)) {
+                var note = Html.Encode(c.Note)
                     .Replace("\r", "")
                     .Replace("\n", "<br />")
                     .Replace("&amp;nbsp;", "&nbsp;");
@@ -79,23 +112,37 @@
             <div class="created_at">
                 <div class="display_label">Created at</div>
                 <div class="display_field">
-                    @Model.CreatedAt.ToString("yyyy/MM/dd HH:mm")
+                    @c.CreatedAt.ToString("yyyy/MM/dd HH:mm")
                 </div>
             </div>
             
             <div class="reviewed_at">
                 <div class="display_label">Reviewed at</div>
                 <div class="display_field">
-                    @Model.ReviewedAt.ToString("yyyy/MM/dd HH:mm")
+                    @c.ReviewedAt.ToString("yyyy/MM/dd HH:mm")
                 </div>
             </div>
 
             <div class="review_level">
                 <div class="display_label">Review Level</div>
                 <div class="display_field">
-                    <img src="~/Images/rev@(Model.ReviewLevel).png" alt="review icon" class="review_icon" />
-                    <span class="badge">@(Model.ReviewLevel + 1)</span>
+                    <img src="~/Images/rev@(c.ReviewLevel).png" alt="review icon" class="review_icon" />
+                    <span class="badge">@(c.ReviewLevel + 1)</span>
                 </div>
+            </div>
+            
+            <div class="answer_time">
+                <div class="display_label">Answer Time</div>
+                <div class="display_field">
+                    @Model.AnswerTime.TotalSeconds.ToString("#.##") [sec]
+                </div>
+            </div>            
+
+            <div class="clear-both">
+                @Html.ActionLink("Edit", "Edit", "Home", new {id = c.Id, 
+                    page = Model.Page, fromController = "Review", fromAction = "Answer",
+                    Model.ItemsPerPage, Model.PageSkip, Model.LastPage, Model.ItemNum, Model.ReviewMode, Model.MyAnswer, Model.AnswerTime},
+                    new { @id = "btnEdit", @class = "btn btn-primary" })
             </div>
         </div>
     </section>
@@ -103,12 +150,13 @@
 
 <div class="back_to">
     @Html.ActionLink("Back", "Index",
-            new { page = ViewBag.Page }, null)
+        new { page = Model.Page, reviewMode = Model.ReviewMode }, null)
 </div>
 
 @section scripts{
 <script type="text/javascript">
     $(function () {
+        $("#sbmAlmost").focus();
         $("#sbmPerfect").focus();
     });
 </script>    

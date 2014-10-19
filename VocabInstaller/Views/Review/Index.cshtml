@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Review";
-    var questionedAt = DateTime.Now;
 }
 
 @section navigations {
@@ -29,67 +28,92 @@
 
 <!-- Card -->
 <div id="review" class="row">
-    @if (Model.ViewCards != null) {
-        var c = Model.ViewCards.ToArray()[0];
+    @if (Model.ViewCard != null) {
+        var c = Model.ViewCard;
         <section class="card">
             @using (Html.BeginForm("Answer", "Review",
-            routeValues: new { id = c.Id }, method: FormMethod.Get,
-            htmlAttributes: new { @class = "form-horizontal" })) {
-
-                @Html.Hidden("page", Model.Page)
-                @Html.Hidden("questionedAt", questionedAt)
+                routeValues: new {id = c.Id}, method: FormMethod.Get,
+                htmlAttributes: new {@class = "form-horizontal"})) {
 
                 <div class="card_left">
-                    <div class="question">
-                        <div class="display_label">Question</div>
-                        <div class="display_field">@c.Question</div>
-                    </div>
-                    
-                    <div class="answer">
-                        <div class="display_label">Answer</div>
-                        <div class="display_field"><span>?</span></div>
-                    </div>
-                </div>
+                    @if (Model.ReviewMode == "Fast") {
+                        <div class="question">
+                            <div class="display_label">Question</div>
+                            <div class="display_field">@c.Question</div>
+                        </div>
 
+                        <div class="answer">
+                            <div class="display_label">Answer</div>
+                            <div class="display_field"><span>?</span></div>
+                        </div>
+                    } else if (Model.ReviewMode == "Typing") {
+                        <div class="answer">
+                            <div class="display_label">Question</div>
+                            <div class="display_field">@c.Answer</div>
+                        </div>
+
+                        <div class="my_answer">
+                            <div class="display_label">Answer</div>
+                            @Html.TextBox("MyAnswer", null, new {@id = "tbMyAnswer", @class = "form-control editor_field"})
+                        </div>
+                    } else if (Model.ReviewMode == "Blank") {
+                        @*Todo: Implement Blank Mode*@
+                    }
+                </div>
                 <div class="card_right">
-                    <div class="form-group submit_button">
+                    @Html.Hidden("Page", Model.Page)
+                    @Html.Hidden("ItemsPerPage", Model.ItemsPerPage)
+                    @Html.Hidden("PageSkip", Model.PageSkip)
+                    @Html.Hidden("LastPage", Model.LastPage)
+                    @Html.Hidden("ItemNum", Model.ItemNum)
+                    @Html.Hidden("ReviewMode", Model.ReviewMode)
+                    @Html.Hidden("QuestionedAt", Model.QuestionedAt)
+                    
+                    @*Html.Hidden("ViewCard.Id", c.Id)*@
+
+                    <div class="form-group">                        
                         <button type="submit" id="sbmAnswer" class="btn btn-primary">
                             Answer
                         </button>
                     </div>
                 </div>
             }
-                <div class="card_left clear-both">
+
+            <div class="card_left clear-both">
+            </div>
+            
+            <div class="card_right">
+                <div class="created_at">
+                    <div class="display_label">Created at</div>
+                    <div class="display_field">
+                        @c.CreatedAt.ToString("yyyy/MM/dd HH:mm")
+                    </div>
                 </div>
 
-                <div class="card_right">
-                    <div class="created_at">
-                        <div class="display_label">Created at</div>
-                        <div class="display_field">
-                            @c.CreatedAt.ToString("yyyy/MM/dd HH:mm")
-                        </div>
+                <div class="reviewed_at">
+                    <div class="display_label">Reviewed at</div>
+                    <div class="display_field">
+                        @c.ReviewedAt.ToString("yyyy/MM/dd HH:mm")
                     </div>
+                </div>
 
-                    <div class="reviewed_at">
-                        <div class="display_label">Reviewed at</div>
-                        <div class="display_field">
-                            @c.ReviewedAt.ToString("yyyy/MM/dd HH:mm")
-                        </div>
+                <div class="review_level">
+                    <div class="display_label">Review Level</div>
+                    <div class="display_field">
+                        <img src="~/Images/rev@(c.ReviewLevel).png" alt="review icon" class="review_icon" />
+                        <span class="badge">@(c.ReviewLevel + 1)</span>
                     </div>
+                </div>
+            
+                <div class="review_mode">
+                    <div class="display_label">Review Mode</div>
+                    @using (Html.BeginForm("Index", "Review", FormMethod.Get)) {
+                        @Html.Hidden("page", Model.Page)
 
-                    <div class="review_level">
-                        <div class="display_label">Review Level</div>
-                        <div class="display_field">
-                            <img src="~/Images/rev@(c.ReviewLevel).png" alt="review icon" class="review_icon" />
-                            <span class="badge">@(c.ReviewLevel + 1)</span>
-                        </div>
-                    </div>
-
-                    <div>
-                        @Html.ActionLink("Edit", "Edit", "Home", new { id = c.Id, page = Model.Page, from = "Review" },
-                            new { @id = "btnEdit", @class = "btn btn-primary" })
-                    </div>
-
+                        @Html.DropDownList("reviewMode", (IEnumerable<SelectListItem>)ViewBag.ReviewModeList,
+                            new { @class = "form-control", @onchange = "submit(this.form)"})
+                    }
+                </div>
             </div> <!-- div class="card_right" -->
         </section>
     } else {
@@ -102,9 +126,20 @@
 </div>
 
 @section scripts {
-<script type="text/javascript">
-    $(function () {
-        $("#sbmAnswer").focus();
-    });
-</script>
+    @switch (Model.ReviewMode) {
+        case "Fast":
+            <script type="text/javascript">
+                $(function() {
+                    $("#sbmAnswer").focus();
+                });
+            </script>
+            break;
+        case "Typing":
+            <script type="text/javascript">
+                $(function() {
+                    $("#tbMyAnswer").focus();
+                });
+            </script>
+            break;
+    }
 }

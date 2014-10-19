@@ -120,8 +120,8 @@ namespace VocabInstaller.Controllers {
                         Question = fields[2],
                         Answer = fields[3],
                         Note = fields[4].Replace('\f', '\n'),
-                        CreatedAt = DateTime.Parse(fields[5]),
-                        ReviewedAt = DateTime.Parse(fields[6]),
+                        CreatedAt = String.IsNullOrEmpty(fields[5]) ? DateTime.Now : DateTime.Parse(fields[5]),
+                        ReviewedAt = String.IsNullOrEmpty(fields[6]) ? DateTime.Now : DateTime.Parse(fields[6]),
                         ReviewLevel = int.Parse(fields[7])
                     }));
 

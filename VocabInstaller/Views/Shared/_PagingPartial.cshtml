@@ -3,12 +3,12 @@
     object firstArgs, prev2Args, prevArgs, nextArgs, next2Args, lastArgs;
     if (Model.GetType() == typeof(VocabInstaller.ViewModels.ReviewViewModel)) {
         controller = "Review";
-        firstArgs = new { page = 0};
-        prev2Args = new { page = Model.Page - Model.PageSkip};
-        prevArgs = new { page = Model.Page - 1};
-        nextArgs = new { page = Model.Page + 1};
-        next2Args = new { page = Model.Page + Model.PageSkip};
-        lastArgs = new { page = Model.LastPage};
+        firstArgs = new { page = 0, reviewMode = Model.ReviewMode };
+        prev2Args = new { page = Model.Page - Model.PageSkip, reviewMode = Model.ReviewMode };
+        prevArgs = new { page = Model.Page - 1, reviewMode = Model.ReviewMode };
+        nextArgs = new { page = Model.Page + 1, reviewMode = Model.ReviewMode };
+        next2Args = new { page = Model.Page + Model.PageSkip, reviewMode = Model.ReviewMode };
+        lastArgs = new { page = Model.LastPage, reviewMode = Model.ReviewMode };
     } else {
         firstArgs = new { page = 0, search = Model.Search };
         prev2Args = new { page = Model.Page - Model.PageSkip, search = Model.Search };

@@ -9,6 +9,8 @@ namespace VocabInstaller.ViewModels {
             Page = 0;
         }
 
+        protected AbstractViewModel() { }
+
         public int ItemsPerPage { get; set; }
         public int PageSkip { get; set; }
         public int ItemNum { get; set; }
