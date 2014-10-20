@@ -94,6 +94,10 @@ button:focus {
         border-left-color: #111111;
     }
 
+#userDropDown {
+    cursor: pointer;
+}
+
 /* pagination
 ----------------------------------------------------------*/
 .page_position {
@@ -182,6 +186,14 @@ label,
 .editor_field {
     margin-top: 1px;
     font-size: 18px;
+}
+
+.char_field {
+    margin-top: 1px;
+    padding: 0;
+    text-align: center;
+    font-size: 18px;
+    width: 32px;
 }
 
 .message_error {
@@ -304,8 +316,6 @@ section.card {
     font-size: 20px;
     color: navy;
     letter-spacing: 1px;
-
-    background-color: pink;
 }
 
 .note .display_field {
@@ -376,11 +386,23 @@ section.card {
 
 .my_answer .display_field .perfect {
     color: darkgreen;
+    font-size: 1em;
 }
 
 .my_answer .display_field .error {
     color: red;
     font-size: 1.25em;
+}
+
+.hint {
+    
+}
+
+#txtHint {
+    display: none;
+    font-size: 20px;
+    color: green;
+    letter-spacing: 1px;
 }
 
 #review .graph {

@@ -21,5 +21,8 @@ namespace VocabInstaller.ViewModels {
         public bool IsPerfect { get; set; }
         public int? MissIndex { get; set; }
 
+        public string Hint { get; set; }
+        public string Blank { get; set; }
+        public char? BlankAnswer { get; set; }
     }
 }

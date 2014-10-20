@@ -79,9 +79,11 @@
             @Html.Hidden("PageSkip", (int) revModel.PageSkip)
             @Html.Hidden("LastPage", (int)revModel.LastPage)
             @Html.Hidden("ItemNum", (int)revModel.ItemNum)
-            @Html.Hidden("ReviewMode", (string) revModel.ReviewMode)
-            @Html.Hidden("MyAnswer", (string) revModel.MyAnswer)
+            @Html.Hidden("ReviewMode", (string)revModel.ReviewMode)
+            @Html.Hidden("MyAnswer", (string)revModel.MyAnswer)
             @Html.Hidden("AnswerTime", (TimeSpan) revModel.AnswerTime)
+            @Html.Hidden("Blank", (string)revModel.Blank)
+            @Html.Hidden("BlankAnswer", (char?)revModel.BlankAnswer)
         }
         
         <div class="form-group submit_button">
@@ -98,7 +100,7 @@
             new { id = Model.Id, 
                 ViewBag.Page,
                 revModel.ItemsPerPage, revModel.PageSkip, revModel.LastPage, revModel.ItemNum, revModel.ReviewMode,
-                revModel.MyAnswer, revModel.AnswerTime}, null)
+                revModel.MyAnswer, revModel.AnswerTime, revModel.Blank, revModel.BlankAnswer}, null)
     } else {
         @Html.ActionLink("Back to List", (string) ViewBag.FromAction, (string) ViewBag.FromController,
             new {id = Model.Id, page = ViewBag.Page, search = ViewBag.Search}, null)

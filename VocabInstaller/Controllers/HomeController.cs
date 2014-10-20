@@ -89,7 +89,7 @@ namespace VocabInstaller.Controllers {
             int page = 0, string search = null, 
             string fromController = "Home", string fromAction = "Index",
 
-            [Bind(Include = "ItemsPerPage, PageSkip, LastPage, ItemNum, ReviewMode, MyAnswer, AnswerTime")]
+            [Bind(Include = "ItemsPerPage, PageSkip, LastPage, ItemNum, ReviewMode, MyAnswer, AnswerTime, Blank, BlankAnswer")]
             ReviewViewModel reviewViewModel = null) {
 
             if (id == null) {
@@ -124,7 +124,7 @@ namespace VocabInstaller.Controllers {
             int page = 0, string search = null, 
             string fromController = "Home", string fromAction = "Index",
 
-            [Bind(Include = "ItemsPerPage, PageSkip, LastPage, ItemNum, ReviewMode, MyAnswer, AnswerTime")]
+            [Bind(Include = "ItemsPerPage, PageSkip, LastPage, ItemNum, ReviewMode, MyAnswer, AnswerTime, Blank, BlankAnswer")]
             ReviewViewModel reviewViewModel = null) {
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());

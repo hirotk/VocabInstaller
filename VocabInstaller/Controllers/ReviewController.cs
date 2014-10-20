@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.IO;
 using System.Drawing;
 using System.Web.UI.DataVisualization.Charting;
-using VocabInstaller.Migrations;
 using VocabInstaller.Models;
 using VocabInstaller.Helpers;
 using VocabInstaller.ViewModels;
@@ -34,13 +35,43 @@ namespace VocabInstaller.Controllers {
                         Value = "Typing",
                         Text = "Typing Mode"
                     },
-/*                    new SelectListItem() {
+                    new SelectListItem() {
                         Value = "Blank",
                         Text = "Blank Mode"
-                    }*/
+                    }
                 };
             }
             return reviewModeList;
+        }
+
+        private void setHintAndBlank(ReviewViewModel model) {
+            string[] words = Regex.Split(model.ViewCard.Question, @"\s+");
+            string longestWord = words.OrderByDescending(w => w.Length).ToArray()[0];
+            var sbHint = new StringBuilder();
+            var sbBlank = new StringBuilder();
+            var rand = new Random();
+            char? blankAns = null;
+
+            foreach (var w in words) {
+                var hintAry = new char[w.Length];
+                var blankAry = Regex.Replace(w, "[a-zA-Z]", "*").ToCharArray();
+                Array.Copy(sourceArray: blankAry, destinationArray: hintAry, length: blankAry.Length);
+                hintAry[0] = w[0];
+                hintAry[w.Length - 1] = w[w.Length - 1];
+                sbHint.Append(new string(hintAry)).Append(" ");
+                if (blankAns == null && w == longestWord) {
+                    var min = w.Length < 3 ? 0 : 1;
+                    var max = w.Length < 3 ? w.Length - 1 : w.Length - 2;
+                    var r = rand.Next(min, max); // [min, max)
+                    blankAns = w[r];
+                    blankAry[r] = '_';
+                }
+                sbBlank.Append(new string(blankAry)).Append(" ");
+            }
+
+            model.Hint = sbHint.ToString().Trim();
+            model.Blank = sbBlank.ToString().Trim();
+            model.BlankAnswer = blankAns;
         }
 
         //
@@ -84,13 +115,17 @@ namespace VocabInstaller.Controllers {
             };
             viewModel.ViewCard = viewModel.GetCardsInPage().SingleOrDefault();
 
+            if (reviewMode == "Typing" || reviewMode == "Blank") {
+                setHintAndBlank(viewModel);
+            }
+
             return View(viewModel);
         }
 
         //
         // GET: /Review/5
         public ActionResult Answer(int id,
-            [Bind(Include = "Page, ItemsPerPage, PageSkip, LastPage, ItemNum, ReviewMode, MyAnswer, QuestionedAt, AnswerTime")]
+            [Bind(Include = "Page, ItemsPerPage, PageSkip, LastPage, ItemNum, ReviewMode, MyAnswer, QuestionedAt, AnswerTime, Blank, BlankAnswer")]
             ReviewViewModel reviewViewModel) {
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
@@ -108,24 +143,32 @@ namespace VocabInstaller.Controllers {
             }
 
             var mode = reviewViewModel.ReviewMode;
-            if (mode == "Typing") {
+            if (mode == "Typing" || mode == "Blank") {
                 var myAns = reviewViewModel.MyAnswer ?? string.Empty;
                 myAns = myAns.Trim();
                 reviewViewModel.MyAnswer = myAns;
-
-                var isPerfect = card.Question == myAns;
-                int? missIndex = null;
-                if (isPerfect == false) {
-                    for (int i = 0; i < myAns.Length; i++) {
-                        if (i >= card.Question.Length ||
-                            myAns[i] != card.Question[i]) {
-                            missIndex = i;
-                            break;
+                bool isPerfect = false;
+                
+                if (mode == "Typing") {
+                    isPerfect = card.Question == myAns;
+                    int? missIndex = null;
+                    if (isPerfect == false) {
+                        for (int i = 0; i < myAns.Length; i++) {
+                            if (i >= card.Question.Length ||
+                                myAns[i] != card.Question[i]) {
+                                missIndex = i;
+                                break;
+                            }
                         }
                     }
+                    reviewViewModel.MissIndex = missIndex;
+                } else if (mode == "Blank") {
+                    if (myAns.Length == 1) {
+                        isPerfect = reviewViewModel.BlankAnswer == myAns[0];
+                    }
                 }
+
                 reviewViewModel.IsPerfect = isPerfect;
-                reviewViewModel.MissIndex = missIndex;
             }
 
             return View(reviewViewModel);
