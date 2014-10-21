@@ -100,6 +100,10 @@
     margin: 0;
 }
 
+.form-horizontal .control-label {
+    padding-top: 5px;
+}
+
 .field-validation-error,
 .validation-summary-errors {
     color: darkred;

@@ -205,6 +205,7 @@
     <Compile Include="Validations\Unique.cs" />
     <Compile Include="ViewModels\AbstractViewModel.cs" />
     <Compile Include="ViewModels\CardCreateModel.cs" />
+    <Compile Include="ViewModels\CardEditModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\ReviewViewModel.cs" />
   </ItemGroup>

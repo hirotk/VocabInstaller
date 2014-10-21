@@ -354,6 +354,46 @@ section.card {
     font-size: 16px;
 }
 
+/* Home/Edit
+----------------------------------------------------------*/
+.created_date,
+.created_time,
+.reviewed_date,
+.reviewed_time {
+    float: left;
+    width: 140px;
+    margin-right: 10px !important;
+}
+
+.reviewed_date {
+    clear: both;
+}
+
+.datepicker {}
+
+.created_date .editor_field,
+.reviewed_date .editor_field,
+.created_time .editor_field,
+.reviewed_time .editor_field {
+    width: 100%;
+}
+
+#edit  .review_level {
+    clear: both;
+    float: none;
+}
+
+#ddReviewLevel {
+    width: 150px;
+    text-align: left;
+    padding: 0 0 0 8px;
+    font-size: 16px;
+}
+
+/*#edit .review_level .editor_field {
+    width: 60px;
+}*/
+ 
 /* Review/Index, Answer, Status
 ----------------------------------------------------------*/
 .review_icon {
@@ -394,9 +434,7 @@ section.card {
     font-size: 1.25em;
 }
 
-.hint {
-    
-}
+.hint {}
 
 #txtHint {
     display: none;

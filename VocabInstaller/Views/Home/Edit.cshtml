@@ -1,5 +1,5 @@
 ﻿@using VocabInstaller.Migrations
-@model VocabInstaller.Models.Card
+@model VocabInstaller.ViewModels.CardEditModel
 
 @{
     ViewBag.Title = "Edit";
@@ -15,6 +15,10 @@
     </ul>
 }
 
+@section styles{
+    @Styles.Render("~/Content/themes/base/css")
+}
+
 <h2>Edit</h2>
 
 @using (Html.BeginForm("Edit", "Home", FormMethod.Post,
@@ -22,7 +26,7 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    <fieldset>
+    <fieldset id="edit">
         <legend>Card</legend>
 
         @Html.HiddenFor(m => m.Id)
@@ -46,26 +50,41 @@
             <span class="text-danger">@Html.ValidationMessageFor(m => m.Note)</span>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.CreatedAt,
-                new { @class = "control-label", @for = "tbCreatedAt" })
-            @Html.TextBoxFor(m => m.CreatedAt,
-                @"{0:yyyy/MM/dd hh\:mm}",
-                 new { @id = "tbCreatedAt", @class = "form-control editor_field" })
-            <span class="text-danger">@Html.ValidationMessageFor(m => m.CreatedAt)</span>
+        <div class="form-group created_date">
+            @Html.LabelFor(m => m.CreatedDate,
+            new { @class = "control-label", @for = "tbCreatedDate" })
+            @Html.TextBoxFor(m => m.CreatedDate,
+            "{0:yyyy/MM/dd}",
+            new { @id = "tbCreatedDate", @class = "form-control editor_field datepicker" })
+            <span class="text-danger">@Html.ValidationMessageFor(m => m.CreatedDate)</span>
+        </div>
+        <div class="form-group created_time">
+            @Html.LabelFor(m => m.CreatedTime, new { @class = "control-label", @for = "tbCreatedTime" })
+            @Html.TextBox("CreatedTime", Model.CreatedTime,
+                @"{0:hh\:mm}",
+                new { @id = "tbCreatedTime", @class = "form-control editor_field" })
+            <span class="text-danger">@Html.ValidationMessageFor(m => m.CreatedTime)</span>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.ReviewedAt, new { @class = "control-label", @for = "tbReviewedDate" })
-            @Html.TextBoxFor(m => m.ReviewedAt,
-                @"{0:yyyy/MM/dd hh\:mm}",
-                 new { @id = "tbReviewedDate", @class = "form-control editor_field" })
-            <span class="text-danger">@Html.ValidationMessageFor(m => m.ReviewedAt)</span>
+        <div class="form-group reviewed_date">
+            @Html.LabelFor(m => m.ReviewedDate, new { @class = "control-label", @for = "tbReviewedDate" })
+            @Html.TextBoxFor(m => m.ReviewedDate,
+                "{0:yyyy/MM/dd}",
+                new { @id = "tbReviewedDate", @class = "form-control editor_field datepicker" })
+            <span class="text-danger">@Html.ValidationMessageFor(m => m.ReviewedDate)</span>
         </div>
+        <div class="form-group reviewed_time">
+            @Html.LabelFor(m => m.ReviewedTime, new { @class = "control-label", @for = "tbReviewedTime" })
+            @Html.TextBox("ReviewedTime", Model.ReviewedTime,
+                @"{0:hh\:mm}",
+                new { @id = "tbReviewedTime", @class = "form-control editor_field" })
+            <span class="text-danger">@Html.ValidationMessageFor(m => m.ReviewedTime)</span>
+        </div>        
 
-        <div class="form-group">
-            @Html.LabelFor(m => m.ReviewLevel, new { @class = "control-label", @for = "tbReviewLevel" })
-            @Html.TextBoxFor(m => m.ReviewLevel, new { @id = "tbReviewLevel", @class = "form-control editor_field" })
+        <div class="form-group review_level">            
+            @Html.LabelFor(m => m.ReviewLevel, new { @class = "control-label", @for = "ddReviewLevel" })
+            @Html.DropDownListFor(m => m.ReviewLevel, (IEnumerable<SelectListItem>)ViewBag.ReviewLevelList,
+                new { @id = "ddReviewLevel", @class = "form-control" })
             <span class="text-danger">@Html.ValidationMessageFor(m => m.ReviewLevel)</span>
         </div>
 
@@ -77,8 +96,6 @@
         @if (fromController == "Review") {
             @Html.Hidden("ItemsPerPage", (int) revModel.ItemsPerPage)
             @Html.Hidden("PageSkip", (int) revModel.PageSkip)
-            @Html.Hidden("LastPage", (int)revModel.LastPage)
-            @Html.Hidden("ItemNum", (int)revModel.ItemNum)
             @Html.Hidden("ReviewMode", (string)revModel.ReviewMode)
             @Html.Hidden("MyAnswer", (string)revModel.MyAnswer)
             @Html.Hidden("AnswerTime", (TimeSpan) revModel.AnswerTime)
@@ -109,10 +126,12 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
 
 <script type="text/javascript">
     $(function () {
         $("#tbQuestion").focus();
+        $(".datepicker").datepicker({ dateFormat: "yy/mm/dd" });
     });
 </script>
 }

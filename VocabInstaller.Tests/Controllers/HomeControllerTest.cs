@@ -120,20 +120,20 @@ namespace VocabInstaller.Tests.Controllers {
                         
             // Act
             var resultGet = controller.Edit(1) as ViewResult;
-            var card = resultGet.Model as Card;
-            var questionBefore = card.Question;
-            card.Question = "Would you like to try it?";
+            var cardEditModel = resultGet.Model as CardEditModel;
+            var questionBefore = cardEditModel.Question;
+            cardEditModel.Question = "Would you like to try it?";
 
-            var resultPost = controller.Edit(card) as ViewResult;
-            mockRepository.Verify(m => m.SaveCard(card));
+            var resultPost = controller.Edit(cardEditModel) as ViewResult;
+            mockRepository.Verify(m => m.SaveCard(It.IsAny<Card>()));
 
-            var cardAfter = resultPost.Model as Card;
+            var cardEditModelAfter = resultPost.Model as CardEditModel;
 
             // Assert
             Assert.IsNotNull(resultGet);
             Assert.AreEqual("Why don't you try it?", questionBefore);
             Assert.IsNotNull(resultPost);
-            Assert.AreEqual("Would you like to try it?", cardAfter.Question);
+            Assert.AreEqual("Would you like to try it?", cardEditModelAfter.Question);
         }
 
         [TestMethod]
@@ -144,11 +144,11 @@ namespace VocabInstaller.Tests.Controllers {
             controller.ControllerContext = ctrlContext.Object;
 
             // Act
-            var resultGet = controller.Edit(id:1) as ActionResult;            
-            var card = new Card(){Id =1, UserId=2, Question="", Answer=""};
+            var resultGet = controller.Edit(id:1) as ActionResult;
+            var cardEditModel = new CardEditModel() { Id = 1, UserId = 2, Question = "", Answer = "" };
             Exception ex = null;
             try {
-                var resultPost = controller.Edit(card) as ActionResult;
+                var resultPost = controller.Edit(cardEditModel) as ActionResult;
             } catch(Exception e) {
                 ex = e;
             }

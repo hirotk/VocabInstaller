@@ -14,14 +14,7 @@ namespace VocabInstaller.ViewModels {
         public int ItemsPerPage { get; set; }
         public int PageSkip { get; set; }
         public int ItemNum { get; set; }
-
-        private int _page;
-        public int Page {
-            get {
-                return _page < 0 ? 0 : _page > this.LastPage ? this.LastPage : _page;
-            }
-            set { _page = value; }
-        }
+        public int Page { get; set; }
 
         public int LastPage {
             get {

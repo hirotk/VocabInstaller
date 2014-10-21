@@ -12,7 +12,7 @@ namespace VocabInstaller.Models {
         public int UserId { get; set; }
 
         [Required]
-        [StringLength(maximumLength: 128)]
+        [StringLength(maximumLength: 256)]
         [Unique("Question", userEach:true, editMode:true, ErrorMessage = "The question already exists.")]
         public string Question { get; set; }        
         

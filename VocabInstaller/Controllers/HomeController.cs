@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -43,10 +44,14 @@ namespace VocabInstaller.Controllers {
                 viewModel.Cards = viewModel.Filter(search);
             }
 
+            if (page > viewModel.LastPage) {
+                viewModel.Page = viewModel.LastPage;
+            }
+
             viewModel.Cards = viewModel.Cards
                 .OrderByDescending(c => c.CreatedAt);
 
-            viewModel.ViewCards = viewModel.GetCardsInPage(page);
+            viewModel.ViewCards = viewModel.GetCardsInPage();
             return View(viewModel);
         }
 
@@ -84,12 +89,29 @@ namespace VocabInstaller.Controllers {
             return View(cardCreateModel);
         }
 
+        private static List<SelectListItem> reviewLevelList = null;
+
+        private static List<SelectListItem> createReviewLevelList() {
+            if (reviewLevelList == null) {
+                reviewLevelList = new List<SelectListItem>();
+                int i;
+                for (i = 0; i < 5; i++) {
+                    reviewLevelList.Add(new SelectListItem() {
+                        Value = i.ToString("D"), Text = string.Format("Review Level {0}", i + 1)
+                    });
+                }
+                reviewLevelList.Add(new SelectListItem() {
+                    Value = i.ToString("D"), Text = string.Format("Completed")
+                });
+            }
+            return reviewLevelList;
+        }
+
         // GET: /Home/Edit/5
         public ActionResult Edit(int? id, 
             int page = 0, string search = null, 
             string fromController = "Home", string fromAction = "Index",
-
-            [Bind(Include = "ItemsPerPage, PageSkip, LastPage, ItemNum, ReviewMode, MyAnswer, AnswerTime, Blank, BlankAnswer")]
+            [Bind(Include = "ItemsPerPage, PageSkip, ReviewMode, MyAnswer, AnswerTime, Blank, BlankAnswer")]
             ReviewViewModel reviewViewModel = null) {
 
             if (id == null) {
@@ -112,29 +134,43 @@ namespace VocabInstaller.Controllers {
 
             ViewBag.ReviewViewModel = reviewViewModel;
 
-            return View(card);
+            ViewBag.ReviewLevelList = createReviewLevelList();
+
+            var cardEditModel = new CardEditModel() {
+                Id = card.Id,
+                UserId = card.UserId,
+                Question = card.Question,
+                Answer = card.Answer,
+                Note = card.Note,
+                CreatedDate = card.CreatedAt.Date,
+                CreatedTime = card.CreatedAt.TimeOfDay,
+                ReviewedDate = card.ReviewedAt.Date,
+                ReviewedTime = card.ReviewedAt.TimeOfDay,
+                ReviewLevel = card.ReviewLevel
+            };
+
+            return View(cardEditModel);
         }
 
         // POST: /Home/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(
-            [Bind(Include = "Id, UserId, Question, Answer, Note, CreatedAt, ReviewedAt, ReviewLevel")] 
-            Card card, 
+            [Bind(Include = "Id, UserId, Question, Answer, Note, CreatedDate, CreatedTime, ReviewedDate, ReviewedTime, ReviewLevel")] 
+            CardEditModel cardEditModel,                        
             int page = 0, string search = null, 
             string fromController = "Home", string fromAction = "Index",
-
-            [Bind(Include = "ItemsPerPage, PageSkip, LastPage, ItemNum, ReviewMode, MyAnswer, AnswerTime, Blank, BlankAnswer")]
+            [Bind(Include = "ItemsPerPage, PageSkip, ReviewMode, MyAnswer, AnswerTime, Blank, BlankAnswer")]
             ReviewViewModel reviewViewModel = null) {
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
-            if (card.UserId != userId) {
+            if (cardEditModel.UserId != userId) {
                 throw new Exception("User Account Error");
             }
 
             if (ModelState.IsValid) {
-                repository.SaveCard(card);
+                repository.SaveCard(cardEditModel.CardInstance);
             }
 
             ViewBag.Page = page;
@@ -145,7 +181,9 @@ namespace VocabInstaller.Controllers {
 
             ViewBag.ReviewViewModel = reviewViewModel;
 
-            return View(card);
+            ViewBag.ReviewLevelList = createReviewLevelList();
+
+            return View(cardEditModel);
         }
 
         // GET: /Home/Delete/5

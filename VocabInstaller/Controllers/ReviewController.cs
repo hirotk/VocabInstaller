@@ -77,7 +77,7 @@ namespace VocabInstaller.Controllers {
         //
         // GET: /Review/
         public ActionResult Index(int page = 0, string reviewMode = "Fast") {
-#if DEBUG
+#if false//DEBUG
             DateTime dt0 = DateTime.Now.AddMilliseconds(-6),
                            dt1 = DateTime.Now.AddMilliseconds(-12),
                            dt2 = DateTime.Now.AddSeconds(-3),
@@ -113,6 +113,9 @@ namespace VocabInstaller.Controllers {
                 QuestionedAt = DateTime.Now,
                 ReviewMode = reviewMode                
             };
+            if (page > viewModel.LastPage) {
+                viewModel.Page = viewModel.LastPage;
+            }
             viewModel.ViewCard = viewModel.GetCardsInPage().SingleOrDefault();
 
             if (reviewMode == "Typing" || reviewMode == "Blank") {
@@ -125,7 +128,7 @@ namespace VocabInstaller.Controllers {
         //
         // GET: /Review/5
         public ActionResult Answer(int id,
-            [Bind(Include = "Page, ItemsPerPage, PageSkip, LastPage, ItemNum, ReviewMode, MyAnswer, QuestionedAt, AnswerTime, Blank, BlankAnswer")]
+            [Bind(Include = "Page, ItemsPerPage, PageSkip, ReviewMode, MyAnswer, QuestionedAt, AnswerTime, Blank, BlankAnswer")]
             ReviewViewModel reviewViewModel) {
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());

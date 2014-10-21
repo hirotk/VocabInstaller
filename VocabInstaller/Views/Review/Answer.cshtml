@@ -177,7 +177,8 @@
                @Html.ActionLink("Edit", "Edit", "Home", new {
                    id = c.Id,
                    page = Model.Page, fromController = "Review", fromAction = "Answer",
-                   Model.ItemsPerPage, Model.PageSkip, Model.LastPage, Model.ItemNum, Model.ReviewMode,
+                   Model.ItemsPerPage, Model.PageSkip, 
+                   Model.ReviewMode,
                    Model.MyAnswer, Model.AnswerTime, Model.Blank, Model.BlankAnswer
                },
                new { @id = "btnEdit", @class = "btn btn-primary" })
