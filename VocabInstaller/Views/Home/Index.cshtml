@@ -6,24 +6,24 @@
 }
 
 @section navigations {
-<ul class="nav navbar-nav">
-    <li><a href="@Url.Action("Index", "Home")">Home</a></li>
-    <li class="divider_vertical"></li>
-    <li><a href="@Url.Action("Index", "Review")">Review</a></li>
-    <li class="divider_vertical"></li>
-    <li><a href="@Url.Action("About", "Home")">About</a></li>
-    @if (User.IsInRole("Administrator")) {
+    <ul class="nav navbar-nav">
+        <li><a href="@Url.Action("Index", "Home")">Home</a></li>
         <li class="divider_vertical"></li>
-        <li><a href="@Url.Action("Index", "Function")">Function</a></li>
-    }
-</ul>
+        <li><a href="@Url.Action("Index", "Review")">Review</a></li>
+        <li class="divider_vertical"></li>
+        <li><a href="@Url.Action("About", "Home")">About</a></li>
+        @if (User.IsInRole("Administrator")) {
+            <li class="divider_vertical"></li>
+            <li><a href="@Url.Action("Index", "Function")">Function</a></li>
+        }
+    </ul>
 }
 
 <!-- ItemNum/Create, Search -->
 <div class="row row_top">
     <div class="col_search">
-        @using (Html.BeginForm("Index", "Home", FormMethod.Get, 
-            new { @class = "form-inline" })) {            
+        @using (Html.BeginForm("Index", "Home", FormMethod.Get,
+            new { @class = "form-inline" })) {
             <div class="form-group submit_button">
                 <button type="submit" class="btn btn-primary">
                     Find
@@ -35,7 +35,7 @@
             </div>
         }
     </div>
-    
+
     <div class="col_create">
         <div class="badge item_num">
             <!--<i class="glyphicon glyphicon-book"></i>-->
@@ -82,7 +82,7 @@
                         <div class="note">
                             <div class="display_field">@Html.Raw(note)</div>
                         </div>
-                    }                    
+                    }
                 </div>
 
                 <div class="card_right">

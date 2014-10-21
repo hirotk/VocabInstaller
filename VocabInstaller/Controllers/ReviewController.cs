@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web.Mvc;
-using System.IO;
-using System.Drawing;
 using System.Web.UI.DataVisualization.Charting;
-using VocabInstaller.Models;
+using System.Web.Mvc;
 using VocabInstaller.Helpers;
+using VocabInstaller.Models;
 using VocabInstaller.ViewModels;
 
 namespace VocabInstaller.Controllers {
@@ -28,16 +28,13 @@ namespace VocabInstaller.Controllers {
             if (reviewModeList == null) {
                 reviewModeList = new List<SelectListItem> {
                     new SelectListItem() {
-                        Value = "Fast",
-                        Text = "Fast Mode"
+                        Value = "Fast", Text = "Fast Mode"
                     },
                     new SelectListItem() {
-                        Value = "Typing",
-                        Text = "Typing Mode"
+                        Value = "Typing", Text = "Typing Mode"
                     },
                     new SelectListItem() {
-                        Value = "Blank",
-                        Text = "Blank Mode"
+                        Value = "Blank", Text = "Blank Mode"
                     }
                 };
             }
@@ -77,7 +74,7 @@ namespace VocabInstaller.Controllers {
         //
         // GET: /Review/
         public ActionResult Index(int page = 0, string reviewMode = "Fast") {
-#if false//DEBUG
+#if DEBUG
             DateTime dt0 = DateTime.Now.AddMilliseconds(-6),
                            dt1 = DateTime.Now.AddMilliseconds(-12),
                            dt2 = DateTime.Now.AddSeconds(-3),
@@ -107,11 +104,11 @@ namespace VocabInstaller.Controllers {
 
             cards = cards.OrderBy(c => c.ReviewLevel).ThenBy(c => c.ReviewedAt);
 
-            var viewModel = new ReviewViewModel(itemsPerPage: 1, pageSkip: 2) {
+            var viewModel = new ReviewViewModel(itemsPerPage: 1, pageSkip: 5) {
                 Cards = cards,
                 Page = page,
                 QuestionedAt = DateTime.Now,
-                ReviewMode = reviewMode                
+                ReviewMode = reviewMode
             };
             if (page > viewModel.LastPage) {
                 viewModel.Page = viewModel.LastPage;

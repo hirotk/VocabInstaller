@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Data;
-using System.Net.Mime;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Linq;
-using System.Web.Mvc;
 using VocabInstaller.Controllers;
 using VocabInstaller.Models;
 using VocabInstaller.Tests.Helpers;
-using System.IO;
 
 namespace VocabInstaller.Tests.Controllers {
     [TestClass]

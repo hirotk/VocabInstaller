@@ -16,7 +16,11 @@
 @if (ViewBag.HasLocalPassword) {
     @Html.Partial("_ChangePasswordPartial")
 }
-   
+
+<div class="back_to">
+    @Html.ActionLink("Back", "Index", "Home")
+</div>
+
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

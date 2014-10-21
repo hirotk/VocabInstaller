@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Web.Mvc;
-using VocabInstaller.Models;
-using VocabInstaller.Helpers;
 using System.Web;
-using System.IO;
+using System.Web.Mvc;
+using VocabInstaller.Helpers;
+using VocabInstaller.Models;
 
 namespace VocabInstaller.Controllers {
     //    [Authorize(Roles = "Administrator, User")]
@@ -50,11 +50,14 @@ namespace VocabInstaller.Controllers {
             var sb = new StringBuilder();
             cards.OrderBy(c => c.Id).ToList().ForEach(c => sb.Append(
                 string.Format("{0}\t{1}\t{2}\t{3}\t\"{4}\"\t{5}\t{6}\t{7}\r\n",
-                c.Id, c.UserId,
+                c.Id,
+                c.UserId,
                 (c.Question ?? string.Empty).Replace('"', '”'),
                 (c.Answer ?? string.Empty).Replace('"', '”'),
                 (c.Note ?? string.Empty).Replace('"', '”'),
-                c.CreatedAt, c.ReviewedAt, c.ReviewLevel)
+                c.CreatedAt.ToString("yyyy/MM/dd HH:mm:ss"),
+                c.ReviewedAt.ToString("yyyy/MM/dd HH:mm:ss"), 
+                c.ReviewLevel)
             ));
 
             string fileName = string.Format("ViDat_{0}.csv",

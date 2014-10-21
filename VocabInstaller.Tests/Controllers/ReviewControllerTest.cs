@@ -3,16 +3,16 @@ using System.Linq;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using VocabInstaller.Models;
 using VocabInstaller.Controllers;
-using VocabInstaller.ViewModels;
+using VocabInstaller.Models;
 using VocabInstaller.Tests.Helpers;
+using VocabInstaller.ViewModels;
 
 namespace VocabInstaller.Tests.Controllers {
     [TestClass]
     public class ReviewControllerTest {
         private Mock<ControllerContext> ctrlContext = new Mock<ControllerContext>();
-        private Mock<IViRepository> mockRepository = new Mock<IViRepository>();        
+        private Mock<IViRepository> mockRepository = new Mock<IViRepository>();
 
         [TestInitialize]
         public void BeginTestMethod() {
@@ -74,7 +74,7 @@ namespace VocabInstaller.Tests.Controllers {
             controller.ControllerContext = ctrlContext.Object;
             int id = 1, page = 0;
 
-            var result = controller.Index(page: 0) as ViewResult;
+            var result = controller.Index(page) as ViewResult;
             var viewModel = result.Model as ReviewViewModel;
 
             // Act
@@ -88,6 +88,62 @@ namespace VocabInstaller.Tests.Controllers {
             // Assert
             Assert.IsNotNull(resultGet);
             Assert.AreEqual("w1", card.Question);
+            Assert.IsNotNull(resultPost);
+            Assert.AreEqual("Index", resultPost.RouteValues["action"]);
+        }
+
+        [TestMethod]
+        public void AnswerTypingTest() {
+            // Arrange
+            var controller = new ReviewController(mockRepository.Object);
+            controller.ControllerContext = ctrlContext.Object;
+            int id = 1, page = 0;
+            var result = controller.Index(page) as ViewResult;
+            var viewModel = result.Model as ReviewViewModel;
+            viewModel.QuestionedAt = DateTime.Now;
+            viewModel.ReviewMode = "Typing";
+            viewModel.MyAnswer = "w1";
+
+            // Act
+            var resultGet = controller.Answer(id, viewModel) as ViewResult;
+            viewModel = resultGet.Model as ReviewViewModel;
+            var card = viewModel.ViewCard;
+            var evaluation = viewModel.IsPerfect ? "Perfect" : "Almost";
+            var resultPost = controller.Answer(id, page, evaluation, viewModel.ReviewMode) as RedirectToRouteResult;
+            mockRepository.Verify(m => m.SaveCard(card));
+
+            // Assert
+            Assert.IsNotNull(resultGet);
+            Assert.AreEqual("Perfect", evaluation);
+            Assert.IsNotNull(resultPost);
+            Assert.AreEqual("Index", resultPost.RouteValues["action"]);
+        }
+
+        [TestMethod]
+        public void AnswerBlankTest() {
+            // Arrange
+            var controller = new ReviewController(mockRepository.Object);
+            controller.ControllerContext = ctrlContext.Object;
+            int id = 1, page = 0;
+            var result = controller.Index(page) as ViewResult;
+            var viewModel = result.Model as ReviewViewModel;
+            viewModel.QuestionedAt = DateTime.Now;
+            viewModel.ReviewMode = "Blank";
+            viewModel.MyAnswer = "w";
+            viewModel.Blank = "_1";
+            viewModel.BlankAnswer = 'w';
+
+            // Act
+            var resultGet = controller.Answer(id, viewModel) as ViewResult;
+            var card = viewModel.ViewCard as Card;
+            var evaluation = viewModel.IsPerfect ? "Perfect" : "Almost";
+
+            var resultPost = controller.Answer(id, page, evaluation, viewModel.ReviewMode) as RedirectToRouteResult;
+            mockRepository.Verify(m => m.SaveCard(card));
+
+            // Assert
+            Assert.IsNotNull(resultGet);
+            Assert.AreEqual("Perfect", evaluation);
             Assert.IsNotNull(resultPost);
             Assert.AreEqual("Index", resultPost.RouteValues["action"]);
         }

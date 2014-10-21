@@ -4,15 +4,15 @@
     ViewBag.Title = "Log in";
 }
 
-<h1>@ViewBag.Title.</h1>
+<h1>@ViewBag.Title</h1>
 
 <section id="login_form">
 @using (Html.BeginForm(new {ReturnUrl = ViewBag.ReturnUrl, 
-    @class="form-horizontal" })) {
+    @class = "form-horizontal" })) {
     @Html.AntiForgeryToken()
     
     @Html.ValidationSummary(excludePropertyErrors: false)
-
+    
     <fieldset>
         <!--<legend>Log in Form</legend>-->
         <div class="form-group">
@@ -30,16 +30,16 @@
             @Html.LabelFor(m => m.RememberMe, new { @class = "control-label", @for = "cbRememberMe" })
         </div>
 
-        <div class="form-group">
+        <div class="form-group submit_button">
             <button type="submit" class="btn btn-primary">
                 Log in
             </button>
         </div>
     </fieldset>
-
-    <p class="register_link">
+    
+<!--    <p class="register_link">
         @Html.ActionLink("Register", "Register") if you don't have an account.
-    </p>
+    </p>-->
 }
 </section>
 

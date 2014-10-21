@@ -1,5 +1,4 @@
-﻿using System.Web;
-using System.Web.Optimization;
+﻿using System.Web.Optimization;
 
 namespace VocabInstaller {
     public class BundleConfig {
@@ -24,7 +23,6 @@ namespace VocabInstaller {
                         "~/Scripts/bootstrap.js"
                         ));
 
-//            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/normalize.css",
                 "~/Content/bootstrap.css",
@@ -46,7 +44,7 @@ namespace VocabInstaller {
                         "~/Content/themes/base/jquery.ui.tabs.css",
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
-                        "~/Content/themes/base/jquery.ui.theme.css"));            
+                        "~/Content/themes/base/jquery.ui.theme.css"));
         }
     }
 }

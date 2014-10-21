@@ -1,53 +1,53 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>@ViewBag.Title - VocabInstaller</title>
-        <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        
-        @Styles.Render("~/Content/css")        
-        @Scripts.Render("~/bundles/modernizr")
-        
-        @RenderSection("styles", required: false)        
-    </head>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - VocabInstaller</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
-    <body>
-        <header class="container navbar navbar-default">            
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("VocabInstaller", "Index", "Home", null, new { @class = "navbar-brand" })
-            </div>
-            <div class="collapse navbar-collapse">
-                @RenderSection("navigations", required: false)
-                @Html.Partial("_LoginPartial")
-            </div>
-        </header>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
 
-        <div class="container main_content">
-            @RenderBody()
+    @RenderSection("styles", required: false)
+</head>
+
+<body>
+    <header class="container navbar navbar-default">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @Html.ActionLink("VocabInstaller", "Index", "Home", null, new { @class = "navbar-brand" })
         </div>
-        
-        <footer class="container">
-            <small>&copy; @DateTime.Now.Year - VocabInstaller</small>
-        </footer>        
+        <div class="collapse navbar-collapse">
+            @RenderSection("navigations", required: false)
+            @Html.Partial("_LoginPartial")
+        </div>
+    </header>
 
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
+    <div class="container main_content">
+        @RenderBody()
+    </div>
 
-        @RenderSection("scripts", required: false)
+    <footer class="container">
+        <small>&copy; @DateTime.Now.Year - VocabInstaller</small>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @RenderSection("scripts", required: false)
 <script>
-$("#userDropDown").keydown(function (e) {
-    var keyCodeEnter = 13;
-    if (e.keyCode === keyCodeEnter) {
-        this.click();
-        return false;
-    }
-});
+    $("#userDropDown").keydown(function (e) {
+        var keyCodeEnter = 13;
+        if (e.keyCode === keyCodeEnter) {
+            this.click();
+            return false;
+        }
+    });
 </script>
-    </body>
+</body>
 </html>

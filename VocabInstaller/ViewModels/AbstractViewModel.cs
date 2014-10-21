@@ -39,8 +39,6 @@ namespace VocabInstaller.ViewModels {
             }
         }
 
-        public IQueryable<Card> ViewCards { get; set; }
-
         public IQueryable<Card> GetCardsInPage(int? page = null) {
             int pg = page ?? Page;
             return Cards.Skip(pg * ItemsPerPage).Take(ItemsPerPage);

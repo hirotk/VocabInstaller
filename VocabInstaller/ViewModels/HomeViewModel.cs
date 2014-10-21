@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -10,6 +9,8 @@ namespace VocabInstaller.ViewModels {
         public HomeViewModel(int itemsPerPage, int pageSkip) 
             : base (itemsPerPage, pageSkip) {
         }
+
+        public IQueryable<Card> ViewCards { get; set; }
 
         public string Search { get; set; }
 

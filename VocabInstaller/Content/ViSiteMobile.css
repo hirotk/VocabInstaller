@@ -48,8 +48,7 @@
 
     .card .card_right {
         overflow: hidden;
-        width: auto;
-        padding: 0 5px;
+        width: 250px;
     }
         .card_right .created_at {
             float: left;

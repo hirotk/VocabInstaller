@@ -22,18 +22,30 @@ namespace VocabInstaller.Controllers {
             return View();
         }
 
+        private const int LoginAttemptLimit = 5;
+
         //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl) {
-            if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe)) {
-                return RedirectToLocal(returnUrl);
+            bool locked = false;
+            if (WebSecurity.GetPasswordFailuresSinceLastSuccess(model.UserName) >= LoginAttemptLimit) {
+                locked = true;
+                ModelState.AddModelError("", "The user's account is locked. Please contact the administrator.");
+            }
+
+            if (!locked) {
+                if (ModelState.IsValid &&
+                    WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe)) {
+                    return RedirectToLocal(returnUrl);
+                } else {
+                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                }
             }
 
             // If we got this far, something failed, redisplay form
-            ModelState.AddModelError("", "The user name or password provided is incorrect.");
             return View(model);
         }
 
@@ -51,7 +63,8 @@ namespace VocabInstaller.Controllers {
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
+//        [AllowAnonymous]
+        [Authorize(Roles = "Administrator")]
         public ActionResult Register() {
             return View();
         }
@@ -59,13 +72,17 @@ namespace VocabInstaller.Controllers {
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
+//        [AllowAnonymous]
+        [Authorize(Roles = "Administrator")]
         [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterModel model) {
             if (ModelState.IsValid) {
                 // Attempt to register the user
                 try {
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+
+                    Roles.AddUsersToRoles(new[] { model.UserName }, new[] { "User" });
+
                     WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");
                 } catch (MembershipCreateUserException e) {
@@ -210,7 +227,7 @@ namespace VocabInstaller.Controllers {
 
             if (ModelState.IsValid) {
                 // Insert a new user into the database
-                using (ViDbContext db = new ViDbContext()) {
+                using (var db = new ViDbContext()) {
                     UserProfile user = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == model.UserName.ToLower());
                     // Check if user already exists
                     if (user == null) {
@@ -240,7 +257,7 @@ namespace VocabInstaller.Controllers {
             return View();
         }
 
-//        [AllowAnonymous]
+        [AllowAnonymous]
         [ChildActionOnly]
         public ActionResult ExternalLoginsList(string returnUrl) {
             ViewBag.ReturnUrl = returnUrl;

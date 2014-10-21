@@ -32,8 +32,8 @@
         var c = Model.ViewCard;
         <section class="card">
             @using (Html.BeginForm("Answer", "Review",
-                routeValues: new {id = c.Id}, method: FormMethod.Get,
-                htmlAttributes: new {@class = "form-horizontal"})) {
+                routeValues: new { id = c.Id }, method: FormMethod.Get,
+                htmlAttributes: new { @class = "form-horizontal" })) {
 
                 <div class="card_left">
                     @if (Model.ReviewMode == "Fast") {
@@ -56,8 +56,8 @@
                             <div class="display_label">Answer</div>
                             <div class="display_field">
                                 @Html.TextBox("MyAnswer", null, new {
-                                    @id = "tbMyAnswer", @class = "form-control editor_field"
-                                })
+                               @id = "tbMyAnswer", @class = "form-control editor_field"
+                           })
                             </div>
                         </div>
                     } else if (Model.ReviewMode == "Blank") {
@@ -71,8 +71,8 @@
                             <div class="display_label">Answer</div>
                             <div class="display_field">
                                 @Html.TextBox("myAnswer", null, new {
-                                    @id = "tbMyAnswer", @class = "form-control char_field"
-                                })
+                               @id = "tbMyAnswer", @class = "form-control char_field"
+                           })
                                 <span id="msgError" class="message_error"></span>
                             </div>
                         </div>
@@ -88,8 +88,8 @@
                     @Html.Hidden("QuestionedAt", Model.QuestionedAt)
                     @Html.Hidden("Blank", Model.Blank)
                     @Html.Hidden("BlankAnswer", Model.BlankAnswer)
-                    
-                    <div class="form-group">                        
+
+                    <div class="form-group">
                         <button type="submit" id="sbmAnswer" class="btn btn-primary">
                             Answer
                         </button>
@@ -107,9 +107,9 @@
                         </div>
                         <div id="txtHint" class="display_field">@Model.Hint</div>
                     </div>
-                }                
+                }
             </div>
-            
+
             <div class="card_right">
                 <div class="created_at">
                     <div class="display_label">Created at</div>
@@ -132,14 +132,14 @@
                         <span class="badge">@(c.ReviewLevel + 1)</span>
                     </div>
                 </div>
-            
+
                 <div class="review_mode">
                     <div class="display_label">Review Mode</div>
                     @using (Html.BeginForm("Index", "Review", FormMethod.Get)) {
                         @Html.Hidden("page", Model.Page)
 
                         @Html.DropDownList("reviewMode", (IEnumerable<SelectListItem>)ViewBag.ReviewModeList,
-                            new { @class = "form-control", @onchange = "submit(this.form)"})
+                            new { @class = "form-control", @onchange = "submit(this.form)" })
                     }
                 </div>
             </div> <!-- div class="card_right" -->
@@ -157,52 +157,52 @@
     @switch (Model.ReviewMode) {
         case "Fast":
             <script type="text/javascript">
-                $(function() {
+                $(function () {
                     $("#sbmAnswer").focus();
                 });
             </script>
             break;
         case "Blank":
         case "Typing":
-            <script type="text/javascript">
-                $(function() {
-                    $("#tbMyAnswer").focus();
+        <script type="text/javascript">
+            $(function () {
+                $("#tbMyAnswer").focus();
 
-                    var show = function() {
-                        $("#txtHint").css("display", "block");
-                    };
+                var show = function () {
+                    $("#txtHint").css("display", "block");
+                };
 
-                    $("#btnHint").click(show);
+                $("#btnHint").click(show);
 
-                    $("#btnHint").keydown(function(e) {
-                        var keyCodeEnter = 13;
-                        if (e.keyCode === keyCodeEnter) {
-                            show();
-                            return false;
-                        }
+                $("#btnHint").keydown(function (e) {
+                    var keyCodeEnter = 13;
+                    if (e.keyCode === keyCodeEnter) {
+                        show();
                         return false;
+                    }
+                    return false;
+                });
+
+                var mode = "@Html.Raw(Model.ReviewMode)";
+                if (mode == "Blank") {
+                    $("#tbMyAnswer").keyup(function () {
+                        if ($("#tbMyAnswer").val().length > 1) {
+                            $("#msgError").text("The blank is just one character.");
+                            $("#sbmAnswer").on("click", disableEvent);
+                            return false;
+                        } else {
+                            $("#msgError").text("");
+                            $("#sbmAnswer").off("click", disableEvent);
+                            return true;
+                        }
                     });
 
-                    var mode = "@Html.Raw(Model.ReviewMode)";
-                    if (mode == "Blank") {
-                        $("#tbMyAnswer").keyup(function() {
-                            if ($("#tbMyAnswer").val().length > 1) {
-                                $("#msgError").text("The blank is just one character.");
-                                $("#sbmAnswer").on("click", disableEvent);
-                                return false;
-                            } else {
-                                $("#msgError").text("");
-                                $("#sbmAnswer").off("click", disableEvent);
-                                return true;
-                            }
-                        });
-
-                        function disableEvent(e) {
-                            e.preventDefault();
-                        }
+                    function disableEvent(e) {
+                        e.preventDefault();
                     }
-                });
-            </script>
+                }
+            });
+        </script>
             break;
     }
 }

@@ -31,7 +31,7 @@ namespace VocabInstaller.Filters {
                     }
 
                     if (!WebSecurity.Initialized) {
-                        WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", 
+                        WebSecurity.InitializeDatabaseConnection("ViConnection", "UserProfile", "UserId", "UserName", 
                             autoCreateTables: true);
                     }
                 } catch (Exception ex) {

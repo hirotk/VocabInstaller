@@ -3,7 +3,7 @@
 namespace VocabInstaller.Models {
     public class ViDbContext : DbContext {
         public ViDbContext()
-            : base("DefaultConnection") {
+            : base("ViConnection") {
         }
 
         public DbSet<UserProfile> UserProfiles { get; set; }

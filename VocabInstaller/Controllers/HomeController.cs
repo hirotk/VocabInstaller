@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using VocabInstaller.Helpers;
 using VocabInstaller.Models;
 using VocabInstaller.ViewModels;
-using VocabInstaller.Helpers;
 
 namespace VocabInstaller.Controllers {
     [Authorize]
@@ -20,7 +20,7 @@ namespace VocabInstaller.Controllers {
             this.repository = repository;
         }
 
-        public ActionResult Index(int page = 0, int itemsPerPage = 4, string search = null) {
+        public ActionResult Index(int page = 0, int itemsPerPage = 10, string search = null) {
             var userRole = Session["UserRole"] as string;
             if (userRole == null) {
                 Session["UserRole"] = this.GetUserRole();
@@ -35,7 +35,7 @@ namespace VocabInstaller.Controllers {
                 userId = (int)uid;
             }
             
-            var viewModel = new HomeViewModel(itemsPerPage, pageSkip: 2) {
+            var viewModel = new HomeViewModel(itemsPerPage, pageSkip: 5) {
                 Cards = repository.Cards.Where(c => c.UserId == userId),
                 Page = page
             };
@@ -109,11 +109,11 @@ namespace VocabInstaller.Controllers {
 
         // GET: /Home/Edit/5
         public ActionResult Edit(int? id, 
-            int page = 0, string search = null, 
+            int page = 0, string search = null,
             string fromController = "Home", string fromAction = "Index",
             [Bind(Include = "ItemsPerPage, PageSkip, ReviewMode, MyAnswer, AnswerTime, Blank, BlankAnswer")]
             ReviewViewModel reviewViewModel = null) {
-
+            
             if (id == null) {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -157,8 +157,8 @@ namespace VocabInstaller.Controllers {
         [ValidateAntiForgeryToken]
         public ActionResult Edit(
             [Bind(Include = "Id, UserId, Question, Answer, Note, CreatedDate, CreatedTime, ReviewedDate, ReviewedTime, ReviewLevel")] 
-            CardEditModel cardEditModel,                        
-            int page = 0, string search = null, 
+            CardEditModel cardEditModel,
+            int page = 0, string search = null,
             string fromController = "Home", string fromAction = "Index",
             [Bind(Include = "ItemsPerPage, PageSkip, ReviewMode, MyAnswer, AnswerTime, Blank, BlankAnswer")]
             ReviewViewModel reviewViewModel = null) {
@@ -226,10 +226,6 @@ namespace VocabInstaller.Controllers {
         }
 
         public ActionResult About() {
-            return View();
-        }
-
-        public ActionResult Contact() {            
             return View();
         }
 

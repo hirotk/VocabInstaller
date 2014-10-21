@@ -5,8 +5,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using VocabInstaller.Controllers;
 using VocabInstaller.Models;
-using VocabInstaller.ViewModels;
 using VocabInstaller.Tests.Helpers;
+using VocabInstaller.ViewModels;
 
 namespace VocabInstaller.Tests.Controllers {
     [TestClass]
@@ -285,18 +285,6 @@ namespace VocabInstaller.Tests.Controllers {
 
             // Act
             ViewResult result = controller.About() as ViewResult;
-
-            // Assert
-            Assert.IsNotNull(result);
-        }
-
-        [TestMethod]
-        public void ContactTest() {
-            // Arrange
-            HomeController controller = new HomeController();
-
-            // Act
-            ViewResult result = controller.Contact() as ViewResult;
 
             // Assert
             Assert.IsNotNull(result);

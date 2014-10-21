@@ -1,10 +1,9 @@
-﻿@using VocabInstaller.Migrations
-@model VocabInstaller.ViewModels.CardEditModel
+﻿@model VocabInstaller.ViewModels.CardEditModel
 
 @{
     ViewBag.Title = "Edit";
-    var fromController = (string) ViewBag.FromController;
-    var revModel = ViewBag.ReviewViewModel;    
+    var fromController = (string)ViewBag.FromController;
+    var revModel = ViewBag.ReviewViewModel;
 }
 
 @section navigations {
@@ -79,9 +78,9 @@
                 @"{0:hh\:mm}",
                 new { @id = "tbReviewedTime", @class = "form-control editor_field" })
             <span class="text-danger">@Html.ValidationMessageFor(m => m.ReviewedTime)</span>
-        </div>        
+        </div>
 
-        <div class="form-group review_level">            
+        <div class="form-group review_level">
             @Html.LabelFor(m => m.ReviewLevel, new { @class = "control-label", @for = "ddReviewLevel" })
             @Html.DropDownListFor(m => m.ReviewLevel, (IEnumerable<SelectListItem>)ViewBag.ReviewLevelList,
                 new { @id = "ddReviewLevel", @class = "form-control" })
@@ -92,13 +91,13 @@
         @Html.Hidden("search", (string)ViewBag.Search)
         @Html.Hidden("fromController", fromController)
         @Html.Hidden("fromAction", (string)ViewBag.FromAction)
-                        
+        
         @if (fromController == "Review") {
-            @Html.Hidden("ItemsPerPage", (int) revModel.ItemsPerPage)
-            @Html.Hidden("PageSkip", (int) revModel.PageSkip)
+            @Html.Hidden("ItemsPerPage", (int)revModel.ItemsPerPage)
+            @Html.Hidden("PageSkip", (int)revModel.PageSkip)
             @Html.Hidden("ReviewMode", (string)revModel.ReviewMode)
             @Html.Hidden("MyAnswer", (string)revModel.MyAnswer)
-            @Html.Hidden("AnswerTime", (TimeSpan) revModel.AnswerTime)
+            @Html.Hidden("AnswerTime", (TimeSpan)revModel.AnswerTime)
             @Html.Hidden("Blank", (string)revModel.Blank)
             @Html.Hidden("BlankAnswer", (char?)revModel.BlankAnswer)
         }
@@ -113,13 +112,13 @@
 
 <div class="back_to">
     @if (fromController == "Review") {
-        @Html.ActionLink("Back to List", (string) ViewBag.FromAction, (string) ViewBag.FromController,
-            new { id = Model.Id, 
+        @Html.ActionLink("Back to List", (string)ViewBag.FromAction, (string)ViewBag.FromController,
+            new {id = Model.Id,
                 ViewBag.Page,
                 revModel.ItemsPerPage, revModel.PageSkip, revModel.LastPage, revModel.ItemNum, revModel.ReviewMode,
                 revModel.MyAnswer, revModel.AnswerTime, revModel.Blank, revModel.BlankAnswer}, null)
     } else {
-        @Html.ActionLink("Back to List", (string) ViewBag.FromAction, (string) ViewBag.FromController,
+        @Html.ActionLink("Back to List", (string)ViewBag.FromAction, (string)ViewBag.FromController,
             new {id = Model.Id, page = ViewBag.Page, search = ViewBag.Search}, null)
     }
 </div>
