@@ -389,10 +389,10 @@ section.card {
 }
 
 #ddReviewLevel {
-    width: 150px;
+    width: 140px;
     text-align: left;
-    padding: 0 0 0 8px;
-    font-size: 16px;
+    padding: 0 0 0 4px;
+    font-size: 15px;
 }
 
 /*#edit .review_level .editor_field {
@@ -473,8 +473,10 @@ section.card {
     width: 120px;
     margin-bottom: 10px;
 }
-.review_mode .form-control {
-    font-size: 12px;
+.review_mode select {
+    text-align: left;
+    font-size: 15px;
+    padding: 0 0 0 4px;
 }
 
 /* Account/Login, Manage
