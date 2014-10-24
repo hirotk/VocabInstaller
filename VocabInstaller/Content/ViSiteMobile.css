@@ -117,3 +117,52 @@
         font-size: 16px;
     }
 }
+
+@media (max-width: 319px) {
+    /* Layout
+    ----------------------------------------------------------*/
+    .main_content {
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-bottom: 10px;
+    }
+
+    /* pagination
+    ----------------------------------------------------------*/
+    .pagination li > a {
+        width: 36px;
+        font-size: 12px;
+        padding: 5px 0;
+    }
+
+    /* Home/Index
+    ----------------------------------------------------------*/
+    .col_create {
+        width: 60px;
+    }
+
+    .col_search {
+        margin-left: -60px;
+        padding-left: 60px;
+    }
+
+    .card .card_right {
+        width: 120px;
+    }
+        .card_right .created_at {
+            float: none;
+            margin-right: 0;
+        }
+
+
+    .btn {
+        padding-top: 4px;
+        height: 30px !important;
+    }
+
+    /* Account/Login, Manage
+    ----------------------------------------------------------*/
+    #login_form .form-control {
+        width: 100%;
+    }
+}
