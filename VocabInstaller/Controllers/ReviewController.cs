@@ -16,7 +16,7 @@ namespace VocabInstaller.Controllers {
         private IViRepository repository;
 
         // Default Constructor
-        public ReviewController() : this(new ViRepository()) {}
+        public ReviewController() : this(new ViRepository()) { }
 
         public ReviewController(IViRepository repository) {
             this.repository = repository;
@@ -138,7 +138,7 @@ namespace VocabInstaller.Controllers {
 
             var qstAt = reviewViewModel.QuestionedAt;
             if (qstAt != null) {
-                reviewViewModel.AnswerTime = 
+                reviewViewModel.AnswerTime =
                     DateTime.Now - (DateTime)qstAt;
             }
 
@@ -148,7 +148,7 @@ namespace VocabInstaller.Controllers {
                 myAns = myAns.Trim();
                 reviewViewModel.MyAnswer = myAns;
                 bool isPerfect = false;
-                
+
                 if (mode == "Typing") {
                     isPerfect = card.Question == myAns;
                     int? missIndex = null;
@@ -255,10 +255,10 @@ namespace VocabInstaller.Controllers {
             reviewStatus.ChartType = SeriesChartType.Bar;
             reviewStatus.MarkerStyle = MarkerStyle.Circle;
             reviewStatus.MarkerColor = Color.DimGray;
-            reviewStatus.IsValueShownAsLabel = true; 
+            reviewStatus.IsValueShownAsLabel = true;
             reviewStatus.LabelFormat = "#0";
 
-            string[] xValues = { "Lv0", "Lv1", "Lv2", "Lv3", "Lv4" };
+            string[] xValues = { "Lv1", "Lv2", "Lv3", "Lv4", "Lv5" };
             int[] yValues = { revLv[0], revLv[1], revLv[2], revLv[3], revLv[4] };
 
             reviewStatus.Points.DataBindXY(xValues, yValues);
