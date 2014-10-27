@@ -81,6 +81,9 @@ namespace VocabInstaller.Controllers {
                 throw new Exception("User Account Error");
             }
 
+            cardCreateModel.CreatedAt = DateTime.Now;
+            cardCreateModel.ReviewedAt = DateTime.Now;
+
             if (ModelState.IsValid) {
                 repository.SaveCard(cardCreateModel.CardInstance);
                 return RedirectToAction("Create");
@@ -194,8 +197,7 @@ namespace VocabInstaller.Controllers {
 
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
 
-            var card = repository.Cards
-                .Where(c => c.UserId == userId && c.Id == id).SingleOrDefault();
+            var card = repository.Cards.SingleOrDefault(c => c.UserId == userId && c.Id == id);
 
             if (card == null) {
                 return HttpNotFound();
@@ -213,8 +215,7 @@ namespace VocabInstaller.Controllers {
         public ActionResult DeleteConfirmed(int id, int page = 0, string search = null) {
             int userId = (int)(Session["UserId"] ?? this.GetUserId());
             
-            var card = repository.Cards
-                .Where(c => c.UserId == userId && c.Id == id).SingleOrDefault();
+            var card = repository.Cards.SingleOrDefault(c => c.UserId == userId && c.Id == id);
 
             if (card == null) {
                 throw new Exception("User Account Error");
