@@ -481,7 +481,9 @@ section.card {
 
 /* Account/Login, Manage
 ----------------------------------------------------------*/
-#login_form .form-control {
+#login_form .form-control,
+#register_form .form-control,
+#change_password_form .form-control {
     width: 300px;
 }
 

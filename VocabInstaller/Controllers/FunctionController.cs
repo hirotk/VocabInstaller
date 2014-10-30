@@ -49,12 +49,12 @@ namespace VocabInstaller.Controllers {
 
             var sb = new StringBuilder();
             cards.OrderBy(c => c.Id).ToList().ForEach(c => sb.Append(
-                string.Format("{0}\t{1}\t{2}\t{3}\t\"{4}\"\t{5}\t{6}\t{7}\r\n",
+                string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\r\n",
                 c.Id,
                 c.UserId,
-                (c.Question ?? string.Empty).Replace('"', '”'),
-                (c.Answer ?? string.Empty).Replace('"', '”'),
-                (c.Note ?? string.Empty).Replace('"', '”'),
+                c.Question ?? string.Empty,
+                c.Answer ?? string.Empty,
+                (c.Note ?? string.Empty).Replace("\n", "[nl /]"),
                 c.CreatedAt.ToString("yyyy/MM/dd HH:mm:ss"),
                 c.ReviewedAt.ToString("yyyy/MM/dd HH:mm:ss"), 
                 c.ReviewLevel)
@@ -91,29 +91,13 @@ namespace VocabInstaller.Controllers {
 
             if (csvFile == null) { throw new FileNotFoundException("csvFile should not be null"); }
 
-            var sb = new StringBuilder();
-
+            var records = new List<string>();
             using (var sr = new StreamReader(csvFile.InputStream)) {
-                bool multi = false;
                 while (!sr.EndOfStream) {
-                    var line = sr.ReadLine();
-                    var ary = string.Format("{0}\n", line).ToCharArray();
-                    var dstAry = new char[ary.Length];
-                    int j = 0;
-                    foreach (char c in ary) {
-                        if (!multi && c == '"') { multi = true; continue; }
-                        if (multi && c == '\n') { dstAry[j++] = '\f'; continue; }
-                        if (multi && c == '"') { multi = false; continue; }
-                        dstAry[j++] = c;
-                    }
-                    var s = new string(dstAry);
-                    s = s.TrimEnd('\0');
-                    sb.Append(s);
+                    records.Add(sr.ReadLine());
                 }
-                if (multi) { throw new Exception("The multi line field has an error."); }
             }
 
-            var records = sb.ToString().TrimEnd().Split('\n');
             var cardList = cards.OrderByDescending(c => c.CreatedAt).ToList();
 
             cardList.AddRange(records.Select(record => record.Split('\t'))
@@ -122,10 +106,10 @@ namespace VocabInstaller.Controllers {
                         UserId = isAdmin ? int.Parse(fields[1]) : userId,
                         Question = fields[2],
                         Answer = fields[3],
-                        Note = fields[4].Replace('\f', '\n'),
+                        Note = fields[4].Replace("[nl /]", "\n"),
                         CreatedAt = String.IsNullOrEmpty(fields[5]) ? DateTime.Now : DateTime.Parse(fields[5]),
                         ReviewedAt = String.IsNullOrEmpty(fields[6]) ? DateTime.Now : DateTime.Parse(fields[6]),
-                        ReviewLevel = int.Parse(fields[7])
+                        ReviewLevel = String.IsNullOrEmpty(fields[7]) ? 0 : int.Parse(fields[7])
                     }));
 
             foreach (var c in cardList) {
