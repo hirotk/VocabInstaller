@@ -19,9 +19,6 @@ namespace VocabInstaller.ViewModels {
             if (!String.IsNullOrEmpty(search)) {
                 search = search.Replace(@"""", "_qt_").Replace(@"\_qt_", @"""");
 
-                search = search.Replace("[", "[[").Replace("]", "]]").Replace("[[", "[[]").Replace("]]", "[]]")
-                    .Replace("(", "[(]").Replace(")", "[)]");
-
                 var compMatchPtn = new Regex(
                     @"_qt_(?<cmKey>(?!_qt_)[\w\s\*\.\?'"",\!\+\-\\()\<\>\[\]=:/@#%\&\$~]+)_qt_");
 
@@ -29,6 +26,8 @@ namespace VocabInstaller.ViewModels {
                 foreach (var m in matches) {
                     var key = m.ToString();
                     search = search.Replace(key, Regex.Replace(key, @"\s+", "_sp_"));
+                    search = search.Replace("[", "[[").Replace("]", "]]").Replace("[[", "[[]").Replace("]]", "[]]")
+                        .Replace("(", "[(]").Replace(")", "[)]");
                 }
 
                 string[] keywords = Regex.Split(search, @"\s+");

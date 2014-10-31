@@ -268,6 +268,14 @@ namespace VocabInstaller.Tests.Controllers {
                 itemsPerPage: 10, search: "\"(a4\\\")\"")).Model);
             Card[] cards11 = viewModel11.Cards.ToArray();
 
+            var viewModel12 = (HomeViewModel)(((ViewResult)controller.Index(
+                itemsPerPage: 10, search: "[a3%]")).Model);
+            Card[] cards12 = viewModel12.Cards.ToArray();
+
+            var viewModel13 = (HomeViewModel)(((ViewResult)controller.Index(
+                itemsPerPage: 10, search: "(a4\\\")")).Model);
+            Card[] cards13 = viewModel13.Cards.ToArray();
+
             // Assert
             Assert.AreEqual(cards1.Length, 3);
             Assert.IsTrue(cards1[0].Id == 4);
@@ -305,6 +313,12 @@ namespace VocabInstaller.Tests.Controllers {
 
             Assert.AreEqual(cards11.Length, 1);
             Assert.IsTrue(cards11[0].Id == 4);
+
+            Assert.AreEqual(cards12.Length, 1);
+            Assert.IsTrue(cards12[0].Id == 3);
+
+            Assert.AreEqual(cards13.Length, 1);
+            Assert.IsTrue(cards13[0].Id == 4);
         }
 
         [TestMethod]
