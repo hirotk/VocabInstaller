@@ -20,25 +20,26 @@ namespace VocabInstaller.Tests.Controllers {
 
             mockRepository.Setup(m => m.Cards).Returns(new Card[] {
                 new Card {Id = 1, UserId = 2,
-                    Question = "Why don't you try it?", Answer = "m1",
+                    Question = "Why don't you try it?", Answer = "< a1 >",
                     CreatedAt = DateTime.Parse("2014/01/01")},
                 new Card {Id = 2, UserId = 2,
-                    Question = "Even though it's difficult, it's worth trying.", Answer = "m2",
+                    Question = "Even though it's difficult, it's worth trying.", Answer = "a2*a2",
                     CreatedAt = DateTime.Parse("2014/01/02")},
                 new Card {Id = 3, UserId = 2,
-                    Question = "What a wonderful day!", Answer = "m3",
+                    Question = "What a wonderful day!", Answer = "[a3%]",
                     CreatedAt = DateTime.Parse("2014/01/03")},
                 new Card {Id = 4, UserId = 2,
-                    Question = "It's only 1.2$.", Answer = "m4",
+                    Question = "It's only 1.2$.", Answer = "(a4\")",
                     CreatedAt = DateTime.Parse("2014/01/04")},
                 new Card {Id = 5, UserId = 2,
-                    Question = "2 * 3 + 6 / 2 = 9", Answer = "m5",
+                    Question = "2 * 3 + 6 / 2 = 9", Answer = "a5",
                     CreatedAt = DateTime.Parse("2014/01/05")},
                 new Card {Id = 6, UserId = 3,
-                    Question = "w6", Answer = "m6",
+
+                    Question = "q6", Answer = "a6",
                     CreatedAt = DateTime.Parse("2014/01/06")},
                 new Card {Id = 7, UserId = 3,
-                    Question = "w7", Answer = "m7",
+                    Question = "q7", Answer = "a7",
                     CreatedAt = DateTime.Parse("2014/01/07")}
             }.OrderByDescending(c => c.CreatedAt)
             .AsQueryable());
@@ -232,7 +233,7 @@ namespace VocabInstaller.Tests.Controllers {
             Card[] cards2 = viewModel2.Cards.ToArray();
 
             var viewModel3 = (HomeViewModel)(((ViewResult)controller.Index(
-                itemsPerPage: 10, search: "&quot;try&quot;")).Model);
+                itemsPerPage: 10, search: "\"try\"")).Model);
             Card[] cards3 = viewModel3.Cards.ToArray();
 
             var viewModel4 = (HomeViewModel)(((ViewResult)controller.Index(
@@ -240,16 +241,32 @@ namespace VocabInstaller.Tests.Controllers {
             Card[] cards4 = viewModel4.Cards.ToArray();
 
             var viewModel5 = (HomeViewModel)(((ViewResult)controller.Index(
-                itemsPerPage: 10, search: "&quot;won*ful&quot;")).Model);
+                itemsPerPage: 10, search: "\"won*ful\"")).Model);
             Card[] cards5 = viewModel5.Cards.ToArray();
 
             var viewModel6 = (HomeViewModel)(((ViewResult)controller.Index(
-                itemsPerPage: 10, search: "&quot;a*ful&quot;")).Model);
+                itemsPerPage: 10, search: "\"a*ful\"")).Model);
             Card[] cards6 = viewModel6.Cards.ToArray();
 
             var viewModel7 = (HomeViewModel)(((ViewResult)controller.Index(
-                itemsPerPage: 10, search: @"&quot;**&quot;")).Model);
+                itemsPerPage: 10, search: "\"\\*\"")).Model);
             Card[] cards7 = viewModel7.Cards.ToArray();
+
+            var viewModel8 = (HomeViewModel)(((ViewResult)controller.Index(
+                itemsPerPage: 10, search: "\"< a1 >\"")).Model);
+            Card[] cards8 = viewModel8.Cards.ToArray();
+
+            var viewModel9 = (HomeViewModel)(((ViewResult)controller.Index(
+                itemsPerPage: 10, search: "\"*\\**\"")).Model);
+            Card[] cards9 = viewModel9.Cards.ToArray();
+
+            var viewModel10 = (HomeViewModel)(((ViewResult)controller.Index(
+                itemsPerPage: 10, search: "\"[a3%]\"")).Model);
+            Card[] cards10 = viewModel10.Cards.ToArray();
+
+            var viewModel11 = (HomeViewModel)(((ViewResult)controller.Index(
+                itemsPerPage: 10, search: "\"(a4\\\")\"")).Model);
+            Card[] cards11 = viewModel11.Cards.ToArray();
 
             // Assert
             Assert.AreEqual(cards1.Length, 3);
@@ -276,6 +293,18 @@ namespace VocabInstaller.Tests.Controllers {
 
             Assert.AreEqual(cards7.Length, 1);
             Assert.IsTrue(cards7[0].Id == 5);
+
+            Assert.AreEqual(cards8.Length, 1);
+            Assert.IsTrue(cards8[0].Id == 1);
+
+            Assert.AreEqual(cards9.Length, 1);
+            Assert.IsTrue(cards9[0].Id == 2);
+
+            Assert.AreEqual(cards10.Length, 1);
+            Assert.IsTrue(cards10[0].Id == 3);
+
+            Assert.AreEqual(cards11.Length, 1);
+            Assert.IsTrue(cards11[0].Id == 4);
         }
 
         [TestMethod]

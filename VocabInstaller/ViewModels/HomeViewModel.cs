@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
 using VocabInstaller.Models;
 
 namespace VocabInstaller.ViewModels {
@@ -18,21 +17,23 @@ namespace VocabInstaller.ViewModels {
             IQueryable<Card> models, Func<Card, string[]> searchFields, string search) {
 
             if (!String.IsNullOrEmpty(search)) {
-                search = HttpUtility.HtmlEncode(search)
-                    .Replace("&#39;", "'").Replace("&amp;", "&");
+                search = search.Replace(@"""", "_qt_").Replace(@"\_qt_", @"""");
+
+                search = search.Replace("[", "[[").Replace("]", "]]").Replace("[[", "[[]").Replace("]]", "[]]")
+                    .Replace("(", "[(]").Replace(")", "[)]");
 
                 var compMatchPtn = new Regex(
-                    @"&quot;(?<cmKey>(?!&quot;)[\w\s\*\.\?',\!\+\-=:/@#%\&\$~]+)&quot;");
+                    @"_qt_(?<cmKey>(?!_qt_)[\w\s\*\.\?'"",\!\+\-\\()\<\>\[\]=:/@#%\&\$~]+)_qt_");
 
                 var matches = compMatchPtn.Matches(search);
                 foreach (var m in matches) {
                     var key = m.ToString();
-                    search = search.Replace(key, Regex.Replace(key, @"\s+", "[sp]"));
+                    search = search.Replace(key, Regex.Replace(key, @"\s+", "_sp_"));
                 }
 
                 string[] keywords = Regex.Split(search, @"\s+");
                 for (int i = 0; i < keywords.Length; i++) {
-                    keywords[i] = keywords[i].Replace("[sp]", " ");
+                    keywords[i] = keywords[i].Replace("_sp_", " ");
                 }
 
                 var filteredlList = models.ToList();
@@ -51,9 +52,9 @@ namespace VocabInstaller.ViewModels {
 
                         key = Regex.Replace(key,
                             @"(?<symbol>[\.\?\!\+\-\&\$])", @"\${symbol}");
-                        key = key.Replace(@"**", "[star]");
+                        key = key.Replace(@"\*", "_star_");
                         key = key.Replace("*", @"[^\s]+");
-                        key = key.Replace("[star]", @"\*");
+                        key = key.Replace("_star_", @"\*");
                         isCompMatch = true;
                     }
 
