@@ -77,16 +77,13 @@ namespace VocabInstaller.Controllers {
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
         public ActionResult ImportConfirmed(HttpPostedFileBase csvFile = null, bool overwrite = false) {
-            var cards = repository.Cards;
-
             bool isAdmin = false;
-            int userId = -1;
+            int userId = 0;
             string userRole = (string)(Session["UserRole"] ?? this.GetUserRole());
             if (userRole == "Administrator") {
                 isAdmin = true;
             } else if (userRole == "User") {
                 userId = (int)(Session["UserId"] ?? this.GetUserId());
-                cards = cards.Where(c => c.UserId == userId);
             }
 
             if (csvFile == null) { throw new FileNotFoundException("csvFile should not be null"); }
@@ -98,7 +95,14 @@ namespace VocabInstaller.Controllers {
                 }
             }
 
-            var cardList = cards.OrderByDescending(c => c.CreatedAt).ToList();
+            var cardList = new List<Card>();
+            if (overwrite) {
+                var cards = repository.Cards;
+                if (userRole == "User") {
+                    cards = cards.Where(c => c.UserId == userId);
+                }
+                cardList = cards.ToList();
+            }
 
             cardList.AddRange(records.Select(record => record.Split('\t'))
                     .Select(fields => new Card() {
@@ -111,6 +115,8 @@ namespace VocabInstaller.Controllers {
                         ReviewedAt = String.IsNullOrEmpty(fields[6]) ? DateTime.Now : DateTime.Parse(fields[6]),
                         ReviewLevel = String.IsNullOrEmpty(fields[7]) ? 0 : int.Parse(fields[7])
                     }));
+
+            cardList = cardList.OrderByDescending(c => c.CreatedAt).ToList();
 
             foreach (var c in cardList) {
                 create(c);

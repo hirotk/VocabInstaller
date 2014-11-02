@@ -517,3 +517,7 @@ section.card {
     #function form .form-group {
         margin-bottom: 10px;
     }
+
+    #function form .file {
+        width: 100%;
+    }

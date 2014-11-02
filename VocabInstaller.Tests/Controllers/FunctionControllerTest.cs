@@ -136,8 +136,8 @@ namespace VocabInstaller.Tests.Controllers {
             // Assert
             Assert.IsNotNull(resultGet);
             Assert.IsNotNull(resultPost);
-            Assert.AreEqual(model.Count, 7 + 5);
-            Assert.AreEqual(model.First().Question, "Why don't you try it?");
+            Assert.AreEqual(model.Count, 5);
+            Assert.AreEqual(model.First().Question, "q6");
             Assert.AreEqual(model.Last().Question, "question4");
         }
 
