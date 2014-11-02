@@ -139,6 +139,8 @@ namespace VocabInstaller.Tests.Controllers {
             Assert.AreEqual(model.Count, 5);
             Assert.AreEqual(model.First().Question, "q6");
             Assert.AreEqual(model.Last().Question, "question4");
+            Assert.AreEqual(model[4].CreatedAt - model[3].CreatedAt, 
+                new TimeSpan(0, 0, 0, 0, 100));
         }
 
         [TestMethod]

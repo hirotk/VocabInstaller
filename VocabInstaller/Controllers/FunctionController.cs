@@ -104,6 +104,9 @@ namespace VocabInstaller.Controllers {
                 cardList = cards.ToList();
             }
 
+            var now = DateTime.Now;
+            now = now.AddMilliseconds(-now.Millisecond);
+            
             cardList.AddRange(records.Select(record => record.Split('\t'))
                     .Select(fields => new Card() {
                         Id = overwrite ? int.Parse(fields[0]) : 0,
@@ -111,14 +114,19 @@ namespace VocabInstaller.Controllers {
                         Question = fields[2],
                         Answer = fields[3],
                         Note = fields[4].Replace("[nl /]", "\n"),
-                        CreatedAt = String.IsNullOrEmpty(fields[5]) ? DateTime.Now : DateTime.Parse(fields[5]),
-                        ReviewedAt = String.IsNullOrEmpty(fields[6]) ? DateTime.Now : DateTime.Parse(fields[6]),
+                        CreatedAt = String.IsNullOrEmpty(fields[5]) ? now : DateTime.Parse(fields[5]),
+                        ReviewedAt = String.IsNullOrEmpty(fields[6]) ? now : DateTime.Parse(fields[6]),
                         ReviewLevel = String.IsNullOrEmpty(fields[7]) ? 0 : int.Parse(fields[7])
                     }));
 
-            cardList = cardList.OrderByDescending(c => c.CreatedAt).ToList();
+            cardList = cardList.OrderBy(c => c.CreatedAt).ToList();
 
+            double t = 0;
             foreach (var c in cardList) {
+                if (c.CreatedAt == now) {
+                    c.CreatedAt = c.ReviewedAt.AddMilliseconds(t);
+                    t += 100;
+                }
                 create(c);
             }
 
