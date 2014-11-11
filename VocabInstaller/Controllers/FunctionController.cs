@@ -171,5 +171,9 @@ namespace VocabInstaller.Controllers {
             return View(deletedList);
         }
 
+        protected override void Dispose(bool disposing) {
+            repository.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }
