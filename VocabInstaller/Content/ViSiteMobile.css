@@ -3,6 +3,11 @@
 */
 
 @media (max-width: 767px) {
+    header,
+    footer {
+        border-radius: 0 !important;
+    }
+
     /* navbar
     ----------------------------------------------------------*/
     .navbar .divider_vertical,

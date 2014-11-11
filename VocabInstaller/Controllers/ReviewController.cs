@@ -12,6 +12,7 @@ using VocabInstaller.Models;
 using VocabInstaller.ViewModels;
 
 namespace VocabInstaller.Controllers {
+    [Authorize]
     public class ReviewController : Controller {
         private IViRepository repository;
 

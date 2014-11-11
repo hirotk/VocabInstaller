@@ -114,6 +114,10 @@ input[type="checkbox"] {
     padding-top: 5px;
 }
 
+.form-horizontal .form-group {
+    margin: 0;
+}
+
 .field-validation-error,
 .validation-summary-errors {
     color: darkred;

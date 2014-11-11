@@ -29,7 +29,7 @@ body {
 
 .container {
     background-color: #f8f8f8;
-    /*min-width: 320px;*/
+    max-width: 1200px;
 }
 
 header, footer {
@@ -40,13 +40,26 @@ header, footer {
     font-family: Rockwell, Times, "Times New Roman", serif;        
 }
 
+header {
+    margin-top: 20px;
+    border-bottom-right-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+footer {
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}
+
 .main_content {
     padding-bottom: 15px;    
 }
 
 footer {
-    height: 28px;
-    line-height: 28px;
+    height: 32px;
+    line-height: 32px;
     text-align: center;
     font-size: 16px;
 }
@@ -165,10 +178,6 @@ button:focus {
 
 /* form
 ----------------------------------------------------------*/
-.form-horizontal .form-group {
-    margin: 0;
-}
-
 legend {
     margin-bottom: 5px;
 }

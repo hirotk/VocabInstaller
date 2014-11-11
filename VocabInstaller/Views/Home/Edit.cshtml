@@ -44,8 +44,8 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(m => m.Note, new { @class = "control-label", @for = "tbNote" })
-            @Html.TextAreaFor(m => m.Note, new { @id = "tbNote", @class = "form-control editor_field", @cols = 60, @rows = 4 })
+            @Html.LabelFor(m => m.Note, new { @class = "control-label", @for = "taNote" })
+            @Html.TextAreaFor(m => m.Note, new { @id = "taNote", @class = "form-control editor_field", @cols = 60, @rows = 4 })
             <span class="text-danger">@Html.ValidationMessageFor(m => m.Note)</span>
         </div>
 
