@@ -78,10 +78,10 @@ namespace VocabInstaller.Helpers {
             public void Interpret(Stack<List<Card>> stack) { }
         }
 
-        public class ReversedPolishMachine {
+        public class ReversePolishMachine {
             private SearchEngine se;
 
-            public ReversedPolishMachine(Func<Card, string[]> searchFields,
+            public ReversePolishMachine(Func<Card, string[]> searchFields,
                 List<Card> populationList) {
                 se = new SearchEngine(searchFields, populationList);
             }
@@ -148,8 +148,8 @@ namespace VocabInstaller.Helpers {
         }
 
         public class SearchEngine {
-            private Func<Card, string[]> searchFields;
-            private List<Card> populationList;
+            private readonly Func<Card, string[]> searchFields;
+            private readonly List<Card> populationList;
 
             public SearchEngine(Func<Card, string[]> searchFields, List<Card> populationList) {
                 this.searchFields = searchFields;
@@ -221,7 +221,7 @@ namespace VocabInstaller.Helpers {
                 search = search.Replace(key, escKey);
             }
 
-            var rpm = new ReversedPolishMachine(searchFields, models.ToList());
+            var rpm = new ReversePolishMachine(searchFields, models.ToList());
 
             var code = rpm.Convert(search);
             rpm.Excute(code);
