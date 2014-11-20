@@ -191,6 +191,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ControllerHelper.cs" />
+    <Compile Include="Helpers\ViewModelHelper.cs" />
     <Compile Include="Migrations\201408250546457_Review.cs" />
     <Compile Include="Migrations\201408250546457_Review.Designer.cs">
       <DependentUpon>201408250546457_Review.cs</DependentUpon>

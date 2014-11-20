@@ -98,10 +98,9 @@ namespace VocabInstaller.Tests.Controllers {
             var controller = new ReviewController(mockRepository.Object);
             controller.ControllerContext = ctrlContext.Object;
             int id = 1, page = 0;
-            var result = controller.Index(page) as ViewResult;
+            var result = controller.Index(page, "Typing") as ViewResult;
             var viewModel = result.Model as ReviewViewModel;
             viewModel.QuestionedAt = DateTime.Now;
-            viewModel.ReviewMode = "Typing";
             viewModel.MyAnswer = "w1";
 
             // Act
@@ -125,10 +124,9 @@ namespace VocabInstaller.Tests.Controllers {
             var controller = new ReviewController(mockRepository.Object);
             controller.ControllerContext = ctrlContext.Object;
             int id = 1, page = 0;
-            var result = controller.Index(page) as ViewResult;
+            var result = controller.Index(page, "Blank") as ViewResult;
             var viewModel = result.Model as ReviewViewModel;
             viewModel.QuestionedAt = DateTime.Now;
-            viewModel.ReviewMode = "Blank";
             viewModel.MyAnswer = "w";
             viewModel.Blank = "_1";
             viewModel.BlankAnswer = 'w';

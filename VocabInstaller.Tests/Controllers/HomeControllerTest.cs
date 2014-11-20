@@ -26,13 +26,13 @@ namespace VocabInstaller.Tests.Controllers {
                     Question = "Even though it's difficult, it's worth trying.", Answer = "a2*a2",
                     CreatedAt = DateTime.Parse("2014/01/02")},
                 new Card {Id = 3, UserId = 2,
-                    Question = "What a wonderful day!", Answer = "[a3%]",
+                    Question = "What a wonderful day!", Answer = "[a3%] beauty",
                     CreatedAt = DateTime.Parse("2014/01/03")},
                 new Card {Id = 4, UserId = 2,
-                    Question = "It's only 1.2$.", Answer = "(a4\")",
+                    Question = "It's only 1.2$.", Answer = "(a4\") beautiful",
                     CreatedAt = DateTime.Parse("2014/01/04")},
                 new Card {Id = 5, UserId = 2,
-                    Question = "2 * 3 + 6 / 2 = 9", Answer = "a5",
+                    Question = "2 * 3 + 6 / 2 = 9", Answer = "a5 grateful",
                     CreatedAt = DateTime.Parse("2014/01/05")},
                 new Card {Id = 6, UserId = 3,
 
@@ -276,6 +276,19 @@ namespace VocabInstaller.Tests.Controllers {
                 itemsPerPage: 10, search: "(a4\\\")")).Model);
             Card[] cards13 = viewModel13.Cards.ToArray();
 
+            var viewModel14 = (HomeViewModel)(((ViewResult)controller.Index(
+                itemsPerPage: 10, search: "\"wo*\" | \"be*\"")).Model);
+            Card[] cards14 = viewModel14.Cards.ToArray();
+
+            var viewModel15 = (HomeViewModel)(((ViewResult)controller.Index(
+                itemsPerPage: 10, search: "(\"wo*\" | \"be*\") & \"*ful\"")).Model);
+            Card[] cards15 = viewModel15.Cards.ToArray();
+
+            var viewModel16 = (HomeViewModel)(((ViewResult)controller.Index(
+                itemsPerPage: 10, search: "(\"wo*\" or \"be*\")  (\"*ful\" or try)")).Model);
+            Card[] cards16 = viewModel16.Cards.ToArray();
+
+
             // Assert
             Assert.AreEqual(cards1.Length, 3);
             Assert.IsTrue(cards1[0].Id == 4);
@@ -319,6 +332,20 @@ namespace VocabInstaller.Tests.Controllers {
 
             Assert.AreEqual(cards13.Length, 1);
             Assert.IsTrue(cards13[0].Id == 4);
+
+            Assert.AreEqual(cards14.Length, 3);
+            Assert.IsTrue(cards14[0].Id == 4);
+            Assert.IsTrue(cards14[1].Id == 3);
+            Assert.IsTrue(cards14[2].Id == 2);
+
+            Assert.AreEqual(cards15.Length, 2);
+            Assert.IsTrue(cards15[0].Id == 4);
+            Assert.IsTrue(cards15[1].Id == 3);
+
+            Assert.AreEqual(cards16.Length, 3);
+            Assert.IsTrue(cards16[0].Id == 4);
+            Assert.IsTrue(cards16[1].Id == 3);
+            Assert.IsTrue(cards16[2].Id == 2);
         }
 
         [TestMethod]
