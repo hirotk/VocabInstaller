@@ -184,9 +184,7 @@ namespace VocabInstaller.Helpers {
                 List<Card> list) {
                 return list.Where(c => {
                     foreach (var s in searchFields(c)) {
-                        if (string.IsNullOrEmpty(s)) {
-                            continue;
-                        }
+                        if (string.IsNullOrEmpty(s)) { continue; }
                         if (Regex.IsMatch(s, string.Format(
                             @"(^|\s+){0}(\s+|$)", word))) {
                             return true;
@@ -198,9 +196,9 @@ namespace VocabInstaller.Helpers {
         }
 
         public static IQueryable<Card> FilterCards(this AbstractViewModel viewModel,
-            IQueryable<Card> models, Func<Card, string[]> searchFields, string search) {
+            IQueryable<Card> cards, Func<Card, string[]> searchFields, string search) {
 
-            if (String.IsNullOrEmpty(search)) { return models; }
+            if (String.IsNullOrEmpty(search)) { return cards; }
 
             search = search.Replace(@"""", "\0") // begin and end quots for compMatch search
                 .Replace("\\\0", @""""); // quots included in search words
@@ -218,7 +216,7 @@ namespace VocabInstaller.Helpers {
                 search = search.Replace(key, escKey);
             }
 
-            var rpm = new ReversedPolishMachine(searchFields, models.ToList());
+            var rpm = new ReversedPolishMachine(searchFields, cards.ToList());
 
             rpm.Search(search);
 

@@ -11,3 +11,4 @@ VocabInstaller
 ![VocabInstaller Screenshots](/VocabInstaller/Screenshots/ViScreenshot0.png?raw=true "VocabInstaller Screenshot0") 
 ![VocabInstaller Screenshots](/VocabInstaller/Screenshots/ViScreenshot1.png?raw=true "VocabInstaller Screenshot1") 
 ![VocabInstaller Screenshots](/VocabInstaller/Screenshots/ViScreenshot2.png?raw=true "VocabInstaller Screenshot2") 
+![VocabInstaller Screenshots](/VocabInstaller/Screenshots/ViScreenshot3.png?raw=true "VocabInstaller Screenshot3") 

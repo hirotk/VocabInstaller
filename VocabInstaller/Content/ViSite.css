@@ -368,6 +368,28 @@ section.card {
     font-size: 16px;
 }
 
+#about h4 {
+    margin:  15px 2px 2px;
+    padding-left: 6px;
+    border-left: solid 3px gray;
+}
+
+#about h5 {
+    margin:  10px 4px 2px;
+    font-size: 16px;
+}
+
+#about .search {    
+    overflow: visible;
+    max-width: 280px;
+    line-height: 30px;
+    margin-left: 2px;
+    padding-left: 5px;
+    background-color: lightgoldenrodyellow;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
 /* Home/Edit
 ----------------------------------------------------------*/
 .created_date,
