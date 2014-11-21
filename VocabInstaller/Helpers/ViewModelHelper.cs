@@ -8,11 +8,11 @@ using VocabInstaller.ViewModels;
 
 namespace VocabInstaller.Helpers {
     public static class ViewModelHelper {
-        public interface IExpression<T> {
+        private interface IExpression<T> {
             void Interpret(Stack<T> stack);
         }
 
-        public class OrFilter : IExpression<List<Card>> {
+        private class OrFilter : IExpression<List<Card>> {
             public void Interpret(Stack<List<Card>> stack) {
                 var listA = stack.Pop();
                 var listB = stack.Pop();
@@ -22,71 +22,24 @@ namespace VocabInstaller.Helpers {
             }
         }
 
-        public class AndFilter : IExpression<List<Card>> {
+        private class AndFilter : IExpression<List<Card>> {
             public void Interpret(Stack<List<Card>> stack) {
                 var listA = stack.Pop();
                 var listB = stack.Pop();
-                var listAandB = new List<Card>();
-                foreach (var card in listA) {
-                    if (listB.Contains(card)) {
-                        listAandB.Add(card);
-                    }
-                }
+                var listAandB = listA.Where(listB.Contains).ToList();
                 stack.Push(listAandB);
             }
         }
 
-        public class UniFilter : IExpression<List<Card>> {
-            public UniFilter(Stack<List<Card>> stack, string word, Func<Card, string[]> searchFields,
-                List<Card> cardList, bool isCompMatch = false) {
-                var list = isCompMatch
-                    ? filterCardsByCompMatch(word, searchFields, cardList)
-                    : filterCards(word, searchFields, cardList);
-
-                stack.Push(list);
-            }
-
-            private List<Card> filterCards(string word, Func<Card, string[]> searchFields,
-                List<Card> list) {
-                return list.Where(c => {
-                    foreach (var s in searchFields(c)) {
-                        if (string.IsNullOrEmpty(s)) { continue; }
-                        if (s.ToLower().Contains(word.ToLower())) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }).ToList();
-            }
-
-            private List<Card> filterCardsByCompMatch(string word, Func<Card, string[]> searchFields,
-                List<Card> list) {
-                return list.Where(c => {
-                    foreach (var s in searchFields(c)) {
-                        if (string.IsNullOrEmpty(s)) {
-                            continue;
-                        }
-                        if (Regex.IsMatch(s, string.Format(
-                            @"(^|\s+){0}(\s+|$)", word))) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }).ToList();
-            }
-
-            public void Interpret(Stack<List<Card>> stack) { }
-        }
-
-        public class ReversePolishMachine {
+        private class ReversedPolishMachine {
             private SearchEngine se;
 
-            public ReversePolishMachine(Func<Card, string[]> searchFields,
+            public ReversedPolishMachine(Func<Card, string[]> searchFields,
                 List<Card> populationList) {
                 se = new SearchEngine(searchFields, populationList);
             }
 
-            public string Convert(string expression) {
+            private static string convert(string expression) {
                 expression = Regex.Replace(expression, @"(?<ope>[\(\)&|])", " ${ope} ");
                 expression = Regex.Replace(expression, @"\s+or\s+", " | ");
                 expression = Regex.Replace(expression, @"(?<key1>[^&|\(\s]+)\s+(?<key2>[^&|\)\s]+)", "${key1} & ${key2}");
@@ -134,7 +87,12 @@ namespace VocabInstaller.Helpers {
                 return sb.ToString().Trim();
             }
 
-            public void Excute(string code) {
+            public void Search(string search) {
+                var code = convert(search);
+                Execute(code);
+            }
+
+            public void Execute(string code) {
                 var talken = code.Split(' ');
 
                 foreach (var t in talken) {
@@ -147,9 +105,9 @@ namespace VocabInstaller.Helpers {
             }
         }
 
-        public class SearchEngine {
-            private readonly Func<Card, string[]> searchFields;
-            private readonly List<Card> populationList;
+        private class SearchEngine {
+            private Func<Card, string[]> searchFields;
+            private List<Card> populationList;
 
             public SearchEngine(Func<Card, string[]> searchFields, List<Card> populationList) {
                 this.searchFields = searchFields;
@@ -186,7 +144,8 @@ namespace VocabInstaller.Helpers {
                             isCompMatch = true;
                         }
 
-                        new UniFilter(stack, talken, searchFields, populationList, isCompMatch);
+                        //new UniFilter(stack, talken, searchFields, populationList, isCompMatch);
+                        uniFilter(stack, talken, searchFields, populationList, isCompMatch);
                         break;
                 }
             }
@@ -196,8 +155,46 @@ namespace VocabInstaller.Helpers {
                 get { return stack; }
             }
 
-            private OrFilter orFilter = new OrFilter();
-            private AndFilter andFilter = new AndFilter();
+            private static readonly OrFilter orFilter = new OrFilter();
+            private static readonly AndFilter andFilter = new AndFilter();
+
+            private static void uniFilter(Stack<List<Card>> stack, string word,
+                Func<Card, string[]> searchFields, List<Card> cardList, bool isCompMatch = false) {
+                var list = isCompMatch
+                    ? filterCardsByCompMatch(word, searchFields, cardList)
+                    : filterCards(word, searchFields, cardList);
+
+                stack.Push(list);
+            }
+
+            private static List<Card> filterCards(string word, Func<Card, string[]> searchFields,
+                List<Card> list) {
+                return list.Where(c => {
+                    foreach (var s in searchFields(c)) {
+                        if (string.IsNullOrEmpty(s)) { continue; }
+                        if (s.ToLower().Contains(word.ToLower())) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }).ToList();
+            }
+
+            private static List<Card> filterCardsByCompMatch(string word, Func<Card, string[]> searchFields,
+                List<Card> list) {
+                return list.Where(c => {
+                    foreach (var s in searchFields(c)) {
+                        if (string.IsNullOrEmpty(s)) {
+                            continue;
+                        }
+                        if (Regex.IsMatch(s, string.Format(
+                            @"(^|\s+){0}(\s+|$)", word))) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }).ToList();
+            }
         }
 
         public static IQueryable<Card> FilterCards(this AbstractViewModel viewModel,
@@ -221,10 +218,9 @@ namespace VocabInstaller.Helpers {
                 search = search.Replace(key, escKey);
             }
 
-            var rpm = new ReversePolishMachine(searchFields, models.ToList());
+            var rpm = new ReversedPolishMachine(searchFields, models.ToList());
 
-            var code = rpm.Convert(search);
-            rpm.Excute(code);
+            rpm.Search(search);
 
             return rpm.GetResult().AsQueryable();
         }
