@@ -154,12 +154,14 @@ namespace VocabInstaller.Controllers {
                     isPerfect = card.Question == myAns;
                     int? missIndex = null;
                     if (isPerfect == false) {
-                        for (int i = 0; i < myAns.Length; i++) {
-                            if (i >= card.Question.Length ||
-                                myAns[i] != card.Question[i]) {
-                                missIndex = i;
-                                break;
+                        int ansLen = card.Question.Length;
+                        int myAnsLen = myAns.Length;
+                        for (int i = 0; i < myAnsLen; i++) {
+                            if (i < ansLen && myAns[i] == card.Question[i]) {
+                                continue;
                             }
+                            missIndex = i;
+                            break;
                         }
                     }
                     reviewViewModel.MissIndex = missIndex;

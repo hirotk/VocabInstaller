@@ -54,7 +54,7 @@ namespace VocabInstaller.Controllers {
                 c.UserId,
                 c.Question ?? string.Empty,
                 c.Answer ?? string.Empty,
-                (c.Note ?? string.Empty).Replace("\n", "[nl /]"),
+                (c.Note ?? string.Empty).Replace("\r\n", "[nl /]"),
                 c.CreatedAt.ToString("yyyy/MM/dd HH:mm:ss"),
                 c.ReviewedAt.ToString("yyyy/MM/dd HH:mm:ss"), 
                 c.ReviewLevel)
@@ -113,7 +113,7 @@ namespace VocabInstaller.Controllers {
                         UserId = isAdmin ? int.Parse(fields[1]) : userId,
                         Question = fields[2],
                         Answer = fields[3],
-                        Note = fields[4].Replace("[nl /]", "\n"),
+                        Note = fields[4].Replace("[nl /]", "\r\n"),
                         CreatedAt = String.IsNullOrEmpty(fields[5]) ? now : DateTime.Parse(fields[5]),
                         ReviewedAt = String.IsNullOrEmpty(fields[6]) ? now : DateTime.Parse(fields[6]),
                         ReviewLevel = String.IsNullOrEmpty(fields[7]) ? 0 : int.Parse(fields[7])

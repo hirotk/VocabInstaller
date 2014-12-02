@@ -39,10 +39,33 @@ namespace VocabInstaller.Helpers {
                 se = new SearchEngine(searchFields, populationList);
             }
 
-            private static string convert(string expression) {
-                expression = Regex.Replace(expression, @"(?<ope>[\(\)&|])", " ${ope} ");
+            private static string rpnEscape(string expression) {
+                expression = expression.Replace(@"""", "\0") // begin and end quots for compMatch search
+                    .Replace("\\\0", @""""); // quots included in search words
+
+                var compMatchPtn = new Regex(@"\0(?<cmKey>[^\0]+)\0");
+                var matches = compMatchPtn.Matches(expression);
+                foreach (var m in matches) {
+                    var key = m.ToString();
+
+                    var escKey = Regex.Replace(key, @"\s+", "_sp_")
+                        .Replace("(", "_opPts_").Replace(")", "_clPts_");
+
+                    expression = expression.Replace(key, escKey);
+                }
+                return expression;
+            }
+
+            private static string rpnUnescape(string expression) {
+                expression = expression.Replace("_sp_", " ")
+                    .Replace("_opPts_", "(").Replace("_clPts_", ")");
+                return expression;
+            }
+
+            private static string rpnConvert(string expression) {
+                expression = Regex.Replace(expression, @"(?<ope>[\(\)])", " ${ope} ");
                 expression = Regex.Replace(expression, @"\s+or\s+", " | ");
-                expression = Regex.Replace(expression, @"(?<key1>[^&|\(\s]+)\s+(?<key2>[^&|\)\s]+)", "${key1} & ${key2}");
+                expression = Regex.Replace(expression, @"(?<key1>[^\(\s&|]+)\s+(?<key2>[^\)\s&|]+)", "${key1} & ${key2}");
                 expression = Regex.Replace(expression, @"\s{2,}", " ");
                 var words = expression.Trim().Split(' ');
 
@@ -88,7 +111,8 @@ namespace VocabInstaller.Helpers {
             }
 
             public void Search(string search) {
-                var code = convert(search);
+                search = rpnEscape(search);
+                var code = rpnConvert(search);
                 Execute(code);
             }
 
@@ -96,7 +120,8 @@ namespace VocabInstaller.Helpers {
                 var talken = code.Split(' ');
 
                 foreach (var t in talken) {
-                    se.Process(t);
+                    var tkn = rpnUnescape(t);
+                    se.Process(tkn);
                 }
             }
 
@@ -106,8 +131,8 @@ namespace VocabInstaller.Helpers {
         }
 
         private class SearchEngine {
-            private Func<Card, string[]> searchFields;
-            private List<Card> populationList;
+            private readonly Func<Card, string[]> searchFields;
+            private readonly List<Card> populationList;
 
             public SearchEngine(Func<Card, string[]> searchFields, List<Card> populationList) {
                 this.searchFields = searchFields;
@@ -126,26 +151,7 @@ namespace VocabInstaller.Helpers {
                         andFilter.Interpret(stack);
                         break;
                     default:
-                        bool isCompMatch = false;
-                        if (compMatchPtn.IsMatch(talken)) {
-                            // Remove quots for compmatch '\0'
-                            talken = compMatchPtn.Match(talken).Groups["cmKey"].Value;
-                            talken = talken.Replace("_sp_", " ")
-                                .Replace("_opPts_", "[(]").Replace("_clPts_", "[)]");
-
-                            // Escape sybols
-                            talken = Regex.Replace(talken,
-                                @"(?<symbol>[\.\?\!\+\-\&\$])", @"\${symbol}");
-
-                            // Escape wildcard char *
-                            talken = talken.Replace(@"\*", "_star_");
-                            talken = talken.Replace("*", @"[^\s]+");
-                            talken = talken.Replace("_star_", @"\*");
-                            isCompMatch = true;
-                        }
-
-                        //new UniFilter(stack, talken, searchFields, populationList, isCompMatch);
-                        uniFilter(stack, talken, searchFields, populationList, isCompMatch);
+                        uniFilter(stack, talken, populationList, searchFields);
                         break;
                 }
             }
@@ -159,35 +165,49 @@ namespace VocabInstaller.Helpers {
             private static readonly AndFilter andFilter = new AndFilter();
 
             private static void uniFilter(Stack<List<Card>> stack, string word,
-                Func<Card, string[]> searchFields, List<Card> cardList, bool isCompMatch = false) {
-                var list = isCompMatch
-                    ? filterCardsByCompMatch(word, searchFields, cardList)
-                    : filterCards(word, searchFields, cardList);
+                List<Card> cardList, Func<Card, string[]> searchFields) {
+
+                bool isCompMatch = false;
+                if (compMatchPtn.IsMatch(word)) {
+                    // Remove quots for compmatch '\0'
+                    word = compMatchPtn.Match(word).Groups["cmKey"].Value;
+
+                    // Escape star
+                    word = word.Replace(@"\*", "_star_");
+                    
+                    // Escape sybols
+                    word = Regex.Replace(word,
+                        @"(?<symbol>[\.\?\!\+\-\^\$\(\)\[\]\\])", @"\${symbol}");
+
+                    // Convert wildcard
+                    word = word.Replace("*", @"[^\s]+");
+                    
+                    // Unescape star
+                    word = word.Replace("_star_", @"\*");
+                    
+                    isCompMatch = true;
+                }
+
+                var list = filterCards(word, cardList, searchFields, isCompMatch);
 
                 stack.Push(list);
             }
 
-            private static List<Card> filterCards(string word, Func<Card, string[]> searchFields,
-                List<Card> list) {
-                return list.Where(c => {
+            private static List<Card> filterCards(string word, 
+                List<Card> cardList, Func<Card, string[]> searchFields, bool isCompMatch = false) {
+                return cardList.Where(c => {
                     foreach (var s in searchFields(c)) {
                         if (string.IsNullOrEmpty(s)) { continue; }
-                        if (s.ToLower().Contains(word.ToLower())) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }).ToList();
-            }
 
-            private static List<Card> filterCardsByCompMatch(string word, Func<Card, string[]> searchFields,
-                List<Card> list) {
-                return list.Where(c => {
-                    foreach (var s in searchFields(c)) {
-                        if (string.IsNullOrEmpty(s)) { continue; }
-                        if (Regex.IsMatch(s, string.Format(
-                            @"(^|\s+){0}(\s+|$)", word))) {
-                            return true;
+                        if (isCompMatch) {
+                            if (Regex.IsMatch(s, string.Format(
+                                @"(^|\s+){0}(\s+|$)", word))) {
+                                return true;
+                            }
+                        } else {
+                            if (s.ToLower().Contains(word.ToLower())) {
+                                return true;
+                            }
                         }
                     }
                     return false;
@@ -196,25 +216,11 @@ namespace VocabInstaller.Helpers {
         }
 
         public static IQueryable<Card> FilterCards(this AbstractViewModel viewModel,
-            IQueryable<Card> cards, Func<Card, string[]> searchFields, string search) {
+            Func<Card, string[]> searchFields, string search) {
+
+            var cards = viewModel.Cards;
 
             if (String.IsNullOrEmpty(search)) { return cards; }
-
-            search = search.Replace(@"""", "\0") // begin and end quots for compMatch search
-                .Replace("\\\0", @""""); // quots included in search words
-
-            var compMatchPtn = new Regex(@"\0(?<cmKey>[^\0]+)\0");
-
-            var matches = compMatchPtn.Matches(search);
-            foreach (var m in matches) {
-                var key = m.ToString();
-
-                var escKey = Regex.Replace(key, @"\s+", "_sp_");
-                escKey = escKey.Replace("[", "[[").Replace("]", "]]")
-                    .Replace("[[", "[[]").Replace("]]", "[]]")
-                    .Replace("(", "_opPts_").Replace(")", "_clPts_");
-                search = search.Replace(key, escKey);
-            }
 
             var rpm = new ReversedPolishMachine(searchFields, cards.ToList());
 

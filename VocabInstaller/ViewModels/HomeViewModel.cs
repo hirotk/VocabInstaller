@@ -18,7 +18,7 @@ namespace VocabInstaller.ViewModels {
             Func<Card, string[]> searchFields = c =>
                 new string[] { c.Question, c.Answer, c.Note };
 
-            var cards = this.FilterCards(Cards, searchFields, Search);
+            var cards = this.FilterCards(searchFields, Search);
             
             this.ItemNum = cards.Count();
 
