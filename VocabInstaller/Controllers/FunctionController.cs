@@ -48,13 +48,13 @@ namespace VocabInstaller.Controllers {
             }
 
             var sb = new StringBuilder();
-            cards.OrderBy(c => c.Id).ToList().ForEach(c => sb.Append(
+            cards.OrderBy(c => c.UserId).ThenBy(c => c.Id).ToList().ForEach(c => sb.Append(
                 string.Format("{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}\r\n",
                 c.Id,
                 c.UserId,
                 c.Question ?? string.Empty,
                 c.Answer ?? string.Empty,
-                (c.Note ?? string.Empty).Replace("\r\n", "[nl /]"),
+                (c.Note ?? string.Empty).Replace("\r", "").Replace("\n", "[nl /]"),
                 c.CreatedAt.ToString("yyyy/MM/dd HH:mm:ss"),
                 c.ReviewedAt.ToString("yyyy/MM/dd HH:mm:ss"), 
                 c.ReviewLevel)
